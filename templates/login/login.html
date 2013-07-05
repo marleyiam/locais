@@ -1,0 +1,87 @@
+{% extends "./layout/site.html" %}
+    {% block content %}
+    <form>
+    	<input id="geocomplete" type="text" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60"/>
+    	<input id="find" type="button" value="find" />
+    </form>
+
+    <form action="/login" method="post">
+    	<table>
+    		<tr>
+    			<td><label for="">Email</label></td><td><input type="text" name="email" placeholder="email"></td>
+    		</tr>
+    		<tr>
+    			<td><label for="">Senha</label></td><td><input type="password" name="senha" placeholder="senha"></td>
+    		</tr>
+    		<tr>
+    			<td>
+    				<input type="submit" value="entrar">
+    			</td>
+    		</tr>
+    	</table>
+    </form>
+    OU
+    REGISTRE-SE
+    <form action="user" method="post">
+    	<table>
+    		<tr>
+    			<td><label for="">Nome</label></td><td><input type="text" name="nome" placeholder="nome"></td>
+    		</tr>
+    		<tr>
+    			<td><label for="">Email</label></td><td><input type="text" name="email" placeholder="email"></td>
+    		</tr>
+    		<tr>
+    			<td><label for="">Cidade</label></td><td><input type="text" name="cidade" placeholder="cidade"></td>
+    		</tr>
+    		<tr>
+    			<td><label for="">Senha</label></td><td><input type="password" name="senha" placeholder="senha"></td>
+    		</tr>
+    		<tr>
+    			<td>
+    				<input type="submit" value="Registrar">
+    			</td>
+    		</tr>
+    	</table>
+    </form>
+    <form action="search_imoveis" method="post" name="">
+	    <label for="tipo"></label>
+	    <select id="tipo" name="tipo">
+	      <option>Apartamento</option>
+	      <option>Casa</option>
+	      <option>Fazenda</option>
+	      <option>Quarto</option>
+	      <option>Terreno</option>
+	    </select>
+	    <label for="cidade"></label>
+	    <select id="cidade" name="cidade">
+	      <option selected="selected">Natal</option>
+	      <option>Rio de Janeiro</option>
+	      <option>São Paulo</option>
+	    </select>
+	    <input type="submit" value="Buscar" id="" name="">
+    </form>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+    	$("#geocomplete").geocomplete({
+    	    details: "ul",
+    	    detailsAttribute: "data-geo"
+    	}).bind("geocode:result", function(event, result){
+    	          // console.log("Result: " + result.formatted_address);
+    	          console.log(result.geometry.location);
+    	         })
+    	         .bind("geocode:error", function(event, status){
+    	           console.log("ERROR: " + status);
+    	         })
+    	         .bind("geocode:multiple", function(event, results){
+    	           console.log("Multiple: " + results.length + " encontrados");
+    	         });
+
+    	$("#find").click(function(){
+    	    $("#geocomplete").trigger("geocode");
+    	});
+      	         	   
+    });
+    </script>
+    {% endblock %}

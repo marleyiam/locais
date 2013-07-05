@@ -1,0 +1,62 @@
+{% extends "./layout/site.html" %}
+  {% block content %}
+    <title>Autocomplete</title>
+    <script type="text/javascript">
+        $(function() {
+
+          var locais = new Array();
+
+          $.ajax({
+              type: 'get',
+              url: 'autocomplete',
+              success: function(data){
+       
+                  for(var i in data) {
+                    locais[i] = data[i].name;  
+                  }
+              },
+              error: function(jqxhr){
+                  console.log(jqxhr);
+              }
+          })
+          $("#de").autocomplete({
+            minLength: 0,
+            source: locais,
+             focus: function(event, ui) {
+              //$( "#project" ).val( ui.item.label );
+              //return false;
+              console.log(event);
+              //console.log(ui);
+            },
+            select: function(event, ui) {
+              //return false;
+              //console.log(event);
+              console.log(ui);
+            }
+          });
+          /*
+          $("#geocomplete").geocomplete({
+            map: ".map_canvas"
+          });
+          */
+          
+          $("#para").autocomplete({
+            minLength: 0,
+            source: locais
+          });
+       
+      });
+    </script>
+
+    <form action="rota/new" method="post" accept-charset="utf-8">
+      <div class="ui-widget">
+        <label for="de">De: </label>
+        <input id="de" name="de" value=""/>
+        <label for="para">Para: </label>
+        <input id="para" name="para" value=""/>
+        <input type="submit" name="" value="criar local" placeholder="">
+      </div>
+    </form>
+    
+    {% include './mapa/mapa.html' %} 
+  {% endblock %}

@@ -1,0 +1,50 @@
+{% extends "./layout/site.html" %}
+  {% block content %}
+        <div id="main">
+            <button type="submmit " onClick="window.history.back()">Voltar</button>
+            <table border="1px solid">
+                <caption>Dados do Local</caption>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>nome</th>
+                        <th>identificador</th>
+                        <th>endereco</th>
+                        <th>cidade</th>
+                        <th>latitude</th>
+                        <th>longitude</th>
+                        <th>descricao</th>
+                        <th>exibicao</th>
+                        <th>clone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ local.id }}</td>
+                        <td>{{ local.name }}</td>
+                        <td>{{ local.identifier }}</td>
+                        <td>{{ local.address }}</td>
+                        <td>{{ local.city }}</td>
+                        <td>{{ local.lat }}</td>
+                        <td>{{ local.lng }}</td>
+                        <td>{{ local.description }}</td>
+                        <td>{{ local.visibility }}</td>
+                        <td>{{ local.clone }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% if (imagens|length > 0) %}
+            <div id="imgs">
+                {% for img in imagens %}
+                <div>
+                    <img src="../uploads_locais/{{ img.name }}" width="400px" height="230px" alt=""/>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <span>Nao ha fotos cadastradas</span>
+            {% endif %}
+
+            {% include './mapa/mapa.html' %}
+        </div>
+  {% endblock %}

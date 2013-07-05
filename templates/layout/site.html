@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <title>main</title>
+
+    <script type="text/javascript">
+      root = "";
+      href = window.location.href;
+      href_array = href.split("/");
+      count = href_array.length;
+      if(count <= 5){
+        root = "./";
+
+      }else if(count == 6){
+        root = "../";
+      }else if(count == 7){
+        root = "../../";
+      }
+    </script>
+    <!-- JQuery -->
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <!-- UI -->
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <!-- Gmaps -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+    <!-- geocomplete -->
+    <script type="text/javascript">
+      $.getScript(root+'js/geocomplete/jquery.geocomplete.js');
+    </script>
+    <!-- File Uploader -->
+    <script type="text/javascript">
+      $.getScript(root+'js/jquery.MultiFile.js');
+    </script>
+
+    <script type="text/javascript">
+      $.getScript(root+'js/main.js');
+    </script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
+    <!--<script src="http://code.jquery.com/jquery-1.9.0rc1.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.0.0rc1.js"></script>
+    <script src="https://raw.github.com/digitalBush/jquery.maskedinput/1.3.1/dist/jquery.maskedinput.min.js" type="text/javascript"></script>-->
+
+    <style>
+
+    </style>
+  </head>
+  <body>
+    {% block content %} Sample Content {% endblock %} 
+  </body>
+</html>

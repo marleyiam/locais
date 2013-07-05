@@ -1,0 +1,570 @@
+
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+  .centralizado { margin: 0 auto; float: none; }
+
+  .panel {
+    background-color: #FFFFFF;
+    border: 1px solid #999999;
+    padding: 5px;
+    position: relative;
+    top: 5px;
+    width: 59%;
+    z-index: 5;
+  }
+
+  #map_canvas {
+    width: 500px;
+    height: 400px;
+  }
+</style>
+  <!--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCF0Hz5nzG-EHJYWZNrZH9Bl-q2AtFG2yk&sensor=true">-->
+  <script type="text/javascript" charset="utf-8">
+    //bind de evento do dom
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    // função que inicializa o mapa com suas devidas configurações
+    function initialize() {
+
+        // Array de parâmetros para estilo no para o mapa.
+        var styles = [
+        {
+          stylers: [
+          { hue: "#00ffe6" },
+          { saturation: -20 }
+          ]
+        },{
+          featureType: "road",
+          elementType: "geometry",
+          stylers: [
+          { lightness: 100 },
+          { visibility: "simplified" }
+          ]
+        },{
+          featureType: "road",
+          elementType: "labels",
+          stylers: [
+          { visibility: "off" }
+          ]
+        }
+        ];
+
+        //Instancia um objeto StyledMapType, passando o array de estilos,
+        // e o nome que será exibido na view do mapa.
+        var styledMap = new google.maps.StyledMapType(styles,
+          {name: "mudar mapa"});
+
+        geocoder = new google.maps.Geocoder();
+
+        var inicio = new google.maps.LatLng(-34.397, 150.644);
+
+        //pré-configurações do mapa
+        var mapOptions = {
+          zoom: 4,
+          center: inicio,
+          mapTypeControlOptions: {
+            mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+          }
+        };
+
+        //instancia do mapa
+        var map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
+
+        //Associa o styled map com o MapTypeId e o define na view do mapa.
+        map.mapTypes.set('map_style', styledMap);
+        map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+
+        /*
+        var mode = "DRIVING";
+            calcRoute( mode, startpoint, endpoint );
+          }*/
+
+      var origin = "";
+      var destination = "";
+      var wps = [];
+
+      function setOrigin(lat,lng){
+          origin = new google.maps.LatLng(lat,lng);
+      }
+
+      function setDestination(lat,lng){
+          destination = new google.maps.LatLng(lat,lng);
+      }
+
+      function addWayPoints(lat,lng){
+          wps.push({ location : new google.maps.LatLng(lat,lng), stopover : true });
+      }
+
+      function jsonRoute(origin, destination, wps){
+
+        var stroute = '{"route":{"origin":{"lat":'+origin.jb+',"lng":'+origin.kb+'},"destination":{"lat":'+destination.jb+',"lng":'+destination.kb+'}';
+
+        if(arguments.length == 3){
+          
+          stroute += ','
+          var routepoints = '"wpts":[';
+
+            for(var i = 0; i<wps.length; i++){
+
+              try{
+                  if( (i > 0) && (wps[i-1]) ){
+
+                    routepoints +=',';
+                  }
+                    routepoints +='{"lat":'+wps[i].location.jb+',"lng":'+wps[i].location.kb+',"stopover":'+wps[i].stopover+'}';
+               
+              }catch(e){}
+          }// fim for
+          routepoints += ']';
+          stroute += routepoints;
+
+        }// fim if
+          stroute += '} }';
+
+          console.log(stroute);
+          $("#route_path").val(stroute);
+          //return stroute;
+      }// fim jsonRoute
+
+      var ren, ser;
+      var route = false;
+
+      ren = new google.maps.DirectionsRenderer( {'draggable':false} );
+      ser = new google.maps.DirectionsService();
+      
+      function traceRoute(origin, destination, waypoints){
+        console.log(origin);
+        console.log(destination);
+        console.log(waypoints);
+
+          if(marker) marker.setMap(null);
+            route = true;
+            ren.setMap(map);
+            if(arguments.length == 2){
+              var request = {
+                    origin:origin, 
+                    destination:destination,
+                    optimizeWaypoints: false,
+                    travelMode: google.maps.DirectionsTravelMode.DRIVING
+                  };
+
+              ser.route(request, function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    ren.setDirections(response);
+
+                    jsonRoute(origin, destination);
+
+                } else {
+                  window.alert("A rota não é possível para o meio de transporte escolhido: " + status);
+                }
+              });
+            }else if(arguments.length == 3){
+              console.log('3');
+              var request = {
+                    origin:origin, 
+                    destination:destination,
+                    waypoints: waypoints,
+                    optimizeWaypoints: false,
+                    travelMode: google.maps.DirectionsTravelMode.DRIVING
+                  };
+              ser.route(request, function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                   ren.setDirections(response);
+
+                   jsonRoute(origin, destination, waypoints);
+
+                } else {
+                  window.alert("A rota não é possível para o meio de transporte escolhido: " + status);
+                }
+             });
+         }
+
+         google.maps.event.addListener(ren, 'directions_changed', function() { 
+         });
+      } // fim do traceRoute
+
+       /** Função que habilita o navigator */
+       function callnavigator(){
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = new google.maps.LatLng(position.coords.latitude,
+             position.coords.longitude);
+
+            var infowindow = new google.maps.InfoWindow({
+              map: map,
+              position: pos,
+              content: 'Você est&aacute; aqui !'
+            });
+
+            map.setCenter(pos);
+          }, function() {
+            handleNoGeolocation(true);
+          });
+        } else {
+            // Browser não suporta geolocalização
+            handleNoGeolocation(false);
+          }
+        }
+
+        function handleNoGeolocation(errorFlag) {
+          if (errorFlag) {
+            var content = 'Erro: O serviço de Geolocalização falhou.';
+          } else {
+            var content = 'Erro: Seu navegador atual ainda não suporta o recurso de  geolocalização.';
+          }
+        }
+
+          //SEARCH
+          var input = /** @type {HTMLInputElement} */(document.getElementById('target'));
+          var searchBox = new google.maps.places.SearchBox(input);
+          var markers = [];
+
+          google.maps.event.addListener(searchBox, 'places_changed', function() {
+            var places = searchBox.getPlaces();
+
+            for (var i = 0, marker; marker = markers[i]; i++) {
+              marker.setMap(null);
+            }
+
+            markers = [];
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0, place; place = places[i]; i++) {
+              var image = {
+                url: place.icon,
+                size: new google.maps.Size(71, 71),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(25, 25)
+              };
+
+              var marker = new google.maps.Marker({
+                map: map,
+                icon: image,
+                title: place.name,
+                position: place.geometry.location
+              });
+
+              markers.push(marker);
+
+              bounds.extend(place.geometry.location);
+            }
+
+            map.fitBounds(bounds);
+          }); //fim do search
+
+        /** bloco que responde de acordo com a url */
+        url = window.parent.location.href;
+        url_array = url.split("/");
+        acao = url_array[5];
+        n = parseInt(acao);
+
+        if(!isNaN(n)){
+         console.log('show');  
+
+         url = '../local/setlocal/'+n;
+         setLocal(url);
+
+       }else{
+        switch(acao){
+          case 'new':
+            console.log('new');
+          break;
+          case undefined:
+            console.log('index');
+          break
+          case 'edit':
+            token = url.lastIndexOf("/");
+            id = url.substr(token+1);
+            url = '../../local/setlocal/'+id;
+            setLocal(url);
+            console.log('edit');
+          break
+          default:
+            console.log("nenhuma");
+          break;
+        }   
+      } 
+
+      /** Obtem o par de coordenadas à partir de um marcador dinâmico */
+      function coordsByMarker(jb,kb){
+        lt = jb.substr(0,10);
+        lg = kb.substr(0,10);
+
+        $("#lat").val(lt);
+        $("#lng").val(lg);
+      }
+
+      /** Adiciona Marcador */
+      var marker;
+
+      function placeMarker(location, image) {
+
+        coordsByMarker(location.jb.toString(),location.kb.toString());
+
+        var position = location;
+        var mp = map;
+
+        if (marker) {
+            marker.setPosition(location);
+        }else{
+            if(arguments.length == 2){
+
+              var img = image;
+              marker = new google.maps.Marker({position: position, map: mp, icon: img});
+              var infowindow = new google.maps.InfoWindow({ 
+                  content: image,
+                  maxWidth : 500
+              });
+
+              google.maps.event.addListener(marker, 'click', function() {
+                  infowindow.open(map,marker);
+              });
+
+            }else{
+               marker = new google.maps.Marker({position: position, map: mp});
+            } 
+        }
+      }
+
+      /** Executa a função de adicionar marcador no mapa */
+      google.maps.event.addListener(map, 'click',function(event) {
+        placeMarker(event.latLng);
+      });
+
+      google.maps.event.addListener(map, 'resize',function(event){
+          //map.setZoom(map.getZoom());
+      });
+
+      google.maps.event.addListener(map, 'bounds_changed',function(){
+      });
+
+      /** Chama a função que ativa o Navigator */
+      $("#navigator").click(function(e){
+        callnavigator();
+      });
+
+      /** Atualiza o local corrente no mapa */
+      function setLocal(url){
+       $.ajax({
+         type: 'get',
+         url: url,
+         success: function(data){
+
+           var location = new google.maps.LatLng(data.lat,data.lng);
+           var marker = new google.maps.Marker({
+             position: location,
+             map: map
+           });
+           map.setZoom(12);
+           map.setCenter(marker.getPosition());
+          },
+          error: function(jqxhr){
+            console.log(jqxhr);
+          }
+       });
+      }// fim setLocal
+      
+      /** Adiciona o fomr_rota*/
+      url = window.parent.location.href;
+      url_array = url.split("/");
+      acao = url_array[4]; 
+      link = "";
+      link = acao == "route"? "../../autocomplete" : "autocomplete";
+      /** Autocomplete de locais */
+      arrayLocais = "";
+      var locais = new Array();
+      //url: '../../autocomplete'
+      url = window.parent.location.href;
+      url_array = url.split("/");
+      $.ajax({
+        type: 'get',
+        url: link,
+        success: function(data){
+          arrayLocais = data;
+          for(var i in data) {
+            locais[i] = data[i].name;  
+          }
+        },
+        error: function(jqxhr){
+          console.log(jqxhr);
+        }
+      });
+
+            var url = window.parent.location.href;
+            var url_array = url.split("/");
+            var token = url.lastIndexOf("/");
+            var id = url.substr(token+1);
+
+            acao = url_array[4]; 
+            link = "";
+            link = acao == "route"? "../autocomplete_route/"+id : "autocomplete";
+            /** Autocomplete de locais */
+            arrayLocais = "";
+            var locais = new Array();
+            //url: '../../autocomplete_route/'
+            url = window.parent.location.href;
+            url_array = url.split("/");
+            $.ajax({
+              type: 'get',
+              url: link,
+              success: function(data){
+
+                routeObj = JSON.parse(data.route_path);
+
+                setOrigin(routeObj.route.origin.lat,routeObj.route.origin.lng);
+                setDestination(routeObj.route.destination.lat,routeObj.route.destination.lng);
+ 
+                 for(var i = 0; i<routeObj.route.wpts.length;i++){
+                    addWayPoints(routeObj.route.wpts[i].lat,routeObj.route.wpts[i].lng);
+                 }
+
+                traceRoute(origin, destination, wps);
+   
+              },
+              error: function(jqxhr){
+                console.log(jqxhr);
+              }
+            });
+      /*****************************************************************/
+      if(acao == "route") {  
+            $("#origem").autocomplete({
+              minLength: 0,
+              source: locais,
+              focus: function(event, ui) {
+              },
+              select: function(event, ui) {
+                lc = ui.item.value;
+                $("#origem").val(lc);
+                lt = arrayLocais.contains('name','lat',lc);
+                lg = arrayLocais.contains('name','lng',lc);
+
+                var location = new google.maps.LatLng(lt,lg);
+                var marker = new google.maps.Marker({
+                  position: location,
+                  map: map
+                });
+
+                var href = window.location.href
+                var path = href.split("/");
+                var src = path[0]+'/'+path[1]+'/'+path[2]+'/'+path[3];
+                src += '/img/Aredimensionado.png';
+                placeMarker(location,src);
+                map.setCenter(marker.getPosition(location));
+                map.setZoom(12);
+                setOrigin(lt,lg);
+              }
+            });
+            $("#destino").autocomplete({
+              minLength: 0,
+              source: locais,
+              focus: function(event, ui) {
+              },
+              select: function(event, ui) {
+                lc = ui.item.value;
+                $("#destino").val(lc);
+                lt = arrayLocais.contains('name','lat',lc);
+                lg = arrayLocais.contains('name','lng',lc);
+                setDestination(lt,lg);
+                traceRoute(origin,destination);
+              }
+            });
+
+            $(".para").autocomplete({
+              minLength: 0,
+              source: locais,
+              focus: function(event, ui) {
+              },
+              select: function(event, ui) {
+                lc = ui.item.value;
+                lt = arrayLocais.contains('name','lat',lc);
+                lg = arrayLocais.contains('name','lng',lc);
+                //setDestination(lt,lg);
+                addWayPoints(lt,lg);
+                traceRoute(origin,destination,wps);
+              }
+            });
+
+            /** Adicionar input de Destinos */
+            $add = $("table").find("#add");
+
+            paramais = 1;
+           
+            $add.click(function(e){
+              if($("table").find(".para").length<8){
+                 paramais++;
+                 ctd = $("#wrapper").css("padding-bottom")
+                 arrctd = ctd.split("p");
+                 ctd = parseInt(arrctd[0]);
+                 ctd -= paramais%2!=0? 30 : 28;
+                 ctd = ctd.toString()+"px";
+                  $("#wrapper").css("padding-bottom",ctd);
+
+                novotr = '<tr>';
+                novotr += '<td><label for="para">Para:</label></td>';
+                novotr += '<td><input class="para add" value=""/><img id="x" src="http://www.kiltr.com/Images/ported/transportControls/close.gif"/></td>';
+                novotr += '</tr>';
+
+                $(novotr).insertBefore($('table').find('#add'));
+                 
+                $(".add").autocomplete({
+                  minLength: 0,
+                  source: locais,
+                  focus: function(event, ui) {
+                  },
+                  select: function(event, ui) {
+                    lc = ui.item.value;
+                    $(this).val(lc);
+                    lt = arrayLocais.contains('name','lat',lc);
+                    lg = arrayLocais.contains('name','lng',lc);
+                    addWayPoints(lt,lg);
+                    traceRoute(origin,destination,wps);
+                  }
+                });
+            }else{
+              window.alert("O limite de pontos foi atingido !");
+            }
+            }); //fim do click no ADD "para"
+
+        paramenos = 1;
+        $close = $('table').find('.add').parent().find('img');
+        $("table").delegate('#x', 'click',function(e){
+          paramenos++;
+          paramais--;
+          ctd = $("#wrapper").css("padding-bottom")
+          arrctd = ctd.split("p");
+          ctd = parseInt(arrctd[0]);
+          ctd += paramenos%2!=0? 30 : 28;
+          ctd = ctd.toString()+"px";
+           $("#wrapper").css("padding-bottom",ctd);
+        
+          $(this).parent().parent().remove(); 
+          var local = $(this).parent().parent().find('.add').val(); 
+          var lat = arrayLocais.contains("name","lat",local);
+          var lng = arrayLocais.contains("name","lng",local);
+          wps = wps.remove({ location : new google.maps.LatLng(lat,lng), stopover : true });
+          if(wps.length>=1){
+            traceRoute(origin,destination,wps);
+          }else{
+            traceRoute(origin,destination); 
+          }
+        });
+      } //fim da checkagem de rota
+
+        /*
+        $("#geocomplete").geocomplete({
+          map: ".map_canvas"
+        });
+        */
+    } //fim do initialize
+    </script>
+    <!--<div class="panel">
+        <input id="address" type="textbox" value="Sydney, NSW">
+        <input type="button" value="Localize-se">
+      </div>-->
+      <div id="form_rota"></div>
+ 
+      <div class="panel">
+        <input id="target" type="text" placeholder="Search Box">
+        <input id="navigator" type="button" name="" value="navigator" placeholder="">
+      </div>
+      <div id="map_canvas"></div>     

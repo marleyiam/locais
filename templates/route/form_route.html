@@ -1,0 +1,79 @@
+
+    <form action="{{action}}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+      <input id="route_path" type="hidden" name="route_path" value=""/>   
+      <table border="0px solid">
+        {% if acao == 'cadastrar' %}
+          <caption>Cadastro de Rota</caption>
+        {% elseif acao == 'editar' %}
+          <caption>Edi&ccedil;&atilde;o de Rota</caption>
+          <input type="hidden" name="_METHOD" value="PUT">
+          <tbody>
+        {% endif %}
+        <tr>
+          <td><label for="">Título :</label></td>
+          <td><input type="text" name="nome" value="{{ route?route.name : ''}}"/></td>
+        </tr>
+        <tr>
+          <td><label for="">Url :</label></td>
+          <td><input type="text" name="identificador" value="{{ route?route.identifier : ''}}"/></td>
+        </tr>
+        <tr>
+          <td><label for="">Descrição :</label></td><td><textarea  type="text" name="descricao">{{ route?route.description : ''}}</textarea></td>
+        </tr>
+
+    <tr>
+        <td>
+            <tr class="ui-widget">
+                <td><label for="de">De:</label></td><td><input id="origem" value=""/></td>
+            </tr>
+            <tr class="ui-widget">
+                <td><label for="para">Para:</label></td><td><input id="destino" value=""/></td>
+            </tr>
+            <tr>
+                <td id="add"><img src="http://png-1.findicons.com/files/icons/1156/fugue/16/plus_circle.png" alt="">ADD</img></td><td></td>
+            </tr>
+        
+        </td>
+
+        <td rowspan="3" colspan="2">
+            <tr><td></td><td></td></tr>
+            <tr><td>{% include './mapa/mapa.html' %}</td><td></td></tr>
+            <tr><td></td><td></td></tr>
+        </td>
+    </tr>  
+       
+        <tr>
+            <td colspan="2">
+              <label>Exibicao</label>
+              
+              <label>
+                <input id="RadioGroup1_0" {{ route.visibility=='public'?'checked':'false' }} type="radio"  value="public" name="exibicao">
+                Publico
+              </label>
+              <label>
+                  <input id="RadioGroup1_0" {{ route.visibility=='private'?'checked':'false' }} type="radio" value="private" name="exibicao">
+                Privado
+              </label>
+            </td>
+        </tr>
+        <tr>
+          <td><label>Fotos</label></td>
+          <td>
+          <input type="file" name="img[]" class="multi" maxlength="3" aceept="jpg|jpeg|png|gif" value="" placeholder=""/>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="submit" name="upload" value="{{ acao=='cadastrar' ? 'Cadastrar':'Editar' }}"></td>
+          <td><button onClick="/locais_fotos/route">Voltar</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+
+    <script type="text/javascript">
+      $wrapper = $('<div id="wrapper">');
+      $wrapper.append($('table').find('.ui-widget'));
+      $wrapper.append($('table').find('#add'));
+      $('table').find('td:eq(8)').append($wrapper);
+      $("#wrapper").css("padding-bottom","335px");
+    </script>

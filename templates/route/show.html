@@ -1,0 +1,42 @@
+{% extends "./layout/site.html" %}
+  {% block content %}
+        <div id="main">
+            <button type="submmit " onClick="window.history.back()">Voltar</button>
+            <table border="1px solid">
+                <caption>Dados da Rota</caption>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>nome</th>
+                        <th>identificador</th>
+                        <th>coordenadas</th>
+                        <th>descricao</th>
+                        <th>exibicao</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ route.id }}</td>
+                        <td>{{ route.name }}</td>
+                        <td>{{ route.identifier }}</td>
+                        <td>{{ route.route_path }}</td>
+                        <td>{{ route.description }}</td>
+                        <td>{{ route.visibility }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% if (imagens|length > 0) %}
+            <div id="imgs">
+                {% for img in imagens %}
+                <div>
+                    <img src="../uploads_rotas/{{ img.name }}" width="400px" height="230px" alt=""/>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <span>Não há fotos cadastradas</span>
+            {% endif %}
+
+            {% include './mapa/mapa.html' %}
+        </div>
+  {% endblock %}

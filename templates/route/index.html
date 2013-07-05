@@ -1,0 +1,46 @@
+
+{% extends "./layout/site.html" %}
+    {% block content %}
+        <title>Lista de Rotas</title>
+
+        <div id="main">
+            <a href="." title="">Voltar</a>
+            <a href="route/new/" title="">Nova Rota</a>
+            <table border="1px solid">
+                    {% for rota in routes %}
+                        <td>
+                            <tr>
+                                <td>
+                                 <a href="route/{{ rota.id }}">Visualizar rota</a>
+                                </td>
+                                <td>
+                                 <a href="route/edit/{{ rota.id }}">Editar rota</a>
+                                </td>
+                                <td>
+                                <a onclick="return confirm('Certeza ?');" href="route/delete/{{ rota.id }}">Excluir rota</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ID :</td><td>{{ rota.id }}</td>
+                            </tr>
+                            <tr>
+                                <td>nome :</td><td>{{ rota.name }}</td>
+                            </tr>
+                            <tr>
+                                <td>identificador :</td><td>{{ rota.identifier }}</td>
+                            </tr>
+                            <tr>
+                                <td>descricao :</td><td>{{ rota.description}}</td>
+                            </tr>
+                            <tr>
+                                <td>caminho da rota :</td><td>{{ rota.route_path}}</td>
+                            </tr>
+                            <tr>
+                                <td>exibicao :</td><td>{{ rota.visibility }}</td>
+                            </tr>
+
+                        </td>
+                    {% endfor %}
+            </table>
+        </div>
+    {% endblock %}

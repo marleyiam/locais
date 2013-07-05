@@ -1,0 +1,67 @@
+
+{% extends "./layout/site.html" %}
+    {% block content %}
+        <title>Show Profile</title>
+
+        <div id="main">
+        
+            <table border="1px solid">
+                  
+                        <td>
+                            <tr>
+                                <td>ID :</td><td>{{ user.id }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ user.name }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ user.city }}</td>/<td>{{ user.uf }}</td>
+                            </tr>
+                            <tr>
+                                <td>descricao :</td>
+                            </tr>
+                            <tr>
+                                <td>{{ user.aboutme}}</td>
+                            </tr>
+                            <tr>
+                              <td>{{ user.phone}}</td>
+                            </tr>
+                        </td>
+            </table>
+        </div>
+        <div id="locais">
+            <span>Meus Locais</span>
+            <span><a href="../local/new/">Novo Local</a></span>
+            <span><a href="../local/new/">Novo Imovel</a></span>
+        </div>
+        <div id="container">
+            <table width="100%" border="1">
+              <tbody>
+                <tr>
+                  <td bgcolor="#CCCCCC">
+                    <table width="100%" border="0">
+                        <tbody>
+                            <tr>
+                              <td>Album Natal</td>
+                              <td class="direita"><p>&nbsp;</p></td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  <table width="100%" border="0" class="centro">
+                      <tbody>
+                        <tr>
+                            <td><a href="meulocal.php"><img width="100" height="77" alt="" src="img/4921506_4.jpg"><br>
+                              Minha casa</a></td>
+                              <td><a href="meulocal.php"><img width="100" height="77" alt="" src="img/4921514_4.jpg"><br>
+                                  Churrasco na piscina</a></td>
+                                  <td><a href="meulocal.php"><img width="100" height="74" alt="" src="img/550x412_9b735df2eab7b8a3e38abbdb02b2c02c.jpg"><br>
+                                      Apartamento 3 </a></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+    {% endblock %}
