@@ -8,6 +8,10 @@ class Local extends ActiveRecord\Model
 	     //array('pictures', 'select' => 'id, name, locals_id')
 	     array('local_pictures','foreign_key' => 'locals_id')
 	   );
+	
+	static $belongs_to = array(
+	  array('users')
+	);
 
 
 }

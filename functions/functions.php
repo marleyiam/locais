@@ -59,4 +59,14 @@ function convertDate2String($data) {
 		return date('F d, Y h:i:s A', strtotime($data));	
 }
 
+function lastIndexOf($string,$item){  
+    $index = strpos(strrev($string),strrev($item));  
+    if ($index){  
+        $index = strlen($string)-strlen($item)-$index;  
+        return $index;  
+    }  
+        else  
+        return -1;  
+}
+
 ?>

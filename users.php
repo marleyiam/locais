@@ -1,5 +1,10 @@
 <?php
-
+/*
+ public function set_password($plaintext) {
+      $this->encrypted_password = md5($plaintext);
+    }
+     printer($user['user']->attributes());
+*/
 /** FRIENDS */
 $app->get('/user/friends', function() use ($app){
    $users['users'] = User::find('all');
@@ -9,11 +14,26 @@ $app->get('/user/friends', function() use ($app){
 /** VIEW PROFILE */
 $app->get('/user/(:id)', function($id) use ($app){
    $user['user'] = User::find_by_id($id);
-
-   $user['imagens'] = $user['user']->user_pictures;
+  // printer($user['user']);
+   echo Inflect::pluralize("Local");
+   exit;
+   //$local['local']->local_pictures;
+   $user['locals'] = $user['user']->locals;
+   $l = Local::find_by_identifier($user['locals'][0]->identifier);
+   printer($l->local_pictures);
+   //printer($user['locals'][0]->identifier);
+   exit;
+   $user['avatar'] = $user['user']->user_pictures;
    $app->render('user/show_profile.html', $user);
 });
+/*
 
+function recursive($root,$first_entity,$second_entity){
+    strtolower($first_entity)
+    $root->$firstLv;
+    
+}
+*/
 /** CREATE */
 $app->post('/user', function () use ($app) {
     $user = new User();

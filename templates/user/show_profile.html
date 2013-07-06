@@ -35,33 +35,45 @@
             <span><a href="../local/new/">Novo Imovel</a></span>
         </div>
         <div id="container">
-            <table width="100%" border="1">
-              <tbody>
-                <tr>
+          <table width="100%" border="1">
+            <tbody>
+              <tr>
                   <td bgcolor="#CCCCCC">
-                    <table width="100%" border="0">
-                        <tbody>
+                      <table width="100%" border="0">
+                          <tbody>
                             <tr>
-                              <td>Album Natal</td>
-                              <td class="direita"><p>&nbsp;</p></td>
-                          </tr>
-                      </tbody>
-                  </table>
-                  <table width="100%" border="0" class="centro">
-                      <tbody>
-                        <tr>
-                            <td><a href="meulocal.php"><img width="100" height="77" alt="" src="img/4921506_4.jpg"><br>
-                              Minha casa</a></td>
-                              <td><a href="meulocal.php"><img width="100" height="77" alt="" src="img/4921514_4.jpg"><br>
-                                  Churrasco na piscina</a></td>
-                                  <td><a href="meulocal.php"><img width="100" height="74" alt="" src="img/550x412_9b735df2eab7b8a3e38abbdb02b2c02c.jpg"><br>
-                                      Apartamento 3 </a></td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </td>
-                  </tr>
+                                <td>Album Natal</td>
+                                <td class="direita"><p>&nbsp;</p></td>
+                             </tr>
+                          </tbody>
+                      </table>
+                      <table width="100%" border="0" class="centro">
+                          <tbody>
+                              <tr>
+                                  {% if (locais|length > 0) %}
+                                      {% for local in locais %}
+                                          <td>
+                                              <a href="../local/{{local.id}}">
+                                              {% if (imagens|length > 0) %}
+                                                  {% for img in imagens %}
+                                                      <img width="100" height="77" alt="" src="../uploads_users/{{ img.name }}"><br>
+                                                  {% endfor %}
+                                              {% else %}
+                                                  <span>Não há fotos cadastradas</span>
+                                              {% endif %}
+                                                  {{ local.name }}
+                                              </a> 
+                                          </td> 
+                                      {% endfor %} 
+                                  {% else %}
+                                      <span>Não há locais cadastrados</span>
+                                  {% endif %}
+                              </tr>
+                          </tbody>
+                      </table>
+                    </td>
+                </tr>
               </tbody>
-          </table>
+            </table>
         </div>
     {% endblock %}

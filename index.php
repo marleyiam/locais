@@ -4,7 +4,7 @@ require 'Slim/Slim.php';
 require 'vendor/php-activerecord/ActiveRecord.php';
 require 'Twig/lib/Twig/Autoloader.php'; 
 require 'functions/functions.php';
-
+require 'functions/Inflect.php';
 
 Twig_Autoloader::register();
 \Slim\Slim::registerAutoloader();
