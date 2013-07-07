@@ -1,0 +1,92 @@
+
+{% extends "./layout/site.html" %}
+    {% block content %}
+        <title>Edit Configurações</title>
+
+        <div id="main">
+       <form action="../update_config/{{user.id}}"  method="post" accept-charset="utf-8" enctype="multipart/form-data">
+        
+                 <input type="hidden" name="_METHOD" value="PUT">
+                 <table width="100%" border="0">
+                             <tbody><tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">Email / Login</td>
+                               <td class="esquerda" style="width: 100px;"><label for="textfield"></label>
+                               <input type="text" size="40" value="{{user.email}}" id="textfield" disabled="disabled" name="textfield"></td>
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">Email alternativo</td>
+                               <td class="esquerda" style="width: 100px;"><input type="text" size="40" value="{{user.alternative_email}}" id="textfield3" name="submail"/>
+                                </td>
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">Nome do usuário</td>
+                               <td class="esquerda" style="width: 100px;"><input type="text" size="40" value="{{user.name}}" id="textfield2" name="nome">
+                               </td>
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">Idioma</td>
+                               <td class="esquerda" style="width: 100px;"><label for="select"></label>
+                                 <select id="select" name="idioma">
+                                   <option>Português</option>
+                                   <option>Inglês</option>
+                                 </select>
+                              
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">&nbsp;</td>
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">Pergunta secreta</td>
+                               <td class="esquerda" style="width: 100px;"><input type="text" size="40" value="{{user.secret_question}}" id="textfield4" name="question"></td>
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">Resposta</td>
+                               <td class="esquerda" style="width: 100px;"><input type="password" size="40" value="{{user.question_answer}}" id="textfield5" name="answer">
+                                </td>
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">&nbsp;</td>
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">Nova senha</td>
+                               <td class="esquerda" style="width: 100px;"><input type="password" size="40" id="textfield6" name="password"></td>
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                               <td width="200">&nbsp;</td>
+                               <td class="esquerda" style="width: 100px;">Repita nova senha</td>
+                               <td class="esquerda" style="width: 100px;"><input type="password" size="40" id="textfield8" name="new_password">
+                               </td>
+                               <td width="150">&nbsp;</td>
+                             </tr>
+                             <tr>
+                                <td width="200">&nbsp;</td>
+                                 <td class="esquerda" style="width: 100px;"><input type="submit" value="Salvar Alterações">
+                                 </td>
+                                 <td width="150">&nbsp;</td>
+                             </tr>
+                           </tbody>
+                       </table>
+                   </torm>
+               </div>
+                       
+    {% endblock %}

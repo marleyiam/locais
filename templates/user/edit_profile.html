@@ -1,57 +1,104 @@
 
 {% extends "./layout/site.html" %}
     {% block content %}
-        <title>Lista de Locais</title>
+        <title>Edit Profile</title>
 
         <div id="main">
-            <a href="." title="">Voltar</a>
-            <a href="local/new/" title="">Novo local</a>
+       <form action="../update/{{user.id}}"  method="post" accept-charset="utf-8" enctype="multipart/form-data">
             <table border="1px solid">
-                    {% for local in locals %}
+                 <input type="hidden" name="_METHOD" value="PUT">
                         <td>
+
+                            <tr>
+                                {% if (avatar|length > 0) %}
+                                
+                                        <td>
+                                            <img height="50px" width="50px" src="../../uploads_users/{{avatar.name}}" alt=""/>
+                                        </td>
+                                
+                                    {% else %}
+                                        <td>
+                                            <img height="50px" width="50px" src="../../uploads_users/default-user-picture.png" alt=""/>
+                                        </td>
+                                    {% endif %}
+
+                                <td>
+                                    <input type="file" name="img[]" class="multi" maxlength="1" aceept="jpg|jpeg|png|gif" value="" placeholder=""/>
+                                </td>
+                            </tr>
+                            <tr>
+                                  
+                                  <td>Data de nascimento</td>
+                                  <td id="select_date">
+                                        <label for="select"></label>
+                                        <select id="day_select" name="day">
+                                         {% for day in days %}
+                                            {% if (day == date[0]) %}
+                                         <option value="{{date[0]}}" selected="selected"></option>
+                                            {% endif %}
+                                            <option value="{{day}}">{{day}}</option>
+                                         {% endfor %}
+                                        </select>
+                                        <label for="select2"></label>
+                                        <select id="month_select" name="month">
+                                         {% for key,month in months %}
+                                            <option value="{{key}}">{{month}}</option>
+                                         {% endfor %}
+                                        </select>
+                                        <label for="select3"></label>
+                                        <select id="year_select" name="year">
+                                          {% for year in years %}
+                                             <option value="{{year}}">{{year}}</option>
+                                          {% endfor %}
+                                        </select>
+                                  </td>
+                            
+                            </tr>
+
+                            <tr>
+                                <td>endereco :</td><td><input type="text" value="{{ user.address }}" name="endereco"/></td>
+                            </tr>
+                            <tr>
+                                <td>cidade :</td><td><input type="text" value="{{ user.city }}" name="cidade"/></td></td>
+                            </tr>
+                            <tr>
+                                <td>bairro :</td><td><input type="text" value="{{ user.area }}" name="bairro"/></td></td>
+                            </tr>
+                            <tr>
+                                <td>uf :</td><td><input type="text" value="{{ user.uf }}" name="uf"/></td></td>
+                            </tr>
+                            <tr>
+                                <td>país :</td><td><input type="text" value="{{ user.country }}" name="pais"/></td></td>
+                            </tr>
+                            <tr>
+                                <td>site :</td><td><input type="text" value="{{ user.site }}" name="site"/></td></td>
+                            </tr>
+                            <tr>
+                                <td><label>Sobre mim :</label></td><td><textarea name="aboutme">{{ user.aboutme }}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <label>Tipo</label>
+                                    
+                                    <label>
+                                        <input id="RadioGroup1_0" {{ user.type=='user'?'checked':'false' }} type="radio"  value="user" name="type">
+                                    Usuário Comum
+                                    </label>
+                                    <label>
+                                        <input id="RadioGroup1_0" {{ user.type=='agent'?'checked':'false' }} type="radio" value="agent" name="type">
+                                    Corretor
+                                    </label>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
-                                 <a href="local/{{ local.id }}">Visualizar Local</a>
-                                </td>
-                                <td>
-                                 <a href="local/edit/{{ local.id }}">Editar Local</a>
-                                </td>
-                                <td>
-                                <a onclick="return confirm('Certeza ?');" href="local/delete/{{ local.id }}">Excluir Local</a>
+                                    <input type="submit" value="atualizar">
                                 </td>
                             </tr>
-                            <tr>
-                                <td>ID :</td><td>{{ local.id }}</td>
-                            </tr>
-                            <tr>
-                                <td>nome :</td><td>{{ local.name }}</td>
-                            </tr>
-                            <tr>
-                                <td>identificador :</td><td>{{ local.identifier }}</td>
-                            </tr>
-                            <tr>
-                                <td>endereco :</td><td>{{ local.address }}</td>
-                            </tr>
-                            <tr>
-                                <td>cidade :</td><td>{{ local.city }}</td>
-                            </tr>
-                            <tr>
-                                <td>latitude :</td><td>{{ local.lat }}</td>
-                            </tr>
-                            <tr>
-                                <td>longitude :</td><td>{{ local.lng }}</td>
-                            </tr>
-                            <tr>
-                                <td>descricao :</td><td>{{ local.description}}</td>
-                            </tr>
-                            <tr>
-                                <td>exibicao :</td><td>{{ local.visibility }}</td>
-                            </tr>
-                            <tr>
-                                <td>clonar :</td><td>{{ local.clone }}</td>
-                            </tr>
+
                         </td>
-                    {% endfor %}
-            </table>
+                 
+                </table>
+            </form>
         </div>
     {% endblock %}

@@ -4,6 +4,7 @@ class User extends ActiveRecord\Model
 	static $has_many = array(
 	    array('locals','foreign_key' => 'users_id'),
 	    array('routes','foreign_key' => 'users_id')
+	    //array('local_pictures','foreign_key' => 'locals_id')
 	   );
 
 	static $has_one = array(
@@ -11,7 +12,7 @@ class User extends ActiveRecord\Model
 		);
 
 	/*static $has_many = array(
-	     array('friends','foreign_key' => 'firends_id')
+	     array('friends','foreign_key' => 'friends_id')
 	   );*/
 }
 ?>

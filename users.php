@@ -5,6 +5,7 @@
     }
      printer($user['user']->attributes());
 */
+
 /** FRIENDS */
 $app->get('/user/friends', function() use ($app){
    $users['users'] = User::find('all');
@@ -14,26 +15,15 @@ $app->get('/user/friends', function() use ($app){
 /** VIEW PROFILE */
 $app->get('/user/(:id)', function($id) use ($app){
    $user['user'] = User::find_by_id($id);
-  // printer($user['user']);
-   echo Inflect::pluralize("Local");
-   exit;
-   //$local['local']->local_pictures;
    $user['locals'] = $user['user']->locals;
-   $l = Local::find_by_identifier($user['locals'][0]->identifier);
-   printer($l->local_pictures);
-   //printer($user['locals'][0]->identifier);
-   exit;
+   $user['routes'] = $user['user']->routes;
+   $user['imagens_routes'] = get_nested_relation($user['routes'],'route_pictures');
+   $user['imagens_locals'] = get_nested_relation($user['locals'],'local_pictures');
    $user['avatar'] = $user['user']->user_pictures;
+
    $app->render('user/show_profile.html', $user);
 });
-/*
 
-function recursive($root,$first_entity,$second_entity){
-    strtolower($first_entity)
-    $root->$firstLv;
-    
-}
-*/
 /** CREATE */
 $app->post('/user', function () use ($app) {
     $user = new User();
@@ -49,26 +39,43 @@ $app->post('/user', function () use ($app) {
     }
 });
 
-/** NEW */
+/** NEW *//*
 $app->get('/user/new/', function () use ($app) {
     $dados_requisicao['action'] = get_root_url().'user';
     $dados_requisicao['acao'] = "cadastrar";
     $app->render('user/new.html', $dados_requisicao);
 });
+*/
 
-/** EDIT */
+/** EDIT PROFILE */
 $app->get('/user/edit/(:id)', function ($id) use ($app) {
     $dados_requisicao['user'] = User::find_by_id($id);
-    $dados_requisicao['action'] = get_root_url().'user/update/'.$id;
-    $dados_requisicao['acao'] = "editar";
-    $app->render('user/edit.html', $dados_requisicao);
+    $dados_requisicao['avatar'] = $dados_requisicao['user']->user_pictures;
+
+    $dados_requisicao['days'] = make_date_select('day');
+    $dados_requisicao['months'] = make_date_select('month');
+    $dados_requisicao['years'] = make_date_select('year');
+
+    $birth_date = $dados_requisicao['user']->birthdate;
+    $date = $birth_date->format('d-m-Y');
+    $dados_requisicao['date'] = explode("-", $date);
+
+    $app->render('user/edit_profile.html', $dados_requisicao);
+});
+
+/** EDIT CONFIG */
+$app->get('/user/config/(:id)', function ($id) use ($app) {
+    $dados_requisicao['user'] = User::find_by_id($id);
+    $dados_requisicao['avatar'] = $dados_requisicao['user']->user_pictures;
+
+    $app->render('user/edit_config.html', $dados_requisicao);
 });
 
 /** UPDATE PROFILE */
 $app->put('/user/update/(:id)', function ($id) use ($app) {
     $user = User::find_by_id($id);
     $imagem = new UserPicture();
-    $user->name  = $app->request()->post('nome');
+   // $user->name  = $app->request()->post('nome');
     $user->phone = $app->request()->post('telefone');
     $user->address = $app->request()->post('endereco');
     $user->city = $app->request()->post('cidade');
@@ -77,11 +84,14 @@ $app->put('/user/update/(:id)', function ($id) use ($app) {
     $user->country = $app->request()->post('pais');
     $user->site = $app->request()->post('site');
     $user->aboutme = $app->request()->post('aboutme');
-    $user->type = $app->request()->post('tipo');
+    $user->type = $app->request()->post('type');
+    $day = $app->request()->post('day');
+    $month = $app->request()->post('month');
+    $year = $app->request()->post('year');
+    $birth_date = $year.'-'.$month.'-'.$day;
+    $user->birthdate = $birth_date;
 
     $dados_requisicao['user'] = $user;
-    $dados_requisicao['action'] = get_root_url().'user/update/'.$id;
-    $dados_requisicao['acao'] = "editar";
 
     if($user->save()){
 
@@ -112,6 +122,26 @@ $app->put('/user/update/(:id)', function ($id) use ($app) {
         $app->redirect(get_root_url().'user/'.$id);
     }else{
         $app->render('user/edit_profile.html', $dados_requisicao);
+    }
+});
+
+/** UPDATE CONFIG */
+$app->put('/user/update_config/(:id)', function ($id) use ($app) {
+    $user = User::find_by_id($id);
+
+    $user->name  = $app->request()->post('nome');
+    $user->alternative_email = $app->request()->post('submail');
+    $user->address = $app->request()->post('endereco');
+    $user->secret_question = $app->request()->post('question');
+    $user->question_answer = $app->request()->post('answer');
+    $user->password = $app->request()->post('password');
+
+    $dados_requisicao['user'] = $user;
+
+    if($user->save()){
+        $app->redirect(get_root_url().'user/'.$id);
+    }else{
+        $app->render('user/edit_config.html', $dados_requisicao);
     }
 });
 

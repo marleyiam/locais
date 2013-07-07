@@ -69,4 +69,68 @@ function lastIndexOf($string,$item){
         return -1;  
 }
 
+function from_camel_case($input) {
+  preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);
+  $ret = $matches[0];
+  foreach ($ret as &$match) {
+    $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+  }
+  return implode('_', $ret);
+}
+
+function relation($entity,$relation,$find){
+//$user['imagens'] = relation(array("Local",$user['locals']),"LocalPicture","identifier");
+	$data = array();
+	$findby = 'find_by_'.$find;
+	$get_relation = Inflect::pluralize(strtolower(from_camel_case($relation)));
+
+	foreach ($entity[1] as $key => $value) {	
+		$data[$key] = $value->$get_relation;
+	}
+
+	return $data;
+}
+
+function get_nested_relation($obj,$relation){
+	$data = array();
+
+	foreach ($obj as $key => $value) {
+	      $data[$key] = $value->$relation;
+	}
+	return $data;
+}
+
+function make_date_select($param){
+	
+	$months = array(1=> "Janeiro", "Fevereiro", "Março", 
+	           "Abril", "Maio", "Junho", "Julho", "Agosto", 
+	           "Setembro", "Outubro", "Novembro", "Dezembro"); 
+	$days = array();
+	$years = array();
+	$q = 0;
+
+	switch($param){
+		case $param == 'day': 
+			for($i = 1; $i<=31; $i++){
+				$days[$i] =  $i;
+			}
+			return $days;
+		break;
+		case  $param == 'month':
+			return $months;
+		break;
+		case $param == 'year': 
+			for($i = 1920; $i<=2013; $i++){
+				$q++;
+				$years[$q] = $i;	
+			 }
+			 return $years;
+		break;
+		default;
+			return 'ERROR';
+		break;
+	}
+
+}
+
 ?>

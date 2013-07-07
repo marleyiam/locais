@@ -3,14 +3,28 @@
     {% block content %}
         <title>Show Profile</title>
 
+
         <div id="main">
+          <a href="edit/{{user.id}}">edit profile</a>
+        </br>
+          <a href="config/{{user.id}}">edit config</a>
+          <form>
+            <input id="geocomplete" type="text" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60"/>
+            <input id="find" type="button" value="find" />
+          </form>
         
             <table border="1px solid">
                   
                         <td>
-                            <tr>
-                                <td>ID :</td><td>{{ user.id }}</td>
-                            </tr>
+                          {% if (avatar|length > 0) %}
+                              <tr>
+                                  <td><img height="100px" width="100px" src="../uploads_users/{{avatar.name}}" alt=""></td><td>*</td>
+                              </tr>
+                            {% else %}
+                               <tr>
+                                  <td><img height="100px" width="100px" src="../uploads_users/default-user-picture.png" alt=""></td><td>*</td>
+                              </tr>
+                            {% endif %}
                             <tr>
                                 <td>{{ user.name }}</td>
                             </tr>
@@ -34,7 +48,7 @@
             <span><a href="../local/new/">Novo Local</a></span>
             <span><a href="../local/new/">Novo Imovel</a></span>
         </div>
-        <div id="container">
+        <div class="container">
           <table width="100%" border="1">
             <tbody>
               <tr>
@@ -42,7 +56,7 @@
                       <table width="100%" border="0">
                           <tbody>
                             <tr>
-                                <td>Album Natal</td>
+                                <td>Locais</td>
                                 <td class="direita"><p>&nbsp;</p></td>
                              </tr>
                           </tbody>
@@ -50,13 +64,17 @@
                       <table width="100%" border="0" class="centro">
                           <tbody>
                               <tr>
-                                  {% if (locais|length > 0) %}
-                                      {% for local in locais %}
+                                  {% if (locals|length > 0) %}
+                                      {% for key,local in locals %}
                                           <td>
                                               <a href="../local/{{local.id}}">
-                                              {% if (imagens|length > 0) %}
-                                                  {% for img in imagens %}
-                                                      <img width="100" height="77" alt="" src="../uploads_users/{{ img.name }}"><br>
+                                              {% if (imagens_locals|length > 0) %}
+                                                  {% for arrimg in imagens_locals %}
+                                                    {% for img in arrimg %}
+                                                      {% if (img.locals_id == local.id) %}
+                                                        <img width="100" height="77" src="../uploads_locais/{{ img.name }}"/>
+                                                      {% endif %}
+                                                    {% endfor %}
                                                   {% endfor %}
                                               {% else %}
                                                   <span>Não há fotos cadastradas</span>
@@ -76,4 +94,53 @@
               </tbody>
             </table>
         </div>
+
+        <div class="container">
+          <table width="100%" border="1">
+            <tbody>
+              <tr>
+                  <td bgcolor="#CCCCCC">
+                      <table width="100%" border="0">
+                          <tbody>
+                            <tr>
+                                <td>Rotas</td>
+                                <td class="direita"><p>&nbsp;</p></td>
+                             </tr>
+                          </tbody>
+                      </table>
+                      <table width="100%" border="0" class="centro">
+                        <!-- ROTAS -->
+                        <table width="100%" border="0" class="centro">
+                            <tbody>
+                                <tr>
+                                    {% if (routes|length > 0) %}
+                                        {% for key,route in routes %}
+                                            <td>
+                                                <a href="../route/{{route.id}}">
+                                                {% if (imagens_routes|length > 0) %}
+                                                    {% for arrimg in imagens_routes %}
+                                                      {% for img in arrimg %}
+                                                        {% if (img.routes_id == route.id) %}
+                                                          <img width="100" height="77" src="../uploads_rotas/{{ img.name }}"/>
+                                                        {% endif %}
+                                                      {% endfor %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span>Não há fotos cadastradas</span>
+                                                {% endif %}
+                                                    {{ route.name }}
+                                                </a> 
+                                            </td> 
+                                        {% endfor %} 
+                                    {% else %}
+                                        <span>Não há rotas cadastradas</span>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
     {% endblock %}
