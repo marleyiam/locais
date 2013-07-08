@@ -2,34 +2,19 @@
 {% extends "./layout/site.html" %}
     {% block content %}
         <title>Show Profile</title>
-
-
-        <div id="main">
-          <a href="edit/{{user.id}}">edit profile</a>
-        </br>
-          <a href="config/{{user.id}}">edit config</a>
-          <form>
-            <input id="geocomplete" type="text" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60"/>
-            <input id="find" type="button" value="find" />
-          </form>
         
+          {% block header_profile %}
+            {% include 'user/header_profile.html' %}
+          {% endblock %}
+
             <table border="1px solid">
                   
                         <td>
-                          {% if (avatar|length > 0) %}
-                              <tr>
-                                  <td><img height="100px" width="100px" src="../uploads_users/{{avatar.name}}" alt=""></td><td>*</td>
-                              </tr>
-                            {% else %}
-                               <tr>
-                                  <td><img height="100px" width="100px" src="../uploads_users/default-user-picture.png" alt=""></td><td>*</td>
-                              </tr>
-                            {% endif %}
                             <tr>
                                 <td>{{ user.name }}</td>
                             </tr>
                             <tr>
-                                <td>{{ user.city }}</td>/<td>{{ user.uf }}</td>
+                                <td>{{ user.city }}</td><td>{{ user.uf }}</td>
                             </tr>
                             <tr>
                                 <td>descricao :</td>

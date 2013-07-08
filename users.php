@@ -12,6 +12,7 @@ $app->get('/user/friends', function() use ($app){
     $app->render('user/index.html', $users);
 });
 
+
 /** VIEW PROFILE */
 $app->get('/user/(:id)', function($id) use ($app){
    $user['user'] = User::find_by_id($id);

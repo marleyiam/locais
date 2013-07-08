@@ -33,22 +33,19 @@
                                         <label for="select"></label>
                                         <select id="day_select" name="day">
                                          {% for day in days %}
-                                            {% if (day == date[0]) %}
-                                         <option value="{{date[0]}}" selected="selected"></option>
-                                            {% endif %}
-                                            <option value="{{day}}">{{day}}</option>
+                                            <option value="{{day}}" {{ day == date[0]? 'selected': '' }}>{{day}}</option>
                                          {% endfor %}
                                         </select>
                                         <label for="select2"></label>
                                         <select id="month_select" name="month">
                                          {% for key,month in months %}
-                                            <option value="{{key}}">{{month}}</option>
+                                            <option value="{{key}}" {{ key == date[1]? 'selected': '' }}>{{month}}</option>
                                          {% endfor %}
                                         </select>
                                         <label for="select3"></label>
                                         <select id="year_select" name="year">
                                           {% for year in years %}
-                                             <option value="{{year}}">{{year}}</option>
+                                             <option value="{{year}}" {{ year == date[2]? 'selected': ''}}>{{year}}</option>
                                           {% endfor %}
                                         </select>
                                   </td>

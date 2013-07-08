@@ -22,7 +22,11 @@ $app = new \Slim\Slim(array( 'view' => new \Slim\Extras\Views\Twig()));
 
 /** INDEX */
 $app->get('/local', function() use ($app){
-   $locals['locals'] = Local::find('all');
+    //$session['user_id']
+    $user = User::find_by_id(3);
+    $locals['locals'] = $user->locals;
+
+    //$locals['locals'] = Local::find('all');
     $app->render('local/index.html', $locals);
 });
 
@@ -192,18 +196,46 @@ $app->get('/autocomplete', function () use ($app) {
     echo json_encode($res);
 });
 
-/** FORM ROTA */
-$app->get('/form_route', function () use ($app) {
+/** AUTOCOMPLETE SEARCH LOCAL*/
+$app->get('/search_locals', function () use ($app) {
 
-    $app->render('route/form_route.html');
+    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
+
+    $arrterm = $app->request()->params();
+    $term = $arrterm["term"];
+
+    $res = array();
+    $ress = array();
+    $locals['locals'] = Local::find('all', array('conditions' => array("name LIKE ?
+    OR identifier LIKE ? OR address LIKE ?
+    OR city LIKE ?", "%".$term."%","%".$term."%","%".$term."%","%".$term."%")));
+    $locals['results'] = count($locals['locals']);
+    echo $locals['results'];
+    printer($locals['locals']);
 });
 
-/*
-$app->get('/rota', function () use ($app) {
+/** AUTOCOMPLETE SEARCH LOCAL AJAX*/
+/*$app->get('/search_locals', function () use ($app) {
 
-    $app->render('rota/rota.html');
-});
-*/
+    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
+
+    $arrterm = $app->request()->params();
+    $term = $arrterm["term"];
+
+    $res = array();
+    $ress = array();
+    $locals = Local::find('all', array('conditions' => array("name LIKE ?
+    OR identifier LIKE ? OR address LIKE ?
+    OR city LIKE ?", "%".$term."%","%".$term."%","%".$term."%","%".$term."%")));
+
+    foreach ($locals as $key => $value) {
+        $res[$key] = $value->attributes();
+        $ress[$key] = $res[$key]["name"];   
+    }
+
+    echo json_encode($ress);
+});*/
+
 
 $app->map('/login', function () use ($app) {
 
