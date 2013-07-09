@@ -3,10 +3,10 @@
 require 'Slim/Slim.php';
 require 'vendor/php-activerecord/ActiveRecord.php';
 require 'Twig/lib/Twig/Autoloader.php'; 
+require 'Twig/lib/Twig/Environment.php'; 
 require 'functions/functions.php';
-require 'functions/Inflect.php';
 
-Twig_Autoloader::register();
+$loader = Twig_Autoloader::register();
 \Slim\Slim::registerAutoloader();
 ActiveRecord\Config::initialize(function($cfg) {
     $cfg->set_model_directory('models');
@@ -18,6 +18,14 @@ ActiveRecord\Config::initialize(function($cfg) {
 #$app = new \Slim\Slim();
 //Diz pro Slim usar os templates do Twig \o/
 $app = new \Slim\Slim(array( 'view' => new \Slim\Extras\Views\Twig()));
+
+/*
+$twig = new Twig_Environment($loader, array(
+        'autoescape' => false,
+    ));
+
+$twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
+*/
 
 
 /** INDEX */
@@ -199,19 +207,29 @@ $app->get('/autocomplete', function () use ($app) {
 /** AUTOCOMPLETE SEARCH LOCAL*/
 $app->get('/search_locals', function () use ($app) {
 
-    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
-
     $arrterm = $app->request()->params();
     $term = $arrterm["term"];
+    $users = array();
+    $images = array();
 
-    $res = array();
-    $ress = array();
-    $locals['locals'] = Local::find('all', array('conditions' => array("name LIKE ?
+    //$join = 'LEFT JOIN users as u ON locals.users_id = u.id';
+    $locals['locals'] = Local::find('all', 
+    array('conditions' => array("name LIKE ?
     OR identifier LIKE ? OR address LIKE ?
     OR city LIKE ?", "%".$term."%","%".$term."%","%".$term."%","%".$term."%")));
+    //$locals['locals'] =  Local::all(array('joins' => array('users')));
+    //$locals['locals'] =  Local::all(array('joins' => $join));
+    foreach ($locals['locals'] as $key => $value) {
+        $users[$key] = $value->users;
+        $images[$key] = $value->local_pictures;
+       
+    }
+
+    $locals['images'] = $images;
+    $locals['users'] = $users;
     $locals['results'] = count($locals['locals']);
-    echo $locals['results'];
-    printer($locals['locals']);
+    //printer($images);exit;
+    $app->render('user/search_for_locals.html', $locals);
 });
 
 /** AUTOCOMPLETE SEARCH LOCAL AJAX*/
