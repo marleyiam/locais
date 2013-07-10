@@ -5,6 +5,10 @@
     }
      printer($user['user']->attributes());
 */
+     /*
+     $slim->setCookie('takeOut', 1, '1 hour');
+$slim->setEncryptedCookie('loyaltyCardNumber', 43252);
+*/
 
 /** FRIENDS */
 $app->get('/user/friends', function() use ($app){
@@ -14,8 +18,8 @@ $app->get('/user/friends', function() use ($app){
 
 
 /** VIEW PROFILE */
-$app->get('/user/(:id)', function($id) use ($app){
-   $user['user'] = User::find_by_id($id);
+$app->get('/user', $authenticate($app), function() use ($app){
+   $user['user'] = current_user();
    $user['locals'] = $user['user']->locals;
    $user['routes'] = $user['user']->routes;
    $user['imagens_routes'] = get_nested_relation($user['routes'],'route_pictures');
@@ -40,17 +44,10 @@ $app->post('/user', function () use ($app) {
     }
 });
 
-/** NEW *//*
-$app->get('/user/new/', function () use ($app) {
-    $dados_requisicao['action'] = get_root_url().'user';
-    $dados_requisicao['acao'] = "cadastrar";
-    $app->render('user/new.html', $dados_requisicao);
-});
-*/
 
 /** EDIT PROFILE */
-$app->get('/user/edit/(:id)', function ($id) use ($app) {
-    $dados_requisicao['user'] = User::find_by_id($id);
+$app->get('/user/edit', $authenticate($app), function () use ($app) {
+    $dados_requisicao['user'] = current_user();
     $dados_requisicao['avatar'] = $dados_requisicao['user']->user_pictures;
 
     $dados_requisicao['days'] = make_date_select('day');
@@ -65,18 +62,17 @@ $app->get('/user/edit/(:id)', function ($id) use ($app) {
 });
 
 /** EDIT CONFIG */
-$app->get('/user/config/(:id)', function ($id) use ($app) {
-    $dados_requisicao['user'] = User::find_by_id($id);
+$app->get('/user/config', $authenticate($app), function () use ($app) {
+    $dados_requisicao['user'] = current_user();
     $dados_requisicao['avatar'] = $dados_requisicao['user']->user_pictures;
 
     $app->render('user/edit_config.html', $dados_requisicao);
 });
 
 /** UPDATE PROFILE */
-$app->put('/user/update/(:id)', function ($id) use ($app) {
-    $user = User::find_by_id($id);
+$app->put('/user/update', function () use ($app) {
+    $user = current_user();
     $imagem = new UserPicture();
-   // $user->name  = $app->request()->post('nome');
     $user->phone = $app->request()->post('telefone');
     $user->address = $app->request()->post('endereco');
     $user->city = $app->request()->post('cidade');
@@ -120,35 +116,58 @@ $app->put('/user/update/(:id)', function ($id) use ($app) {
                 }
             }
         }
-        $app->redirect(get_root_url().'user/'.$id);
+        $app->redirect(get_root_url().'user');
     }else{
         $app->render('user/edit_profile.html', $dados_requisicao);
     }
 });
 
 /** UPDATE CONFIG */
-$app->put('/user/update_config/(:id)', function ($id) use ($app) {
-    $user = User::find_by_id($id);
+$app->put('/user/update_config', function () use ($app) {
+    $user = current_user();
+    $dados_requisicao['user'] = $user;
+    $equals = 0;
 
     $user->name  = $app->request()->post('nome');
     $user->alternative_email = $app->request()->post('submail');
     $user->address = $app->request()->post('endereco');
     $user->secret_question = $app->request()->post('question');
     $user->question_answer = $app->request()->post('answer');
-    $user->password = $app->request()->post('password');
 
-    $dados_requisicao['user'] = $user;
+    if($app->request()->post('password')!="" && $app->request()->post('npassword')!=""){
+        $equals = ($app->request()->post('password') == $app->request()->post('npassword'));
+
+        if($equals == 1){
+            $user->password = $app->request()->post('password');
+        }else{
+            $app->render('user/edit_config.html', $dados_requisicao);
+        }
+    }
 
     if($user->save()){
-        $app->redirect(get_root_url().'user/'.$id);
+        $app->redirect(get_root_url().'user');
     }else{
         $app->render('user/edit_config.html', $dados_requisicao);
     }
 });
 
+$app->get('/login', function() use ($app){
+    $app->render('login/login.html');
+});
 
-/** FORM User */
-$app->get('/form_user', function () use ($app) {
+$app->post('/user_login', function () use ($app) {
+    $obj = (object) $app->request()->post();
+    $email = $obj->email;
+    //$password = md5($obj->password);
+    $password = $obj->password;
+    $user = User::find_by_email_and_password($email,$password);
+    if($user){
+        $_SESSION['user_id'] = $user->id;
+        $app->redirect(get_root_url().'user');
+        $app->flash("login_msg","Você está logado");
+    }else{
+        $app->redirect(get_root_url().'login');
+        $app->flash("login_msg","Você está logado");
+    }
 
-    $app->render('user/form_user.html');
 });

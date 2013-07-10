@@ -130,7 +130,16 @@ function make_date_select($param){
 			return 'ERROR';
 		break;
 	}
+}
 
+function set_password($password) {
+    return md5($password);
+}
+
+function current_user(){
+	if(isset($_SESSION['user_id'])){
+		return User::find_by_id($_SESSION['user_id']);
+	}
 }
 
 ?>

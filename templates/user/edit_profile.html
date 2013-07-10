@@ -4,7 +4,7 @@
         <title>Edit Profile</title>
 
         <div id="main">
-       <form action="../update/{{user.id}}"  method="post" accept-charset="utf-8" enctype="multipart/form-data">
+       <form action="update"  method="post" accept-charset="utf-8" enctype="multipart/form-data">
             <table border="1px solid">
                  <input type="hidden" name="_METHOD" value="PUT">
                         <td>
@@ -13,12 +13,12 @@
                                 {% if (avatar|length > 0) %}
                                 
                                         <td>
-                                            <img height="50px" width="50px" src="../../uploads_users/{{avatar.name}}" alt=""/>
+                                            <img height="50px" width="50px" src="../uploads_users/{{avatar.name}}" alt=""/>
                                         </td>
                                 
                                     {% else %}
                                         <td>
-                                            <img height="50px" width="50px" src="../../uploads_users/default-user-picture.png" alt=""/>
+                                            <img height="50px" width="50px" src="../uploads_users/default-user-picture.png" alt=""/>
                                         </td>
                                     {% endif %}
 

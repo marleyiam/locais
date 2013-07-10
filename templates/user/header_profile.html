@@ -1,8 +1,8 @@
 
 	<div id="main">
-		<a href="edit/{{user.id}}">edit profile</a>
+		<a href="user/edit">edit profile</a>
 	</br>
-	<a href="config/{{user.id}}">edit config</a>
+	<a href="user/config">edit config</a>
 	<form action="../search_locals" method="get">
 		<input id="search_locals" type="text" name="term" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60"/>
 		<input id="find" type="submit" value="find" />
@@ -10,11 +10,14 @@
 	<table border="1px solid">
 	{% if (avatar|length > 0) %}
 	    <tr>
-	        <td><img height="100px" width="100px" src="../uploads_users/{{avatar.name}}" alt=""></td><td>*</td>
+	        <td>
+	        	<img height="100px" width="100px" src="./uploads_users/{{avatar.name}}" alt="">
+	        </td>
+	        <td> olá {{ user.name }} |<a href="logout">logout</a></td>
 	    </tr>
 	  {% else %}
 	     <tr>
-	        <td><img height="100px" width="100px" src="../uploads_users/default-user-picture.png" alt=""></td><td>*</td>
+	        <td><img height="100px" width="100px" src="../uploads_users/default-user-picture.png" alt=""></td><td>olá {{ user.name }}|<a href="logout">logout</a></td>
 	    </tr>
 	  {% endif %}
 	</table>
@@ -24,13 +27,13 @@
 			<tr>
 				<td width="20%">&nbsp;</td>
 				<td width="8%" class="centro">
-					<a class="centro" href="../local">
+					<a class="centro" href="local">
 						<img width="57" height="32" src="img/facebook_places.jpg"><br>
 						Meus locais
 					</a>
 				</td>
 				<td width="8%" class="centro">
-					<a class="centro" href="../rout">
+					<a class="centro" href="rout">
 						<img width="28" height="30" src="img/rotas.jpg"><br>
 						Minhas rotas
 					</a>
@@ -42,7 +45,7 @@
 					</a><a href="meusimoveis.php"><br></a>
 				</td>
 				<td width="7%" class="centro">
-					<a class="centro" href="../fav">
+					<a class="centro" href="fav">
 						<img width="37" height="30" alt="" src="img/friends.jpg"><br>
 						Favoritos
 					</a>

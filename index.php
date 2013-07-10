@@ -18,7 +18,7 @@ ActiveRecord\Config::initialize(function($cfg) {
 #$app = new \Slim\Slim();
 //Diz pro Slim usar os templates do Twig \o/
 $app = new \Slim\Slim(array( 'view' => new \Slim\Extras\Views\Twig()));
-
+$app->add(new \Slim\Middleware\SessionCookie(array('secret' => 'myappsecret')));
 /*
 $twig = new Twig_Environment($loader, array(
         'autoescape' => false,
@@ -26,15 +26,34 @@ $twig = new Twig_Environment($loader, array(
 
 $twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
 */
+$authenticate = function ($app) {
+    return function () use ($app) {
+        if (!isset($_SESSION['user_id'])) {
+            $app->flash('error', 'Login required');
+            $app->redirect(get_root_url().'login');
+        }
+    };
+};
 
+$app->hook('slim.before.dispatch', function() use ($app) { 
+   $user = null;
+   if (isset($_SESSION['user_id'])) {
+      $user_id = $_SESSION['user_id'];
+      $user = User::find_by_id($user_id);
+   }
+   $app->view()->setData('user', $user);
+});
 
-/** INDEX */
-$app->get('/local', function() use ($app){
-    //$session['user_id']
-    $user = User::find_by_id(3);
+$app->get('/logout', function () use ($app) {
+    unset($_SESSION['user_id']);
+    $app->view()->setData('user', null);
+    $app->render('login/login.html');
+});
+
+/** INDEX */ 
+$app->get('/local', $authenticate($app), function() use ($app){
+    $user = current_user();
     $locals['locals'] = $user->locals;
-
-    //$locals['locals'] = Local::find('all');
     $app->render('local/index.html', $locals);
 });
 
@@ -47,7 +66,8 @@ $app->get('/local/(:id)', function($id) use ($app){
 });
 
 /** CREATE */
-$app->post('/local', function () use ($app) {
+$app->post('/local', $authenticate($app) , function () use ($app) {
+    $user = current_user();
     $local = new Local();
     $imagem = new LocalPicture();
     $last_local = Local::last();
@@ -61,6 +81,7 @@ $app->post('/local', function () use ($app) {
     $local->description = $app->request()->post('descricao');
     $local->visibility = $app->request()->post('exibicao');
     $local->clone = $app->request()->post('clone');
+    $local->users_id = $user->id;
     
     if($local->save()){
 
@@ -88,7 +109,8 @@ $app->post('/local', function () use ($app) {
                 }
             }
         }
-        $app->redirect(get_root_url().'local');
+        //$app->redirect(get_root_url().'user');
+        $app->redirect(get_root_url().'local/'.$id);
     }else{
         $app->render('local/new.html', 'erro no insert');
     }
@@ -102,14 +124,14 @@ $app->get('/local/delete/(:id)', function($id) use ($app) {
 });
 
 /** NEW */
-$app->get('/local/new/', function () use ($app) {
+$app->get('/local/new/', $authenticate($app), function () use ($app) {
     $dados_requisicao['action'] = get_root_url().'local';
     $dados_requisicao['acao'] = "cadastrar";
     $app->render('local/new.html', $dados_requisicao);
 });
 
 /** EDIT */
-$app->get('/local/edit/(:id)', function ($id) use ($app) {
+$app->get('/local/edit/(:id)', $authenticate($app), function ($id) use ($app) {
     $dados_requisicao['local'] = Local::find_by_id($id);
     $dados_requisicao['action'] = get_root_url().'local/update/'.$id;
     $dados_requisicao['acao'] = "editar";
@@ -177,12 +199,7 @@ $app->get('/local/setlocal/(:id)', function ($id) use ($app) {
 
 /** rota ROOT */
 $app->get('/', function () use ($app){
-       echo '<a href="local">Lista de Locais</a>';
-       echo '</br>';
-       echo '<a href="form_rota">Form Rota</a>';
-       echo '</br>';
-       echo '<a href="route">Lista de Rotas</a>';
-       echo '</br>';
+
        echo '<a href="login">Login</a>';
 });
 
@@ -255,31 +272,12 @@ $app->get('/search_locals', function () use ($app) {
 });*/
 
 
-$app->map('/login', function () use ($app) {
 
-            // Test for Post & make a cheap security check, to get avoid from bots
-    if($app->request()->isPost() && sizeof($app->request()->post()) > 2)
-    {
-        // Don't forget to set the correct attributes in your form (name="user" + name="password")
-        $post = (object)$app->request()->post();
-
-        if(isset($post->user) && isset($post->passwort))
-        {
-            $app->setEncryptedCookie('my_cookie',$post->password);
-            $app->redirect('profile/index.html');
-        } 
-        else
-        {
-            $app->redirect('/login');
-        }
-    }
-            // render login
-    $app->render('login/login.html');
-
-})->via('GET','POST')->name('/login');
+           // $app->setEncryptedCookie('my_cookie',$post->password);
+           // $app->redirect('profile/index.html');
 
 
-
+/*
 $authAdmin = function($role = 'member'){
 
     return function () use ($role){
@@ -293,20 +291,7 @@ $authAdmin = function($role = 'member'){
         }
     };
 };
-
-$app->get('/admin', $authAdmin('admin'), function () use ($app) {
-
-    $app->render('default.tpl', array
-       (
-           'siteTitle'   => $app->siteTitle,
-           'pageTitle'   => 'Admin Control Panel',
-           'mainTitle'   => 'Admin Control Panel',
-           'subTemplate' => 'pages/admin.tpl'
-       )
-    );
-
-})->name('admin');
-
+*/
 
 require 'routes.php';
 require 'users.php';
