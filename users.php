@@ -169,5 +169,29 @@ $app->post('/user_login', function () use ($app) {
         $app->redirect(get_root_url().'login');
         $app->flash("login_msg","Você está logado");
     }
+});
 
+/** AUTOCOMPLETE SEARCH USER AJAX*/
+$app->get('/ajax_search_users', function () use ($app) {
+
+    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
+
+    $arrterm = $app->request()->params();
+    $term = $arrterm["term"];
+
+    $res = array();
+    $ress = array();
+    $arr = array();
+    $avatar = "";
+    $users = User::find('all', array('conditions' => array("name LIKE ?", "%".$term."%")));
+
+    foreach ($users as $key => $value) {
+        $avatar = $value->user_pictures? $value->user_pictures->attributes() : 'default-user-picture.png';
+        $res[$key] = $value->attributes();
+        $ress[$key] = $res[$key]["name"]; 
+        $arr[$key] = array("id" => $res[$key]["id"],"name" => $res[$key]["name"],
+        "city" => $res[$key]["city"], "avatar" => $avatar);  
+    }
+
+    echo json_encode($arr);
 });

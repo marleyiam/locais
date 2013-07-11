@@ -1,8 +1,9 @@
 <?php
 
 /** INDEX */
-$app->get('/route', function() use ($app){
-   $routes['routes'] = Route::find('all');
+$app->get('/route', $authenticate($app), function() use ($app){
+    $user = current_user();
+   $routes['routes'] =  $user->routes;
     $app->render('route/index.html', $routes);
 });
 
@@ -15,7 +16,8 @@ $app->get('/route/(:id)', function($id) use ($app){
 });
 
 /** CREATE */
-$app->post('/route', function () use ($app) {
+$app->post('/route', $authenticate($app), function () use ($app) {
+    $user = current_user();
     $route = new Route();
     $imagem = new RoutePicture();
     $last_route = Route::last();
@@ -25,6 +27,7 @@ $app->post('/route', function () use ($app) {
     $route->route_path = $app->request()->post('route_path');
     $route->description = $app->request()->post('descricao');
     $route->visibility = $app->request()->post('exibicao');
+    $route->users_id = $user->id;
 
     if($route->save()){
 
@@ -66,14 +69,14 @@ $app->get('/route/delete/(:id)', function($id) use ($app) {
 });
 
 /** NEW */
-$app->get('/route/new/', function () use ($app) {
+$app->get('/route/new/', $authenticate($app), function () use ($app) {
     $dados_requisicao['action'] = get_root_url().'route';
     $dados_requisicao['acao'] = "cadastrar";
     $app->render('route/new.html', $dados_requisicao);
 });
 
 /** EDIT */
-$app->get('/route/edit/(:id)', function ($id) use ($app) {
+$app->get('/route/edit/(:id)', $authenticate($app), function ($id) use ($app) {
     $dados_requisicao['route'] = Route::find_by_id($id);
     $dados_requisicao['action'] = get_root_url().'route/update/'.$id;
     $dados_requisicao['acao'] = "editar";
@@ -146,7 +149,7 @@ $app->get('/autocomplete_route/(:id)', function ($id) use ($app) {
 });
 
 /** FORM Route */
-$app->get('/form_route', function () use ($app) {
-
-    $app->render('route/form_route.html');
-});
+//$app->get('/form_route', function () use ($app) {
+//
+//    $app->render('route/form_route.html');
+//});

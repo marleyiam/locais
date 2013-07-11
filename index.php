@@ -200,7 +200,7 @@ $app->get('/local/setlocal/(:id)', function ($id) use ($app) {
 /** rota ROOT */
 $app->get('/', function () use ($app){
 
-       echo '<a href="login">Login</a>';
+    $app->render('login/login.html');
 });
 
 /** AUTOCOMPLETE LOCAL */
@@ -222,7 +222,7 @@ $app->get('/autocomplete', function () use ($app) {
 });
 
 /** AUTOCOMPLETE SEARCH LOCAL*/
-$app->get('/search_locals', function () use ($app) {
+$app->get('/search_for_locals', function () use ($app) {
 
     $arrterm = $app->request()->params();
     $term = $arrterm["term"];

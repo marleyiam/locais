@@ -32,7 +32,7 @@
           return size;
       }; 
 
-      
+      /*
       function fa(){
        $('#origem').trigger('keydown'); 
         $('#origem:focus').autocomplete('focus', $('#origem').val('bairro nordeste') ); 
@@ -43,4 +43,4 @@
         $(".ui-menu-item").trigger('click');   
       }
       setInterval(fa(),fc(),500,500);
-     
+     '*/
