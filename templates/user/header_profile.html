@@ -1,9 +1,9 @@
 
 	<div id="main">
-		<a href="user/edit">edit profile</a>
+		<a href="http://localhost/locais_fotos/user/edit">edit profile</a>
 	</br>
-	<a href="user/config">edit config</a>
-	<form action="../search_locals" method="get">
+	<a href="http://localhost/locais_fotos/user/config">edit config</a>
+	<form action="http://localhost/locais_fotos/search_for_locals" method="get">
 		<input id="search_locals" type="text" name="term" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60"/>
 		<input id="find" type="submit" value="find" />
 	</form>
@@ -11,13 +11,13 @@
 	{% if (avatar|length > 0) %}
 	    <tr>
 	        <td>
-	        	<img height="100px" width="100px" src="./uploads_users/{{avatar.name}}" alt="">
+	        	<img height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/{{avatar.name}}" alt="">
 	        </td>
-	        <td> olá {{ user.name }} |<a href="logout">logout</a></td>
+	        <td> olá {{ user.name }} |<a href="http://localhost/locais_fotos/logout">logout</a></td>
 	    </tr>
 	  {% else %}
 	     <tr>
-	        <td><img height="100px" width="100px" src="../uploads_users/default-user-picture.png" alt=""></td><td>olá {{ user.name }}|<a href="logout">logout</a></td>
+	        <td><img height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/default-user-picture.png" alt=""></td><td>olá {{ user.name }}|<a href="http://localhost/locais_fotos/logout">logout</a></td>
 	    </tr>
 	  {% endif %}
 	</table>
@@ -27,13 +27,13 @@
 			<tr>
 				<td width="20%">&nbsp;</td>
 				<td width="8%" class="centro">
-					<a class="centro" href="local">
+					<a class="centro" href="http://localhost/locais_fotos/local">
 						<img width="57" height="32" src="img/facebook_places.jpg"><br>
 						Meus locais
 					</a>
 				</td>
 				<td width="8%" class="centro">
-					<a class="centro" href="rout">
+					<a class="centro" href="http://localhost/locais_fotos/route">
 						<img width="28" height="30" src="img/rotas.jpg"><br>
 						Minhas rotas
 					</a>
@@ -45,7 +45,7 @@
 					</a><a href="meusimoveis.php"><br></a>
 				</td>
 				<td width="7%" class="centro">
-					<a class="centro" href="fav">
+					<a class="centro" href="http://localhost/locais_fotos/fav">
 						<img width="37" height="30" alt="" src="img/friends.jpg"><br>
 						Favoritos
 					</a>

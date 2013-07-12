@@ -2,8 +2,11 @@
 {% extends "./layout/site.html" %}
     {% block content %}
         <title>Edit Profile</title>
-
+        
         <div id="main">
+            {% block header_profile %}
+              {% include 'user/header_profile.html' %}
+            {% endblock %}
        <form action="update"  method="post" accept-charset="utf-8" enctype="multipart/form-data">
             <table border="1px solid">
                  <input type="hidden" name="_METHOD" value="PUT">
@@ -98,4 +101,5 @@
                 </table>
             </form>
         </div>
+
     {% endblock %}

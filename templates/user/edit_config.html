@@ -4,6 +4,9 @@
         <title>Edit Configurações</title>
 
         <div id="main">
+          {% block header_profile %}
+            {% include 'user/header_profile.html' %}
+          {% endblock %}
        <form action="update_config"  method="post" accept-charset="utf-8" enctype="multipart/form-data">
         
                  <input type="hidden" name="_METHOD" value="PUT">

@@ -10,9 +10,7 @@ class Local extends ActiveRecord\Model
 	   );
 	
 	static $belongs_to = array(
-	  array('users')
+	  array('users','foreign_key' => 'users_id')
 	);
-
-
 }
 ?>

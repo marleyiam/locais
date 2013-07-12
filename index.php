@@ -189,10 +189,10 @@ $app->put('/local/update/(:id)', function ($id) use ($app) {
 
 /** SETLOCAL */
 $app->get('/local/setlocal/(:id)', function ($id) use ($app) {
+    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
     $local = Local::find_by_id($id);
     $coordenadas['lat'] = $local->lat;
     $coordenadas['lng'] = $local->lng;
-    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
     echo json_encode($coordenadas);
 });
 
@@ -245,7 +245,6 @@ $app->get('/search_for_locals', function () use ($app) {
     $locals['images'] = $images;
     $locals['users'] = $users;
     $locals['results'] = count($locals['locals']);
-    //printer($images);exit;
     $app->render('user/search_for_locals.html', $locals);
 });
 
@@ -295,5 +294,6 @@ $authAdmin = function($role = 'member'){
 
 require 'routes.php';
 require 'users.php';
+
 /** RUN APP */
 $app->run();

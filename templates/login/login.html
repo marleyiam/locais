@@ -1,8 +1,8 @@
 {% extends "./layout/site.html" %}
     {% block content %}
-    <form>
-    	<input id="geocomplete" type="text" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60"/>
-    	<input id="find" type="button" value="find" />
+    <form  action="search_for_locals" method="get">
+    	<input id="geocompletee" type="text" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60" name="term"/>
+    	<input id="find" type="submit" value="find" />
     </form>
 
     <form action="user_login" method="post">
@@ -62,7 +62,7 @@
     </form>
 
     <script type="text/javascript">
-    $(document).ready(function(){
+    /*$(document).ready(function(){
 
     	$("#geocomplete").geocomplete({
     	    details: "ul",
@@ -82,6 +82,6 @@
     	    $("#geocomplete").trigger("geocode");
     	});
       	         	   
-    });
+    });*/
     </script>
     {% endblock %}

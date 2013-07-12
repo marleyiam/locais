@@ -29,6 +29,19 @@ $app->get('/user', $authenticate($app), function() use ($app){
    $app->render('user/show_profile.html', $user);
 });
 
+/** USER PUBLIC PROFILE */
+$app->get('/profile/(:id)', $authenticate($app), function($id) use ($app){
+   $user['avatar'] = current_user()->user_pictures;
+   $user['public_user'] = User::find_by_id($id);
+   $user['public_locals'] = $user['public_user']->locals;
+   $user['public_routes'] = $user['public_user']->routes;
+   $user['public_imagens_routes'] = get_nested_relation($user['public_routes'],'route_pictures');
+   $user['public_imagens_locals'] = get_nested_relation($user['public_locals'],'local_pictures');
+   $user['public_avatar'] = $user['public_user']->user_pictures;
+
+   $app->render('user/user_profile.html', $user);
+});
+
 /** CREATE */
 $app->post('/user', function () use ($app) {
     $user = new User();

@@ -1,7 +1,7 @@
 
 {% extends "./layout/site.html" %}
     {% block content %}
-        <title>Show Profile</title>
+        <title>Public Profile</title>
         
           {% block header_profile %}
             {% include 'user/header_profile.html' %}
@@ -25,30 +25,42 @@
             <table border="1px solid">
                   
                         <td>
+                          <tr>
+                             
+                              {% if (public_avatar|length > 0) %}
+                                
+                                      <td>
+                                        <img height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/{{public_avatar.name}}" alt="">
+                                      </td>
+                                      <td> {{ public_user.name }} </td>
+                                 
+                                {% else %}
+                               
+                                      <td><img height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/default-user-picture.png" alt=""></td>
+                                      <td>{{ public_user.name }}</td>
+                                
+                                {% endif %}
+                            
+                          </tr>
                             <tr>
-                                <td>{{ user.name }}</td>
+                                <td>{{ public_user.name }}</td>
                             </tr>
                             <tr>
-                                <td>{{ user.city }}</td><td>{{ user.uf }}</td>
+                                <td>{{ public_user.city }}</td><td>{{ public_user.uf }}</td>
                             </tr>
                             <tr>
                                 <td>descricao :</td>
                             </tr>
                             <tr>
-                                <td>{{ user.aboutme}}</td>
+                                <td>{{ public_user.aboutme}}</td>
                             </tr>
                             <tr>
-                              <td>{{ user.phone}}</td>
+                              <td>{{ public_user.phone}}</td>
                             </tr>
                         </td>
             </table>
         </div>
-        <div id="locais">
-            <span>Meus Locais</span>
-            <span><a href="http://localhost/locais_fotos/local/new/">Novo Local</a></span>
-            <span><a href="http://localhost/locais_fotos/local/new/">Novo Imovel</a></span>
-            <span><a href="http://localhost/locais_fotos/route/new/">Nova Rota</a></span>
-        </div>
+
         <div class="container">
           <table width="100%" border="1">
             <tbody>
@@ -65,12 +77,13 @@
                       <table width="100%" border="0" class="centro">
                           <tbody>
                               <tr>
-                                  {% if (locals|length > 0) %}
-                                      {% for key,local in locals %}
+                                  {% if (public_locals|length > 0) %}
+                                      {% for key,local in public_locals %}
+                                        {% if(local.visibility=='public') %}
                                           <td>
                                               <a href="http://localhost/locais_fotos/local/{{local.id}}">
-                                              {% if (imagens_locals|length > 0) %}
-                                                  {% for arrimg in imagens_locals %}
+                                              {% if (public_imagens_locals|length > 0) %}
+                                                  {% for arrimg in public_imagens_locals %}
                                                     {% for img in arrimg %}
                                                       {% if (img.locals_id == local.id) %}
                                                         <img width="100" height="77" src="http://localhost/locais_fotos/uploads_locais/{{ img.name }}"/>
@@ -82,7 +95,8 @@
                                               {% endif %}
                                                   {{ local.name }}
                                               </a> 
-                                          </td> 
+                                          </td>
+                                        {% endif %} 
                                       {% endfor %} 
                                   {% else %}
                                       <span>Não há locais cadastrados</span>
@@ -114,12 +128,13 @@
                         <table width="100%" border="0" class="centro">
                             <tbody>
                                 <tr>
-                                    {% if (routes|length > 0) %}
-                                        {% for key,route in routes %}
+                                    {% if (public_routes|length > 0) %}
+                                        {% for key,route in public_routes %}
+                                          {% if(route.visibility=='public') %}
                                             <td>
                                                 <a href="http://localhost/locais_fotos/route/{{route.id}}">
-                                                {% if (imagens_routes|length > 0) %}
-                                                    {% for arrimg in imagens_routes %}
+                                                {% if (public_imagens_routes|length > 0) %}
+                                                    {% for arrimg in public_imagens_routes %}
                                                       {% for img in arrimg %}
                                                         {% if (img.routes_id == route.id) %}
                                                           <img width="100" height="77" src="http://localhost/locais_fotos/uploads_rotas/{{ img.name }}"/>
@@ -132,6 +147,7 @@
                                                     {{ route.name }}
                                                 </a> 
                                             </td> 
+                                          {% endif %}
                                         {% endfor %} 
                                     {% else %}
                                         <span>Não há rotas cadastradas</span>
@@ -143,7 +159,6 @@
                     </tr>
                   </tbody>
                 </table>
-                <a href="http://localhost/locais_fotos/profile/{{user.id}}">meu perfil público</a>
                 <form action="" method="">
                   <input id="search_users" type="text" name="term" placeholder="Busca de Usuários" value="" size="60"/>
                 </form>
@@ -159,7 +174,7 @@
                       inner_html += '<div class="list_item_container">';
 inner_html += '<div class="image">';
 inner_html += '<img height="50px" width="50px"';
-inner_html += 'src="http://localhost/locais_fotos/uploads_users/' + avatar + '">';
+inner_html += ' src="http://localhost/locais_fotos/uploads_users/' + avatar + '">';
 inner_html += '</div>';
                       inner_html += '<div class="label">' + item.name + '</div>';
                       inner_html += '<div class="city">' + item.city + '</div>';
@@ -175,11 +190,8 @@ inner_html += '</div>';
                         minLength: 0,
                         source: 'http://localhost/locais_fotos/ajax_search_users',
                          focus: function(event, ui) {
-                          //console.log(event);
                         },
                         select: function(event, ui) {
-                          //console.log(ui.item.value);                 
-                          //console.log(ui);
                         }
                       });
                   
