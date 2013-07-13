@@ -46,7 +46,10 @@
         <div id="locais">
             <span>Meus Locais</span>
             <span><a href="http://localhost/locais_fotos/local/new/">Novo Local</a></span>
+            {% if(user.type=='agent') %}
             <span><a href="http://localhost/locais_fotos/local/new/">Novo Imovel</a></span>
+            {% endif %}
+
             <span><a href="http://localhost/locais_fotos/route/new/">Nova Rota</a></span>
         </div>
         <div class="container">
@@ -148,6 +151,66 @@
                   <input id="search_users" type="text" name="term" placeholder="Busca de Usuários" value="" size="60"/>
                 </form>
             </div>
+            <!-- AMIGOS -->
+
+            <div class="container">
+              <table width="100%" border="1">
+                <tbody>
+                  <tr>
+                      <td bgcolor="#CCCCCC">
+                          <table width="100%" border="0">
+                              <tbody>
+                                <tr>
+                                    <td>Amigos <a href="">[{{friends_quantity}}]</a></td>
+                                    <td class="direita"><p>&nbsp;</p></td>
+                                 </tr>
+                              </tbody>
+                          </table>
+                          <table width="100%" border="0" class="centro">
+                              <tbody>
+                                  <tr>
+                                      {% if (friends|length > 0) %}
+                                          {% for key,friend in friends %}
+                                              <td>
+                                                  <a href="http://localhost/locais_fotos/profile/{{friend.id}}">
+
+                                                {% if (friends_avatars|length > 0) %}
+                                                  {% for i,img in friends_avatars %}
+                                                    {% if(img.name is defined) %}
+                                                      {% if (img.users_id == friend.id) %}
+                                                        
+                                                          <img class="friend_avatar" height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/{{img.name}}" data-public-user="{{friend.id}}"/>
+                                                        {% else %}
+                                                       
+                                                        <img class="friend_avatar" height="100px" width="100px" 
+                                                        src="http://localhost/locais_fotos/uploads_users/default-user-picture.png" data-public-user="{{friend.id}}"/>
+                                                        {% endif %}
+                                                          
+                                                      {% endif %}
+                                                   
+                                                  {% endfor %}
+                                                {% else %}
+                                                 
+                                                          <img class="friend_avatar" height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/default-user-picture.png" data-public-user="{{friend.id}}"/>
+                                                  
+                                                  {% endif %}
+                                                  {{friend.name}}
+                                                  </a> 
+
+                                              </td> 
+                                          {% endfor %} 
+                                      {% else %}
+                                          <span>você ainda não tem amigos</span>
+                                      {% endif %}
+                                  </tr>
+                              </tbody>
+                          </table>
+                        </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+
 
 
               <script type="text/javascript">
@@ -181,7 +244,7 @@ inner_html += '</div>';
                           //console.log(ui.item.value);                 
                           //console.log(ui);
                         }
-                      });
+                      }); 
                   
                 </script>
     {% endblock %}

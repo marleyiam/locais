@@ -1,0 +1,18 @@
+{% extends "./layout/site.html" %}
+    {% block content %}
+        <title>Users Requests</title>
+        
+          {% block header_profile %}
+            {% include 'user/header_profile.html' %}
+          {% endblock %}
+
+          <div id="container">
+          	<table border="1px solid">
+			{% for i,requester in requesters %}
+				<tr>
+					<td>{{requester.name}}</td>
+				</tr>
+			{% endfor %}
+          	</table>
+          </div>
+{% endblock %}

@@ -44,3 +44,20 @@
       }
       setInterval(fa(),fc(),500,500);
      '*/
+     $(".add_btn").on('click', function(e){
+         e.preventDefault();
+
+             user_a = $(".header_avatar").attr("data-user");
+             user_b = $(".avatar").attr("data-public-user");
+             $.ajax({
+             type: 'post',
+             url: 'http://localhost/locais_fotos/add_user',
+             data: {from_user:user_a,to_user:user_b},
+             success: function(data){
+                 window.alert(data);
+             },
+             error: function(jqxhr){
+                 window.alert(jqxhr);
+             }
+         });
+     });

@@ -30,14 +30,28 @@
                               {% if (public_avatar|length > 0) %}
                                 
                                       <td>
-                                        <img height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/{{public_avatar.name}}" alt="">
+                                        <img class="avatar" height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/{{public_avatar.name}}" data-public-user="{{public_user.id}}">
                                       </td>
-                                      <td> {{ public_user.name }} </td>
+                                      <td>
+                                        {% if(user.id!=public_user.id) %}
+                                        <a href="http://localhost/locais_fotos/add_user">
+                                          <img class="add_btn" src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" alt=""/>
+                                        </a>
+                                        {% endif %}
+                                      </td>
                                  
                                 {% else %}
                                
-                                      <td><img height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/default-user-picture.png" alt=""></td>
-                                      <td>{{ public_user.name }}</td>
+                                      <td>
+                                        <img class="avatar" height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/default-user-picture.png" data-public-user="{{public_user.id}}">
+                                      </td>
+                                      <td>
+                                        {% if(user.id!=public_user.id) %}
+                                        <a href="http://localhost/locais_fotos/add_user">
+                                          <img class="add_btn" src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" alt=""/>
+                                        </a>
+                                        {% endif %} 
+                                        </td>
                                 
                                 {% endif %}
                             
@@ -193,6 +207,25 @@ inner_html += '</div>';
                         },
                         select: function(event, ui) {
                         }
+                      });
+
+      /*********************************** ADD USER *******************************/
+                      $(".add_btn").on('click', function(e){
+                          e.preventDefault();
+
+                              user_a = $(".header_avatar").attr("data-user");
+                              user_b = $(".avatar").attr("data-public-user");
+                              $.ajax({
+                              type: 'post',
+                              url: 'http://localhost/locais_fotos/add_user',
+                              data: {from_user:user_a,to_user:user_b},
+                              success: function(data){
+                                  window.alert(data);
+                              },
+                              error: function(jqxhr){
+                                  window.alert(jqxhr);
+                              }
+                          });
                       });
                   
                 </script>

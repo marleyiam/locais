@@ -10,16 +10,61 @@
 $slim->setEncryptedCookie('loyaltyCardNumber', 43252);
 */
 
-/** FRIENDS */
-$app->get('/user/friends', function() use ($app){
-   $users['users'] = User::find('all');
-    $app->render('user/index.html', $users);
-});
 
+/** ADD USER */
+$app->post('/add_user', function() use ($app){
+    $user = current_user();
+    $f = $app->request()->params();
+    $friends_list = $user->friends;
+
+    $already_friends = array();
+    $already_friends_ids = array();
+    foreach ($friends_list as $key => $value) {
+         $already_friends[$key] = $value->attributes();
+         $already_friends_ids[$key] = $already_friends[$key]['id_b'];
+    }
+
+    if(in_array($f['to_user'],$already_friends_ids)){
+        echo 'Solicitação já enviada !';
+    }else{
+
+        $friends = new Friend();
+        
+        $friends->id_a = $f['from_user'];
+        $friends->id_b = $f['to_user'];
+        $friends->aproved = 'false';
+        if($friends->save()){
+             echo 'sua solicitação foi enviada !';
+        }else{
+             echo 'não foi possível realizar sua solicitação !';
+        }
+    }
+});
 
 /** VIEW PROFILE */
 $app->get('/user', $authenticate($app), function() use ($app){
    $user['user'] = current_user();
+   $user['friends_relations'] = $user['user']->friends;
+   $arr = array();
+   $friends = array();
+   $friends_avatars = array();
+   $aproved = $user['user']->friends;
+
+   $pendent = Friend::find("all", array(
+    "conditions" => array('aproved = ? AND id_a = ?','FALSE',$user['user']->id)));
+
+   $user['friends_quantity'] = count($aproved);
+   $user['friends_requests_quantity'] = count($pendent);
+
+   foreach ($aproved as $key => $value) {
+        $arr[$key] = $value->attributes();
+        $friends[$key] = User::find_by_id($arr[$key]['id_b']);
+        $friends_avatars[$key] = $friends[$key]->user_pictures;
+   }
+
+   $user['friends'] = $friends;
+   $user['friends_avatars'] = $friends_avatars;
+
    $user['locals'] = $user['user']->locals;
    $user['routes'] = $user['user']->routes;
    $user['imagens_routes'] = get_nested_relation($user['routes'],'route_pictures');
@@ -27,6 +72,29 @@ $app->get('/user', $authenticate($app), function() use ($app){
    $user['avatar'] = $user['user']->user_pictures;
 
    $app->render('user/show_profile.html', $user);
+});
+
+/** FRIENDSHIP REQUESTS */
+$app->get('/requests', $authenticate($app), function() use ($app){
+    $user['user'] = current_user();
+    $user['avatar'] = $user['user']->user_pictures;
+    $arr = array();
+    $requesters = array();
+    $requesters_avatars = array();
+
+    $pendent = Friend::find("all", array(
+     "conditions" => array('aproved = ? AND id_a = ?','FALSE',$user['user']->id)));
+
+    foreach ($pendent as $key => $value) {
+         $arrr[$key] = $value->attributes();
+         $requesters[$key] = User::find_by_id($arrr[$key]['id_b']);
+         $requesters_avatars[$key] = $requesters[$key]->user_pictures;
+    }
+
+    $user['requesters'] = $requesters;
+    $user['requesters_avatars'] = $requesters_avatars;
+
+    $app->render('user/requests.html', $user);
 });
 
 /** USER PUBLIC PROFILE */
@@ -42,16 +110,16 @@ $app->get('/profile/(:id)', $authenticate($app), function($id) use ($app){
    $app->render('user/user_profile.html', $user);
 });
 
-/** CREATE */
+/** CREATE LOGIN USER */ 
 $app->post('/user', function () use ($app) {
     $user = new User();
     $user->name  = $app->request()->post('nome');
     $user->email = $app->request()->post('email');
     $user->city = $app->request()->post('cidade');
-    $user->password = $app->request()->post('senha');
+    $user->password = md5($app->request()->post('senha'));
    
     if($user->save()){
-        $app->redirect(get_root_url().'user/'.User::last()->id);
+        $app->redirect(get_root_url().'user');
     }else{
         $app->render('/login', 'erro no insert');
     }
@@ -172,7 +240,7 @@ $app->post('/user_login', function () use ($app) {
     $obj = (object) $app->request()->post();
     $email = $obj->email;
     //$password = md5($obj->password);
-    $password = $obj->password;
+    $password = md5($obj->password);
     $user = User::find_by_email_and_password($email,$password);
     if($user){
         $_SESSION['user_id'] = $user->id;
