@@ -132,14 +132,21 @@ function make_date_select($param){
 	}
 }
 
-function set_password($password) {
-    return md5($password);
-}
 
 function current_user(){
 	if(isset($_SESSION['user_id'])){
 		return User::find_by_id($_SESSION['user_id']);
 	}
+}
+
+function current_user_avatar(){
+	return current_user()? current_user()->user_pictures : 'default-user-picture.png';
+}
+
+function getGlobals() {
+    return array(
+        'session'   => $_SESSION,
+    ) ;
 }
 
 ?>

@@ -2,11 +2,15 @@
 {% extends "./layout/site.html" %}
     {% block content %}
         <title>Lista de Rotas</title>
+        {% block header_profile %}
+          {% include 'user/header_profile.html' %}
+        {% endblock %}
 
         <div id="main">
             <a href="user" title="">Voltar</a>
             <a href="route/new/" title="">Nova Rota</a>
             <table border="1px solid">
+                {% if(routes|length>0) %}
                     {% for rota in routes %}
                         <td>
                             <tr>
@@ -38,9 +42,13 @@
                             <tr>
                                 <td>exibicao :</td><td>{{ rota.visibility }}</td>
                             </tr>
-
                         </td>
                     {% endfor %}
+                {% else %}
+                <tr>
+                    <td>Não há rotas cadastradas !</td>
+                </tr>
+                {% endif %}
             </table>
         </div>
     {% endblock %}

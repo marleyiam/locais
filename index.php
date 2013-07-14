@@ -5,6 +5,7 @@ require 'vendor/php-activerecord/ActiveRecord.php';
 require 'Twig/lib/Twig/Autoloader.php'; 
 require 'Twig/lib/Twig/Environment.php'; 
 require 'functions/functions.php';
+require '/opt/lampp/lib/php/Log.php';
 
 $loader = Twig_Autoloader::register();
 \Slim\Slim::registerAutoloader();
@@ -26,23 +27,6 @@ $twig = new Twig_Environment($loader, array(
 
 $twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
 */
-
-
-# This function reads your DATABASE_URL configuration automatically set by Heroku
-# the return value is a string that will work with pg_connect
-function pg_connection_string() {
-  // we will fill this out next
-}
- 
-# Establish db connection
-$db = pg_connect(pg_connection_string());
-if (!$db) {
-   echo "Database connection error.";
-   exit;
-}
- 
-$result = pg_query($db, "SELECT statement goes here");
-
 
 
 $authenticate = function ($app) {
@@ -90,7 +74,7 @@ $app->post('/local', $authenticate($app) , function () use ($app) {
     $local = new Local();
     $imagem = new LocalPicture();
     $last_local = Local::last();
-    $last_id = $last_local->id;
+    $last_id = $last_local? $last_local->id : 0;
     $local->name  = $app->request()->post('nome');
     $local->identifier = $app->request()->post('identificador');
     $local->address = $app->request()->post('endereco');
@@ -128,8 +112,8 @@ $app->post('/local', $authenticate($app) , function () use ($app) {
                 }
             }
         }
-        //$app->redirect(get_root_url().'user');
-        $app->redirect(get_root_url().'local/'.$id);
+
+        $app->redirect(get_root_url().'local/'.$last_id+1);
     }else{
         $app->render('local/new.html', 'erro no insert');
     }

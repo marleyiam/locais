@@ -2,11 +2,14 @@
 {% extends "./layout/site.html" %}
     {% block content %}
         <title>Lista de Locais</title>
-
+        {% block header_profile %}
+          {% include 'user/header_profile.html' %}
+        {% endblock %}
         <div id="main">
             <a href="user" title="">Voltar</a>
             <a href="local/new/" title="">Novo local</a>
             <table border="1px solid">
+                {% if(locals|length>0) %}
                     {% for local in locals %}
                         <td>
                             <tr>
@@ -52,6 +55,11 @@
                             </tr>
                         </td>
                     {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td>Não há locais cadastrados </td>
+                    </tr>
+                    {% endif %}
             </table>
         </div>
     {% endblock %}

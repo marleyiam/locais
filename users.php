@@ -23,6 +23,7 @@ $app->post('/add_user', function() use ($app){
          $already_friends[$key] = $value->attributes();
          $already_friends_ids[$key] = $already_friends[$key]['id_b'];
     }
+   //echo  Friend::table()->last_sql;
 
     if(in_array($f['to_user'],$already_friends_ids)){
         echo 'Solicitação já enviada !';
@@ -51,7 +52,7 @@ $app->get('/user', $authenticate($app), function() use ($app){
    $aproved = $user['user']->friends;
 
    $pendent = Friend::find("all", array(
-    "conditions" => array('aproved = ? AND id_a = ?','FALSE',$user['user']->id)));
+    "conditions" => array('aproved = ? AND id_b = ?','FALSE',$user['user']->id)));
 
    $user['friends_quantity'] = count($aproved);
    $user['friends_requests_quantity'] = count($pendent);
@@ -77,24 +78,52 @@ $app->get('/user', $authenticate($app), function() use ($app){
 /** FRIENDSHIP REQUESTS */
 $app->get('/requests', $authenticate($app), function() use ($app){
     $user['user'] = current_user();
-    $user['avatar'] = $user['user']->user_pictures;
+    $user['avatar'] = current_user_avatar();
     $arr = array();
     $requesters = array();
     $requesters_avatars = array();
+    $friend_relation_ids = array();
 
     $pendent = Friend::find("all", array(
-     "conditions" => array('aproved = ? AND id_a = ?','FALSE',$user['user']->id)));
+     "conditions" => array('aproved = ? AND id_b = ?','FALSE',$user['user']->id)));
+
 
     foreach ($pendent as $key => $value) {
          $arrr[$key] = $value->attributes();
-         $requesters[$key] = User::find_by_id($arrr[$key]['id_b']);
+         $friend_relation_ids[$key] = $arrr[$key]['id'];
+         $requesters[$key] = User::find_by_id($arrr[$key]['id_a']);
          $requesters_avatars[$key] = $requesters[$key]->user_pictures;
     }
 
     $user['requesters'] = $requesters;
     $user['requesters_avatars'] = $requesters_avatars;
+    $user['friend_relation_ids'] = $friend_relation_ids;
 
     $app->render('user/requests.html', $user);
+});
+
+
+/** CONFIRM FRIEND */
+$app->post('/requests/confirm', function() use ($app){
+      $f = $app->request()->params();
+      $friend = Friend::find_by_id($f['id']);
+      if($friend->update_attribute ("aproved" ,"TRUE")){
+            echo "Vocês agora são amigos !!!";
+      }else{
+            echo "Não foi possível confirma esse pedido de amizade !";
+      }
+});
+
+/** DENY FRIEND */
+$app->post('/requests/deny', function() use ($app){
+      $f = $app->request()->params();
+      $friend = Friend::find_by_id($f['id']);
+
+      if($friend->delete()){
+          echo "Vocês negou essa solicitação de amizade !!!";
+      }else{
+          echo "Vocês não são amigos, mas a solicitação ainda existe";
+      }
 });
 
 /** USER PUBLIC PROFILE */
@@ -136,8 +165,11 @@ $app->get('/user/edit', $authenticate($app), function () use ($app) {
     $dados_requisicao['years'] = make_date_select('year');
 
     $birth_date = $dados_requisicao['user']->birthdate;
-    $date = $birth_date->format('d-m-Y');
-    $dados_requisicao['date'] = explode("-", $date);
+    
+    if($birth_date){
+        $date = $birth_date->format('d-m-Y');
+        $dados_requisicao['date'] = explode("-", $date);
+    }
 
     $app->render('user/edit_profile.html', $dados_requisicao);
 });
@@ -239,16 +271,16 @@ $app->get('/login', function() use ($app){
 $app->post('/user_login', function () use ($app) {
     $obj = (object) $app->request()->post();
     $email = $obj->email;
-    //$password = md5($obj->password);
     $password = md5($obj->password);
     $user = User::find_by_email_and_password($email,$password);
+    $msg = "";
     if($user){
         $_SESSION['user_id'] = $user->id;
         $app->redirect(get_root_url().'user');
-        $app->flash("login_msg","Você está logado");
+        //$app->flash("login_msg","Você está logado");
     }else{
+        //$app->flash("loginerror","Você NÂO está logado");
         $app->redirect(get_root_url().'login');
-        $app->flash("login_msg","Você está logado");
     }
 });
 

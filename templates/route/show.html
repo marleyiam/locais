@@ -1,5 +1,9 @@
 {% extends "./layout/site.html" %}
   {% block content %}
+      {% block header_profile %}
+        {% include 'user/header_profile.html' %}
+      {% endblock %}
+  
         <div id="main">
             <button type="submmit " onClick="window.history.back()">Voltar</button>
             <table border="1px solid">

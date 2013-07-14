@@ -61,3 +61,56 @@
              }
          });
      });
+
+     //$("#target").val()
+
+          /** Adiciona o fomr_rota*/
+           url = window.parent.location.href;
+           url_array = url.split("/");
+           acao = url_array[4]; 
+           $.inArray(acao, url_array)
+           v = '/local/new/';
+           
+          String.prototype.contains = function(it) { 
+              return this.indexOf(it) != -1; 
+          };
+           
+           console.log(url.contains(v));
+
+           $(document).ready(function(){
+
+              $("#acc").on('click',function(e){
+                  id = $(this).attr('data-friend');
+                  e.preventDefault();
+                      $.ajax({
+                      type: 'post',
+                      url: 'requests/confirm',
+                      data: {id:id},
+                      success: function(data){
+                        console.log(data);
+                        window.alert(data);  
+                      },
+                      error: function(jqxhr){
+                        console.log(jqxhr);    
+                      }
+                  });
+              });
+
+              $("#dny").on('click',function(e){
+                  id = $(this).attr('data-friend');
+                  e.preventDefault();
+                      $.ajax({
+                      type: 'post',
+                      url: 'requests/deny',
+                      data: {id:id},
+                      success: function(data){
+                        console.log(data);
+                        window.alert(data);  
+                      },
+                      error: function(jqxhr){
+                        console.log(jqxhr);    
+                      }
+                  });
+              });
+
+           });

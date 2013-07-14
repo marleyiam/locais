@@ -7,7 +7,7 @@ class User extends ActiveRecord\Model
 	static $has_many = array(
 	    array('locals','foreign_key' => 'users_id'),
 	    array('routes','foreign_key' => 'users_id'),
-	    array('friends','foreign_key' => 'id_a','conditions' => array('aproved = ?', 'TRUE'))
+	    array('friends','foreign_key' => 'id_a')
 	   );
 
 	static $has_one = array(

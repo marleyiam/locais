@@ -1,5 +1,8 @@
 {% extends "./layout/site.html" %}
     {% block content %}
+    {% if(msg) %}
+    <span><strong>{{msg}}</strong></span>
+    {% endif %}
     <form  action="search_for_locals" method="get">
     	<input id="geocompletee" type="text" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60" name="term"/>
     	<input id="find" type="submit" value="find" />
@@ -25,16 +28,16 @@
     <form action="user" method="post">
     	<table>
     		<tr>
-    			<td><label for="">Nome</label></td><td><input type="text" name="nome" placeholder="nome"></td>
+    			<td><label for="">Nome</label></td><td><input type="text" name="nome" placeholder="nome" required></td>
     		</tr>
     		<tr>
-    			<td><label for="">Email</label></td><td><input type="text" name="email" placeholder="email"></td>
+    			<td><label for="">Email</label></td><td><input type="text" name="email" placeholder="email" required></td>
     		</tr>
     		<tr>
-    			<td><label for="">Cidade</label></td><td><input type="text" name="cidade" placeholder="cidade"></td>
+    			<td><label for="">Cidade</label></td><td><input type="text" name="cidade" placeholder="cidade" required></td>
     		</tr>
     		<tr>
-    			<td><label for="">Senha</label></td><td><input type="password" name="senha" placeholder="senha"></td>
+    			<td><label for="">Senha</label></td><td><input type="password" name="senha" placeholder="senha" required></td>
     		</tr>
     		<tr>
     			<td>

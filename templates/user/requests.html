@@ -9,9 +9,28 @@
           <div id="container">
           	<table border="1px solid">
 			{% for i,requester in requesters %}
-				<tr>
-					<td>{{requester.name}}</td>
-				</tr>
+          {% for j,avatars in requesters_avatars %}
+            {% for g,friend in friend_relation_ids %}
+              {% if(avatars.users_id==requester.id) %}
+                <tr>
+                  <td>
+                    <a href="profile/{{requester.id}}">
+                      <img height="100px" width="100px" src="uploads_users/{{avatars.name}}" alt=""/>
+                    </a>
+                  </td>
+                  <td>
+                   
+                    <strong>{{requester.name}}</strong> quer adicioná-lo a sua lista de amigos
+                    
+                      <span><a href="#"><img data-friend="{{friend}}" id="acc" src="img/thumbsU.png" alt=""></a></span>
+                      <span><a href="#"><img data-friend="{{friend}}" id="dny" src="img/thumbsD.png" alt=""></a></span>
+                    
+                  </td>
+                </tr>
+
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
 			{% endfor %}
           	</table>
           </div>
