@@ -79,6 +79,26 @@
 
            $(document).ready(function(){
 
+            /** ADD USER */
+            $(".add_btn").on('click', function(e){
+                e.preventDefault();
+
+                    user_a = $(".header_avatar").attr("data-user");
+                    user_b = $(".avatar").attr("data-public-user");
+                    $.ajax({
+                    type: 'post',
+                    url: 'http://localhost/locais_fotos/add_user',
+                    data: {from_user:user_a,to_user:user_b},
+                    success: function(data){
+                        window.alert(data);
+                    },
+                    error: function(jqxhr){
+                        window.alert(jqxhr);
+                    }
+                });
+            });
+
+              /** ACC FRIEND REQUEST */
               $("#acc").on('click',function(e){
                   id = $(this).attr('data-friend');
                   e.preventDefault();
@@ -87,7 +107,7 @@
                       url: 'requests/confirm',
                       data: {id:id},
                       success: function(data){
-                        console.log(data);
+                        //console.log(data);
                         window.alert(data);  
                       },
                       error: function(jqxhr){
@@ -96,6 +116,7 @@
                   });
               });
 
+              /** DENY FRIEND REQUEST */
               $("#dny").on('click',function(e){
                   id = $(this).attr('data-friend');
                   e.preventDefault();
@@ -104,13 +125,43 @@
                       url: 'requests/deny',
                       data: {id:id},
                       success: function(data){
-                        console.log(data);
-                        window.alert(data);  
+                        //console.log(data);
+                        window.alert(data);
+                        $(this).parent('tr').hide("slow"); 
                       },
                       error: function(jqxhr){
-                        console.log(jqxhr);    
+                        console.log(jqxhr);
+                        $(this).parent('tr').hide("slow");  
                       }
                   });
               });
 
-           });
+              /** USER AUTOCOMPLETE */
+            $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
+
+              var avatar = item.avatar.name? item.avatar.name : item.avatar;
+              var inner_html = '<a href="http://localhost/locais_fotos/profile/'+item.id+'">';
+              inner_html += '<div class="list_item_container">';
+              inner_html += '<div class="image">';
+              inner_html += '<img height="50px" width="50px"';
+              inner_html += ' src="http://localhost/locais_fotos/uploads_users/' + avatar + '">';
+              inner_html += '</div>';
+              inner_html += '<div class="label">' + item.name + '</div>';
+              inner_html += '<div class="city">' + item.city + '</div>';
+              inner_html += '</div></a>';
+                      return $( "<li></li>" )
+                          .data("item.autocomplete", item)
+                          .append(inner_html)
+                          .appendTo( ul );
+            };
+
+            $("#search_users").autocomplete({
+              minLength: 0,
+              source: 'http://localhost/locais_fotos/ajax_search_users',
+               focus: function(event, ui) {
+              },
+              select: function(event, ui) {
+              }
+            });
+
+           }); // fim do document.ready

@@ -46,9 +46,8 @@
         <div id="locais">
             <span>Meus Locais</span>
             <span><a href="http://localhost/locais_fotos/local/new/">Novo Local</a></span>
-            {% if(user.type=='agent') %}
+
             <span><a href="http://localhost/locais_fotos/local/new/">Novo Imovel</a></span>
-            {% endif %}
 
             <span><a href="http://localhost/locais_fotos/route/new/">Nova Rota</a></span>
         </div>
@@ -179,12 +178,12 @@
                                                     {% if(img.name is defined) %}
                                                       {% if (img.users_id == friend.id) %}
                                                         
-                                                          <img class="friend_avatar" height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/{{img.name}}" data-public-user="{{friend.id}}"/>
+                                                        <img class="friend_avatar" height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/{{img.name}}" data-public-user="{{friend.id}}"/>
+                                                        {% endif %}
                                                         {% else %}
                                                        
                                                         <img class="friend_avatar" height="100px" width="100px" 
                                                         src="http://localhost/locais_fotos/uploads_users/default-user-picture.png" data-public-user="{{friend.id}}"/>
-                                                        {% endif %}
                                                           
                                                       {% endif %}
                                                    
@@ -211,40 +210,4 @@
                 </table>
             </div>
 
-
-
-              <script type="text/javascript">
-
-                    $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
-
-                      var avatar = item.avatar.name? item.avatar.name : item.avatar;
-                      var inner_html = '<a href="http://localhost/locais_fotos/profile/'+item.id+'">';
-                      inner_html += '<div class="list_item_container">';
-inner_html += '<div class="image">';
-inner_html += '<img height="50px" width="50px"';
-inner_html += 'src="http://localhost/locais_fotos/uploads_users/' + avatar + '">';
-inner_html += '</div>';
-                      inner_html += '<div class="label">' + item.name + '</div>';
-                      inner_html += '<div class="city">' + item.city + '</div>';
-                      inner_html += '</div></a>';
-                              return $( "<li></li>" )
-                                  .data("item.autocomplete", item)
-                                  .append(inner_html)
-                                  .appendTo( ul );
-
-                    };
-
-                      $("#search_users").autocomplete({
-                        minLength: 0,
-                        source: 'http://localhost/locais_fotos/ajax_search_users',
-                         focus: function(event, ui) {
-                          //console.log(event);
-                        },
-                        select: function(event, ui) {
-                          //console.log(ui.item.value);                 
-                          //console.log(ui);
-                        }
-                      }); 
-                  
-                </script>
     {% endblock %}
