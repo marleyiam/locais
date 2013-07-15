@@ -68,8 +68,11 @@ $app->post('/user', function () use ($app) {
     $user->email = $app->request()->post('email');
     $user->city = $app->request()->post('cidade');
     $user->password = md5($app->request()->post('senha'));
-   
+    
     if($user->save()){
+        $last_user = User::last();
+        $last_user_id = $last_user? $last_user->id : 0;
+        $_SESSION['user_id'] = $last_user_id;
         $app->redirect(get_root_url().'user');
     }else{
         $app->render('/login', 'erro no insert');

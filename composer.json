@@ -1,21 +1,22 @@
 {
-    "name": "slim/slim",
+    "name": "facebook/php-sdk",
+    "description": "Facebook PHP SDK",
+    "keywords": ["facebook", "sdk"],
     "type": "library",
-    "description": "Slim Framework, a PHP micro framework",
-    "keywords": ["microframework","rest","router"],
-    "homepage": "http://github.com/codeguy/Slim",
-    "license": "MIT",
+    "homepage": "https://github.com/facebook/facebook-php-sdk",
+    "license": "Apache2",
     "authors": [
         {
-            "name": "Josh Lockhart",
-            "email": "info@joshlockhart.com",
-            "homepage": "http://www.joshlockhart.com/"
+            "name": "Facebook",
+            "homepage": "https://github.com/facebook/facebook-php-sdk/contributors"
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.2.0",
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "autoload": {
-        "psr-0": { "Slim": "." }
+        "classmap": ["src"]
     }
 }

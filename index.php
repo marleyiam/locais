@@ -5,7 +5,8 @@ require 'vendor/php-activerecord/ActiveRecord.php';
 require 'Twig/lib/Twig/Autoloader.php'; 
 require 'Twig/lib/Twig/Environment.php'; 
 require 'functions/functions.php';
-require '/opt/lampp/lib/php/Log.php';
+//require '/opt/lampp/lib/php/Log.php';
+require 'vendor/facebook/facebook.php';
 
 $loader = Twig_Autoloader::register();
 \Slim\Slim::registerAutoloader();
@@ -28,11 +29,13 @@ $twig = new Twig_Environment($loader, array(
 $twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
 */
 
+define('FACEBOOK_APP_ID',"475085362501750");
+define('FACEBOOK_SECRET',"d07dfae4e722f45fd92072069e4e0c59");
+define('REDIRECT_URI',"http://localhost/locais_fotos");
 
 /** rota ROOT */
 $app->get('/', function () use ($app){
-
-    $app->render('login/login.html');
+    $app->redirect('login');
 });
 
 

@@ -164,4 +164,25 @@
               }
             });
 
+
+            //$("[name=email]:eq(1)").change(function(){
+            $("#login-email").change(function(){
+                $(".validation").remove();
+                email = $(this).val();
+                console.log(email);
+                $.ajax({
+                type: 'post',
+                url: 'check_email',
+                data: {email:email},
+                success: function(data){
+                    console.log(data);
+                    $validation = $('<tr class="validation">').html(data).css("visibility","visible");
+                    $("#login-email").parent().parent().after($validation);
+                },
+                error :function(jqxhr){
+                    console.log(jqxhr);
+                }
+                });
+            });
+
            }); // fim do document.ready

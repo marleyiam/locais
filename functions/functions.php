@@ -149,4 +149,14 @@ function getGlobals() {
     ) ;
 }
 
+function get_last_id($entity){
+    $last_user = $entity::last();
+    $last_user_id = $last_user? $last_user->id : 0;
+    return ($last_user_id+1);
+}
+
+function validateEmail($email) {
+  return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
 ?>
