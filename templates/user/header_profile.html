@@ -1,13 +1,13 @@
 
 	<div id="main">
-		<a href="http://localhost/locais_fotos/user/edit">edit profile</a>
+		<a href="user/edit">edit profile</a>
 	</br>
-	<a href="http://localhost/locais_fotos/user/config">edit config</a>
+	<a href="user/config">edit config</a>
 	</br>
 	{% if(friends_requests_quantity>0) %}
-	<a href="http://localhost/locais_fotos/requests">({{friends_requests_quantity}})Solicitações</a>
+	<a href="requests">({{friends_requests_quantity}})Solicitações</a>
 	{% endif %}
-	<form action="http://localhost/locais_fotos/search_for_locals" method="get">
+	<form id="formSearch" action="search_for_locals" method="get">
 		<input id="search_locals" type="text" name="term" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60"/>
 		<input id="find" type="submit" value="find" />
 	</form>
@@ -15,20 +15,20 @@
 	{% if (avatar|length > 0) %}
 	    <tr>
 	        <td>
-	        	<a href="http://localhost/locais_fotos/user">
-	        	<img class="header_avatar" height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/{{avatar.name}}" data-user="{{user.id}}">
+	        	<a href="user">
+	        	<img class="header_avatar" height="100px" width="100px" src="uploads_users/{{avatar.name}}" data-user="{{user.id}}">
 	        	</a>
 	        </td>
-	        <td> olá {{ user.name }} |<a href="http://localhost/locais_fotos/logout">logout</a></td>
+	        <td> olá {{ user.name }} |<a href="logout">logout</a></td>
 	    </tr>
 	  {% else %}
 	     <tr>
 	        <td>
-	        	<a href="http://localhost/locais_fotos/user">
-	        	<img class="header_avatar" height="100px" width="100px" src="http://localhost/locais_fotos/uploads_users/default-user-picture.png" data-user="{{user.id}}">
+	        	<a href="user">
+	        	<img class="header_avatar" height="100px" width="100px" src="uploads_users/default-user-picture.png" data-user="{{user.id}}">
 	        	<a/>
 	        </td>
-	        <td>olá {{ user.name }}|<a href="http://localhost/locais_fotos/logout">logout</a></td>
+	        <td>olá {{ user.name }}|<a href="logout">logout</a></td>
 	    </tr>
 	  {% endif %}
 	</table>
@@ -38,27 +38,27 @@
 			<tr>
 				<td width="20%">&nbsp;</td>
 				<td width="8%" class="centro">
-					<a class="centro" href="http://localhost/locais_fotos/local">
+					<a class="centro" href="local">
 						<img width="57" height="32" src="#"><br>
 						Meus locais
 					</a>
 				</td>
 				<td width="8%" class="centro">
-					<a class="centro" href="http://localhost/locais_fotos/route">
+					<a class="centro" href="route">
 						<img width="28" height="30" src="#"><br>
 						Minhas rotas
 					</a>
 				</td>
 
 				<td width="6%" class="centro">
-					<a class="centro" href="../imoveis">
+					<a class="centro" href="realty">
 						<img width="31" height="30" alt="" src="#"><br>
-						Imóveis
+						Meus Imóveis
 					</a><a href="meusimoveis.php"><br></a>
 				</td>
 
 				<td width="7%" class="centro">
-					<a class="centro" href="http://localhost/locais_fotos/fav">
+					<a class="centro" href="fav">
 						<img width="37" height="30" alt="" src="#"><br>
 						Favoritos
 					</a>

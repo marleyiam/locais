@@ -128,17 +128,8 @@ $app->put('/route/update/(:id)', function ($id) use ($app) {
     }
 });
 
-/** SETROTA */
-$app->get('/route/setrota/(:id)', function ($id) use ($app) {
-    $route = Route::find_by_id($id);
-    $coordenadas['lat'] = $route->lat;
-    $coordenadas['lng'] = $route->lng;
-    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
-    echo json_encode($coordenadas);
-});
 
-
-/** AUTOCOMPLETE Route */
+/** AUTOCOMPLETE Route (SET ROUTE) */ 
 $app->get('/autocomplete_route/(:id)', function ($id) use ($app) {
 
     $app->response()->header('Content-Type', 'application/json;charset=utf-8');
@@ -147,9 +138,3 @@ $app->get('/autocomplete_route/(:id)', function ($id) use ($app) {
 
     echo json_encode($route['route']->attributes());
 });
-
-/** FORM Route */
-//$app->get('/form_route', function () use ($app) {
-//
-//    $app->render('route/form_route.html');
-//});

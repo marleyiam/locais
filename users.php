@@ -38,8 +38,25 @@ $app->get('/user', $authenticate($app), function() use ($app){
    $user['friends'] = $friends;
    $user['friends_avatars'] = $friends_avatars;
 
-   $user['locals'] = $user['user']->locals;
-   $user['routes'] = $user['user']->routes;
+   //$user['locals'] = $user['user']->locals;
+   //$user['routes'] = $user['user']->routes;
+
+   /*
+   $aproved = Friend::find("all", array(
+    "conditions" => array('aproved = ? AND id_b = ? OR aproved = ? AND id_a = ? ','TRUE',$user['user']->id,'TRUE',$user['user']->id)));
+
+    $join = 'LEFT JOIN users as u ON locals.users_id = u.id';
+    $locals['locals'] = Local::find('all', 
+    array('conditions' => array("name LIKE ?
+    OR identifier LIKE ? OR address LIKE ?
+    OR city LIKE ?", "%".$term."%","%".$term."%","%".$term."%","%".$term."%")));
+    $locals['locals'] =  Local::all(array('joins' => array('users')));
+    $locals['locals'] =  Local::all(array('joins' => $join));
+    
+   */
+   $albums = $user['user']->albums;
+   $user['albums'] = $albums;
+  // Local::find('all', array())
    $user['imagens_routes'] = get_nested_relation($user['routes'],'route_pictures');
    $user['imagens_locals'] = get_nested_relation($user['locals'],'local_pictures');
    $user['avatar'] = $user['user']->user_pictures;

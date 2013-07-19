@@ -1,0 +1,10 @@
+
+{% extends "./layout/site.html" %}
+  {% block content %}
+	<title>Cadastro de Album</title>
+	{% block header_profile %}
+	  {% include 'user/header_profile.html' %}
+	{% endblock %}
+	
+    {% include 'album/form_album.html' %}
+  {% endblock %}

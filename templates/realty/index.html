@@ -1,0 +1,80 @@
+
+{% extends "./layout/site.html" %}
+    {% block content %}
+        <title>Lista de Imóveis</title>
+        {% block header_profile %}
+          {% include 'user/header_profile.html' %}
+        {% endblock %}
+        <div id="main">
+            <a href="user" title="">Voltar</a>
+            <a href="realty/new/" title="">Novo Imóvel</a>
+            <table border="1px solid">
+                {% if(realties|length>0) %}
+                    {% for realty in realties %}
+                        <td>
+                            <tr>
+                                <td>
+                                 <a href="realty/{{ realty.id }}">Visualizar Imóvel</a>
+                                </td>
+                                <td>
+                                 <a href="realty/edit/{{ realty.id }}">Editar Imóvel</a>
+                                </td>
+                                <td>
+                                <a onclick="return confirm('Certeza ?');" href="realty/delete/{{ realty.id }}">Excluir Imóvel</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ID :</td><td>{{ realty.id }}</td>
+                            </tr>
+                            <tr>
+                                <td>nome :</td><td>{{ realty.name }}</td>
+                            </tr>
+                            <tr>
+                                <td>identificador :</td><td>{{ realty.identifier }}</td>
+                            </tr>
+                            <tr>
+                                <td>endereco :</td><td>{{ realty.address }}</td>
+                            </tr>
+                            <tr>
+                                <td>cidade :</td><td>{{ realty.city }}</td>
+                            </tr>
+                            <tr>
+                                <td>latitude :</td><td>{{ realty.lat }}</td>
+                            </tr>
+                            <tr>
+                                <td>longitude :</td><td>{{ realty.lng }}</td>
+                            </tr>
+                            <tr>
+                                <td>descricao :</td><td>{{ realty.description}}</td>
+                            </tr>
+                            <tr>
+                                <td>exibicao :</td><td>{{ realty.visibility }}</td>
+                            </tr>
+                            <tr>
+                                <td>quartos :</td><td>{{ realty.rooms }}</td>
+                            </tr>
+                            <tr>
+                                <td>area :</td><td>{{ realty.area }}</td>
+                            </tr>
+                            <tr>
+                                <td>tipo de negocio :</td><td>{{ realty.trading }}</td>
+                            </tr>
+                            <tr>
+                                <td>preco :</td><td>{{ realty.price }}</td>
+                            </tr>
+                            <tr>
+                                <td>contatos :</td><td>{{ realty.contacts }}</td>
+                            </tr>
+                            <tr>
+                                <td>clonar :</td><td>{{ realty.clone }}</td>
+                            </tr>
+                        </td>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td>Não há imóveis cadastrados </td>
+                    </tr>
+                    {% endif %}
+            </table>
+        </div>
+    {% endblock %}

@@ -38,7 +38,7 @@ $app->get('/', function () use ($app){
     $app->redirect('login');
 });
 
-
+//$app->notFound('ErrorFunction404');
 
 /** AUTOCOMPLETE SEARCH LOCAL AJAX*/
 /*$app->get('/search_locals', function () use ($app) {
@@ -85,9 +85,11 @@ $authAdmin = function($role = 'member'){
 */
 require 'auth.php';
 require 'locals.php';
+require 'realties.php';
 require 'routes.php';
 require 'users.php';
 require 'friends.php';
+require 'albums.php';
 
 /** RUN APP */
 $app->run();

@@ -1,0 +1,87 @@
+
+<form action="{{action}}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+	<table border="0px solid">
+	{% if acao == 'cadastrar' %}
+		<caption>Cadastro de Imóvel</caption>
+	{% elseif acao == 'editar' %}
+		<caption>Edi&ccedil;&atilde;o de Imóvel</caption>
+		<input type="hidden" name="_METHOD" value="PUT">
+		<tbody>
+	{% endif %}
+			<tr>
+				<td><label>Nome</label></td><td><input type="text" name="nome" value="{{ realty?realty.name : ''}}"></td>
+			</tr>
+			<tr>
+				<td><label>Identificador</label></td><td><input type="text" name="identificador" value="{{ realty?realty.identifier : ''}}"></td>
+			</tr>
+			<tr>
+				<td><label>Endereco</label></td><td><input type="text" name="endereco" value="{{ realty?realty.address : ''}}"></td>
+			</tr>
+			<tr>
+				<td><label>Cidade</label></td><td><input type="text" name="cidade" value="{{ realty?realty.city : ''}}"></td>
+			</tr>
+			<tr>
+				<td><label>Latitude</label></td><td><input id="lat" type="text" name="lat" value="{{ realty?realty.lat : ''}}"></td>
+			</tr>
+			<tr>
+				<td><label>Longitude</label></td><td><input id="lng" type="text" name="lng" value="{{ realty?realty.lng : ''}}"></td>
+			</tr>
+
+			<tr>
+				<td><label>Descricao</label></td><td><textarea name="descricao">{{ realty?realty.description : ''}}</textarea></td>
+			</tr>
+
+			<tr>
+				<td><label>Quartos</label></td><td><input type="text" name="quartos" value="{{ realty?realty.rooms : ''}}"></td>
+			</tr>
+			<tr>
+				<td><label>Área</label></td><td><input type="text" name="area" value="{{ realty?realty.area : ''}}"></td>
+			</tr>
+			<tr>
+				<td><label>Tipo de negócio</label></td><td><input type="text" name="negocio" value="{{ realty?realty.trading : ''}}"></td>
+			</tr>
+			<tr>
+				<td><label>Valor</label></td><td><input type="text" name="preco" value="{{ realty?realty.price : ''}}"></td>
+			</tr>
+			<tr>
+				<td><label>Contatos</label></td><td><textarea name="contatos">{{ realty?realty.contacts : ''}}</textarea></td>
+			</tr>
+
+
+			<tr>
+				<td colspan="2">
+					<label>Exibicao</label>
+					
+					<label>
+						<input id="RadioGroup1_0" {{ realty.visibility=='public'?'checked':'false' }} type="radio"  value="public" name="exibicao">
+				    Publico
+					</label>
+					<label>
+				    	<input id="RadioGroup1_0" {{ realty.visibility=='private'?'checked':'false' }} type="radio" value="private" name="exibicao">
+				    Privado
+					</label>
+				</td>
+			</tr>
+			<tr>
+
+			</tr>
+			<tr>
+				<td><label>Clone</label></td><td><input type="checkbox"  {{ realty.clone?'checked':'false' }} name="clone"></td>
+			</tr>
+			<tr>
+				<td><label>Fotos</label></td>
+				<td>
+				<input type="file" name="img[]" class="multi" maxlength="3" aceept="jpg|jpeg|png|gif" value="" placeholder=""/>
+				</td>
+			</tr>
+			<tr>
+				<td><input type="submit" name="upload" value="{{ acao=='cadastrar' ? 'Cadastrar':'Editar' }}"></td>
+				<td><button onClick="/locais_fotos/realty">Voltar</button></td>
+			</tr>
+		</tbody>
+	</table>                                                                                       
+</form>
+
+<div id="map">
+	 {% include 'mapa/mapa.html' %}
+</div>

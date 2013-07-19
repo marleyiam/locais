@@ -17,7 +17,7 @@
                                     {% for j,img in images %}
                                         {% if (j == key ) %}
                                         <td>
-                                            <a href="http://localhost/locais_fotos/local/{{local.id}}">
+                                            <a href="local/{{local.id}}">
                                                 <img height="100px" width="100px" src="http://localhost/locais_fotos/uploads_locais/{{ img[0].name }}" alt=""/>{{  img[0].name }}
                                             </a>
                                         </td>
@@ -26,7 +26,7 @@
                                 {% else %}
                                         <td>
                                             <a href="">
-                                                <img src="http://localhost/locais_fotos/uploads_locais/no_picture.gif" alt=""/>
+                                                <img src="uploads_locais/no_picture.gif" alt=""/>
                                             </a>
                                         </td>
                                 {% endif %}
@@ -52,7 +52,7 @@
                                 <td>
                                     {% for i, user in users %}
                                         {% if (key == i) %}
-                                           <a href="http://localhost/locais_fotos/profile/{{user.id}}">{{ user.name }}</a> 
+                                           <a href="profile/{{user.id}}">{{ user.name }}</a> 
                                         {% endif %}
                                     
                                     {% endfor %}

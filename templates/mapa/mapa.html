@@ -369,7 +369,7 @@
       acao = url_array[4]; 
       link = "";
       link = acao == "route"? "../../autocomplete" : "autocomplete";
-      console.log(link);
+      console.log('link :'+link);
       /** Autocomplete de locais */
       arrayLocais = "";
       var locais = new Array();
@@ -397,7 +397,7 @@
 
             acao = url_array[4]; 
             link = "";
-            link = acao == "route"? "../autocomplete_route/"+id : "autocomplete";
+            link = acao == "route"? "../../autocomplete_route/"+id : "autocomplete";
             /** Autocomplete de locais */
             arrayLocais = "";
             var locais = new Array();

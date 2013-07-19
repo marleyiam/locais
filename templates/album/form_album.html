@@ -1,0 +1,50 @@
+
+<form action="{{action}}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+	<table border="0px solid">
+	{% if acao == 'cadastrar' %}
+		<caption>Cadastro de Album</caption>
+	{% elseif acao == 'editar' %}
+		<caption>Edi&ccedil;&atilde;o de Album</caption>
+		<input type="hidden" name="_METHOD" value="PUT">
+		<tbody>
+	{% endif %}
+			<tr>
+				<td><label>Nome</label></td><td><input type="text" name="nome" value="{{ album?album.album_name : ''}}"></td>
+			</tr>
+
+			<tr>
+				<td><input type="submit" name="upload" value="{{ acao=='cadastrar' ? 'Cadastrar':'Editar' }}"></td>
+				<td><button onClick="/locais_fotos/album">Voltar</button></td>
+			</tr>
+		</tbody>
+	</table>
+	<table border="1px solid">
+		{% if (locals|length>0) %}
+			{% for i,local in locals%}
+				<tr>
+					<td><a href="local/{{local.id}}">{{ local.name}}</a></td>
+					{% if(local.albums_id != '' and local.albums_id == album.id) %}
+						<td>
+							<img class="local_album_status_add" src="img/bulletDLL.png" alt="">
+						</td>
+						<td>
+							<button data-id-local="{{local.id}}" class="btn_rmv_album">Remover do Album</button>
+						</td>
+					{% else %}
+						<td>
+							<img class="local_album_status_dll" src="img/bulletADD.png" alt="">
+						</td>
+						<td>
+							<button data-id-local="{{local.id}}" class="btn_add_album" data-id-album="{{album.id}}">Adicionar ao Album</button>
+						</td>
+					{% endif %}
+
+				</tr>
+			{% endfor %}
+		{% else %}
+		<tr>
+			<td>Não há locais cadastrados</td>
+		</tr>
+		{% endif %}
+	</table>                                                                                       
+</form>

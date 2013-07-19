@@ -1,4 +1,114 @@
        //window.alert('!');
+      rootURL = "";
+      function setRoot(){
+          
+          rootURL = "";
+          address_url = window.location.href
+          links = $('a')
+
+          array_Address_url = address_url.split("/")
+          console.log(array_Address_url);
+          resources = []
+          actions = []
+          indexes = []
+          isResource = false;
+          isAction = false;
+          isId = false;
+          actions = ['new','edit']
+          resources = ['local','realty','route','user','profile','album'];
+          configs = ['config'];
+
+          function whatIs(arrayI){
+              if(arrayI=='user'){
+                  return 'isUser';
+                
+              }else if(configs.indexOf(arrayI)!=-1){
+                  return 'isConfig';
+                
+              }else if(resources.indexOf(arrayI)!=-1){
+                  return 'isResource';
+               
+              }else if(actions.indexOf(arrayI)!=-1){
+                  return 'isAction';   
+               
+              }else if(arrayI!=='' && !isNaN(arrayI)){
+                  return 'isNum' ; 
+                
+              }else{
+                  return false;   
+              }
+          }
+
+          for(var i=0 ,l = (array_Address_url.length);i<l;i++){
+
+              if(whatIs(array_Address_url[i])!==false){
+                  indexes.push(whatIs(array_Address_url[i]));   
+              }
+          }
+              
+          function defineRoot(u){
+              if(u==='isUser/isAction'){
+                  rootURL = '../'; 
+              }else if(u==='isUser/isConfig'){
+                  rootURL = '../'; 
+              }else if(u==='isResource/isAction'){
+                  rootURL = '../../';
+              }else if(u==='isResource/isNum'){
+                  rootURL = '../';
+              }else if(u==='isResource/isAction/isNum'){
+                  rootURL = '../../';
+              }else if(u==='/'){
+                  rootURL = ''; 
+              }
+              console.log(rootURL);
+          }
+
+          u = indexes.join('/') ;
+          console.log(indexes);
+          defineRoot(u);
+
+          links.each(function(i,it){
+              $el = $(it);
+
+              try{
+                  if(!$el.attr('href').toString().contains('google')){
+                      str = $el.attr('href').toString();
+                      $el.attr('href',rootURL+str);  
+                  }
+              }catch(e){
+                 
+              }
+          });
+          if($('.header_avatar').length > 0){
+              src = $('.header_avatar').attr('src').toString();
+              $('.header_avatar').attr('src',rootURL+src);
+          }
+
+          if($(".avatar").length > 0){
+              src2 = $(".avatar").attr('src').toString();
+              $(".avatar").attr('src',rootURL+src2);
+          }
+
+          if($("#aformSearch").length > 0){
+              src3 = $(".avatar").attr('action').toString();
+              $("#formSearch").attr('src',rootURL+src3);
+          }
+          if($(".local_album_status_add").length > 0){
+              src4 = $(".local_album_status_add").attr('src').toString();
+              $(".local_album_status_add").attr('src',rootURL+src4);
+          }
+          if($(".local_album_status_dll").length > 0){
+              src4 = $(".local_album_status_dll").attr('src').toString();
+              $(".local_album_status_dll").attr('src',rootURL+src4);
+          }
+      } //fim setRoot
+
+
+      $('#main').ready(function(){
+          console.log('ready');
+          setRoot();
+      });
+
        Array.prototype.contains = function(key, val, param) {
            var i = this.length;
            while (i--) {
@@ -137,7 +247,7 @@
               });
 
               /** USER AUTOCOMPLETE */
-            $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
+            /*$.ui.autocomplete.prototype._renderItem = function (ul, item) { 
 
               var avatar = item.avatar.name? item.avatar.name : item.avatar;
               var inner_html = '<a href="http://localhost/locais_fotos/profile/'+item.id+'">';
@@ -162,10 +272,8 @@
               },
               select: function(event, ui) {
               }
-            });
+            });*/
 
-
-            //$("[name=email]:eq(1)").change(function(){
             $("#login-email").change(function(){
                 $(".validation").remove();
                 email = $(this).val();
@@ -183,6 +291,51 @@
                     console.log(jqxhr);
                 }
                 });
+            });
+
+            /** ADD local to Album */
+            $(".btn_add_album").on('click',function(e){
+             e.preventDefault();
+             $btn = $(this);
+             local_id = $btn.attr('data-id-local');
+             album_id = $btn.attr('data-id-album');
+              //console.log(local_id);
+              $.ajax({
+                  type: 'post',
+                  url: rootURL+'add_local_to_album',
+                  data: {local_id:local_id,album_id:album_id},
+                  success: function(data){
+                      window.alert(data);
+                      $btn.parent().parent().find('img').attr('src',rootURL+'img/bulletDLL.png');
+                    
+                  },
+                  error: function(jqxhr){
+                      window.alert(jqxhr)
+                  }
+              });
+            });
+
+            /** RMV local of Album */
+            $(".btn_rmv_album").on('click',function(e){
+             e.preventDefault();
+             //console.log('click');
+             $btn = $(this);
+             local_id = $btn.attr('data-id-local');
+             album_id = $btn.attr('data-id-album');
+
+              $.ajax({
+                  type: 'post',
+                  url: rootURL+'del_local_of_album',
+                  data: {local_id:local_id,album_id:album_id},
+                  success: function(data){
+                      window.alert(data);
+                      $btn.parent().parent().find('img').attr('src',rootURL+'img/bulletADD.png');
+                
+                  },
+                  error: function(jqxhr){
+                      window.alert(jqxhr)
+                  }
+              });
             });
 
            }); // fim do document.ready

@@ -1,0 +1,63 @@
+{% extends "./layout/site.html" %}
+  {% block content %}
+      {% block header_profile %}
+        {% include 'user/header_profile.html' %}
+      {% endblock %}
+        <div id="main">
+            <button type="submmit " onClick="window.history.back()">Voltar</button>
+            <table border="1px solid">
+                <caption>Dados do Imóvel</caption>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>nome</th>
+                        <th>identificador</th>
+                        <th>endereco</th>
+                        <th>cidade</th>
+                        <th>latitude</th>
+                        <th>longitude</th>
+                        <th>descricao</th>
+                        <th>exibicao</th>
+                        <th>quartos</th>
+                        <th>aŕea</th>
+                        <th>tipo de negócio</th>
+                        <th>valor</th>
+                        <th>contatos</th>
+                        <th>clone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ realty.id }}</td>
+                        <td>{{ realty.name }}</td>
+                        <td>{{ realty.identifier }}</td>
+                        <td>{{ realty.address }}</td>
+                        <td>{{ realty.city }}</td>
+                        <td>{{ realty.lat }}</td>
+                        <td>{{ realty.lng }}</td>
+                        <td>{{ realty.description }}</td>
+                        <td>{{ realty.visibility }}</td>
+                        <td>{{ realty.rooms }}</td>
+                        <td>{{ realty.area }}</td>
+                        <td>{{ realty.trading }}</td>
+                        <td>{{ realty.price }}</td>
+                        <td>{{ realty.contacts }}</td>
+                        <td>{{ realty.clone }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% if (imagens|length > 0) %}
+            <div id="imgs">
+                {% for img in imagens %}
+                <div>
+                    <img src="../uploads_realties/{{ img.name }}" width="400px" height="230px" alt=""/>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <span>Nao ha fotos cadastradas</span>
+            {% endif %}
+
+            {% include './mapa/mapa.html' %}
+        </div>
+  {% endblock %}

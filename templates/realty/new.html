@@ -1,0 +1,10 @@
+
+{% extends "./layout/site.html" %}
+  {% block content %}
+	<title>Cadastro de Imóvel</title>
+	{% block header_profile %}
+	  {% include 'user/header_profile.html' %}
+	{% endblock %}
+	
+    {% include 'realty/form_realty.html' %}
+  {% endblock %}
