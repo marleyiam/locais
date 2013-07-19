@@ -38,8 +38,8 @@ $app->get('/user', $authenticate($app), function() use ($app){
    $user['friends'] = $friends;
    $user['friends_avatars'] = $friends_avatars;
 
-   //$user['locals'] = $user['user']->locals;
-   //$user['routes'] = $user['user']->routes;
+   $user['locals'] = $user['user']->locals;
+   $user['routes'] = $user['user']->routes;
 
    /*
    $aproved = Friend::find("all", array(
