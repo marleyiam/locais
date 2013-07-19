@@ -95,8 +95,10 @@ function get_nested_relation($obj,$relation){
 	$data = array();
 
 	foreach ($obj as $key => $value) {
-	      $data[$key] = $value->$relation;
+	    $data[$key] = $value->$relation;
+		//printer($value);
 	}
+
 	return $data;
 }
 

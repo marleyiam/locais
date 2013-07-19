@@ -40,7 +40,7 @@ $app->get('/album/delete/(:id)', function($id) use ($app) {
 $app->get('/album/new/', $authenticate($app), function () use ($app) {
     $dados_requisicao['action'] = get_root_url().'album';
     $dados_requisicao['acao'] = "cadastrar";
-    $dados_requisicao['locals'] = Local::find("all");
+    $dados_requisicao['locals'] = Local::find("all",array("conditions" => array("users_id = ?", current_user()->id)));
     $app->render('album/new.html', $dados_requisicao);
 });
 
@@ -49,7 +49,7 @@ $app->get('/album/edit/(:id)', $authenticate($app), function ($id) use ($app) {
     $dados_requisicao['album'] = Album::find_by_id($id);
     $dados_requisicao['action'] = get_root_url().'album/update/'.$id;
     $dados_requisicao['acao'] = "editar";
-    $dados_requisicao['locals'] = Local::find("all");
+    $dados_requisicao['locals'] = Local::find("all",array("conditions" => array("users_id = ?", current_user()->id)));
     /*
     $aproved = Friend::find("all", array(
      "conditions" => array('aproved = ? AND id_b = ? OR aproved = ? AND id_a = ? ','TRUE',$user['user']->id,'TRUE',$user['user']->id)));

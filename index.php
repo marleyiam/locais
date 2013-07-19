@@ -6,6 +6,7 @@ require 'Twig/lib/Twig/Autoloader.php';
 require 'Twig/lib/Twig/Environment.php'; 
 require 'functions/functions.php';
 //require '/opt/lampp/lib/php/Log.php';
+require 'functions/Inflect.php';
 require 'vendor/facebook/facebook.php';
 
 $loader = Twig_Autoloader::register();
@@ -33,10 +34,7 @@ define('FACEBOOK_APP_ID',"475085362501750");
 define('FACEBOOK_SECRET',"d07dfae4e722f45fd92072069e4e0c59");
 define('REDIRECT_URI',"http://localhost/locais_fotos");
 
-/** rota ROOT */
-$app->get('/', function () use ($app){
-    $app->redirect('login');
-});
+
 
 //$app->notFound('ErrorFunction404');
 

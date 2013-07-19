@@ -363,22 +363,14 @@
        });
       }// fim setLocal
       
-      /** Adiciona o fomr_rota*/
-      url = window.parent.location.href;
-      url_array = url.split("/");
-      acao = url_array[4]; 
-      link = "";
-      link = acao == "route"? "../../autocomplete" : "autocomplete";
-      console.log('link :'+link);
+
       /** Autocomplete de locais */
       arrayLocais = "";
       var locais = new Array();
-      //url: '../../autocomplete'
-      url = window.parent.location.href;
-      url_array = url.split("/");
+
       $.ajax({
         type: 'get',
-        url: link,
+        url: rootURL+'autocomplete',
         success: function(data){
           arrayLocais = data;
           for(var i in data) {
@@ -395,18 +387,15 @@
             var token = url.lastIndexOf("/");
             var id = url.substr(token+1);
 
-            acao = url_array[4]; 
-            link = "";
-            link = acao == "route"? "../../autocomplete_route/"+id : "autocomplete";
             /** Autocomplete de locais */
             arrayLocais = "";
             var locais = new Array();
-            //url: '../../autocomplete_route/'
+ 
             url = window.parent.location.href;
             url_array = url.split("/");
             $.ajax({
               type: 'get',
-              url: link,
+              url: rootURL+'/autocomplete_route/'+id,
               success: function(data){
 
                 routeObj = JSON.parse(data.route_path);

@@ -1,6 +1,15 @@
 
 <?php
 
+/** rota ROOT */
+$app->get('/', function () use ($app){
+  if (!isset($_SESSION['user_id'])) {
+    $app->redirect('login');
+  }else{
+     $app->redirect(get_root_url().'user');
+  }
+});
+
 $authenticate = function ($app) {
     return function () use ($app) {
         if (!isset($_SESSION['user_id'])) {

@@ -3,18 +3,18 @@
       function setRoot(){
           
           rootURL = "";
-          address_url = window.location.href
-          links = $('a')
+          address_url = window.location.href;
+          links = $('a');
 
-          array_Address_url = address_url.split("/")
+          array_Address_url = address_url.split("/");
           console.log(array_Address_url);
-          resources = []
-          actions = []
-          indexes = []
+          resources = [];
+          actions = [];
+          indexes = [];
           isResource = false;
           isAction = false;
           isId = false;
-          actions = ['new','edit']
+          actions = ['new','edit'];
           resources = ['local','realty','route','user','profile','album'];
           configs = ['config'];
 
@@ -80,32 +80,37 @@
               }
           });
           if($('.header_avatar').length > 0){
-              src = $('.header_avatar').attr('src').toString();
-              $('.header_avatar').attr('src',rootURL+src);
+              $el = $('.header_avatar');
+              src = $el.attr('src').toString();
+              $el.attr('src',rootURL+src);
           }
 
           if($(".avatar").length > 0){
-              src2 = $(".avatar").attr('src').toString();
-              $(".avatar").attr('src',rootURL+src2);
+              $el = $(".avatar");
+              src2 = $el.attr('src').toString();
+              $el.attr('src',rootURL+src2);
           }
 
           if($("#aformSearch").length > 0){
-              src3 = $(".avatar").attr('action').toString();
-              $("#formSearch").attr('src',rootURL+src3);
+              $el = $("#aformSearch");
+              src3 = $el.attr('action').toString();
+              $el.attr('src',rootURL+src3);
           }
           if($(".local_album_status_add").length > 0){
-              src4 = $(".local_album_status_add").attr('src').toString();
-              $(".local_album_status_add").attr('src',rootURL+src4);
+              $el = $(".local_album_status_add");
+              src4 = $el.attr('src').toString();
+              $el.attr('src',rootURL+src4);
           }
           if($(".local_album_status_dll").length > 0){
-              src4 = $(".local_album_status_dll").attr('src').toString();
-              $(".local_album_status_dll").attr('src',rootURL+src4);
+              $el = $(".local_album_status_dll"); 
+              src4 = $el.attr('src').toString();
+              $el.attr('src',rootURL+src4);
           }
       } //fim setRoot
 
 
       $('#main').ready(function(){
-          console.log('ready');
+          //console.log('ready');
           setRoot();
       });
 

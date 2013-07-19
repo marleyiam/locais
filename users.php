@@ -5,6 +5,15 @@ $slim->setCookie('takeOut', 1, '1 hour');
 $slim->setEncryptedCookie('loyaltyCardNumber', 43252);
 */
 
+/** rota ROOT */
+$app->get('/', function () use ($app){
+  if (!current_user()) {
+    $app->redirect('login');
+  }else{
+     $app->redirect(get_root_url().'user');
+  }
+});
+
 /** VIEW PROFILE */
 $app->get('/user', $authenticate($app), function() use ($app){
    $user['user'] = current_user();
@@ -37,28 +46,30 @@ $app->get('/user', $authenticate($app), function() use ($app){
 
    $user['friends'] = $friends;
    $user['friends_avatars'] = $friends_avatars;
+   //printer(count($user['friends_avatars']));exit;
 
    $user['locals'] = $user['user']->locals;
    $user['routes'] = $user['user']->routes;
 
-   /*
-   $aproved = Friend::find("all", array(
-    "conditions" => array('aproved = ? AND id_b = ? OR aproved = ? AND id_a = ? ','TRUE',$user['user']->id,'TRUE',$user['user']->id)));
+   $array_locals_albums = array();
+   $imagens_locals_albums = array();
 
-    $join = 'LEFT JOIN users as u ON locals.users_id = u.id';
-    $locals['locals'] = Local::find('all', 
-    array('conditions' => array("name LIKE ?
-    OR identifier LIKE ? OR address LIKE ?
-    OR city LIKE ?", "%".$term."%","%".$term."%","%".$term."%","%".$term."%")));
-    $locals['locals'] =  Local::all(array('joins' => array('users')));
-    $locals['locals'] =  Local::all(array('joins' => $join));
-    
-   */
    $albums = $user['user']->albums;
    $user['albums'] = $albums;
-  // Local::find('all', array())
+
+   foreach ($user['albums'] as $key => $value) {
+     $array_locals_albums[$key] = Local::find('all', array('conditions' => array('albums_id = ?',$value->id)));
+   }
+
+   foreach ($array_locals_albums as $key => $value) {
+      $imagens_locals_albums[$key] = get_nested_relation($value,'local_pictures');
+   }
+ 
+   $user['locals_albums'] = $array_locals_albums;
    $user['imagens_routes'] = get_nested_relation($user['routes'],'route_pictures');
    $user['imagens_locals'] = get_nested_relation($user['locals'],'local_pictures');
+   $user['imagens_locals_albums'] = $imagens_locals_albums;
+  
    $user['avatar'] = $user['user']->user_pictures;
 
    $app->render('user/show_profile.html', $user);
