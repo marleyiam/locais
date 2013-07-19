@@ -5,7 +5,6 @@ require 'vendor/php-activerecord/ActiveRecord.php';
 require 'Twig/lib/Twig/Autoloader.php'; 
 require 'Twig/lib/Twig/Environment.php'; 
 require 'functions/functions.php';
-//require '/opt/lampp/lib/php/Log.php';
 require 'functions/Inflect.php';
 require 'vendor/facebook/facebook.php';
 

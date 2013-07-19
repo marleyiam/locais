@@ -11,11 +11,14 @@
           resources = [];
           actions = [];
           indexes = [];
+          profiles = [];
           isResource = false;
           isAction = false;
           isId = false;
+          isProfile = false;
           actions = ['new','edit'];
           resources = ['local','realty','route','user','profile','album'];
+          //profiles = ['profile'];
           configs = ['config'];
 
           function whatIs(arrayI){
@@ -47,6 +50,7 @@
           }
               
           function defineRoot(u){
+            console.log(u);
               if(u==='isUser/isAction'){
                   rootURL = '../'; 
               }else if(u==='isUser/isConfig'){
@@ -110,7 +114,7 @@
 
 
       $('#main').ready(function(){
-          //console.log('ready');
+          console.log('READY');
           setRoot();
       });
 

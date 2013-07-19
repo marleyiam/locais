@@ -30,12 +30,15 @@
                               {% if (public_avatar|length > 0) %}
                                 
                                       <td>
-                                        <img class="avatar" height="100px" width="100px" src="uploads_users/{{public_avatar.name}}" data-public-user="{{public_user.id}}">
+                                        <img class="avatar" height="100px" width="100px" src="uploads_users/{{public_avatar.name}}" 
+                                        data-public-user="{{public_user.id}}">
                                       </td>
                                       <td>
                                         {% if(user.id!=public_user.id) %}
                                         <a href="add_user">
-                                          <img class="add_btn" src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" alt=""/>
+                                          <img class="add_btn" 
+                                          src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" 
+                                          alt=""/>
                                         </a>
                                         {% endif %}
                                       </td>
@@ -43,12 +46,16 @@
                                 {% else %}
                                
                                       <td>
-                                        <img class="avatar" height="100px" width="100px" src="uploads_users/default-user-picture.png" data-public-user="{{public_user.id}}">
+                                        <img class="avatar" height="100px" width="100px" 
+                                        src="uploads_users/default-user-picture.png" 
+                                        data-public-user="{{public_user.id}}">
                                       </td>
                                       <td>
                                         {% if(user.id!=public_user.id) %}
                                         <a href="add_user">
-                                          <img class="add_btn" src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" alt=""/>
+                                          <img class="add_btn" 
+                                          src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" 
+                                          alt=""/>
                                         </a>
                                         {% endif %} 
                                         </td>
@@ -73,106 +80,84 @@
                             </tr>
                         </td>
             </table>
-        </div>
 
-        <div class="container">
-          <table width="100%" border="1">
-            <tbody>
-              <tr>
-                  <td bgcolor="#CCCCCC">
-                      <table width="100%" border="0">
-                          <tbody>
-                            <tr>
-                                <td>Locais</td>
-                                <td class="direita"><p>&nbsp;</p></td>
-                             </tr>
-                          </tbody>
-                      </table>
-                      <table width="100%" border="0" class="centro">
-                          <tbody>
-                              <tr>
-                                  {% if (public_locals|length > 0) %}
-                                      {% for key,local in public_locals %}
-                                        {% if(local.visibility=='public') %}
-                                          <td>
-                                              <a href="local/{{local.id}}">
-                                              {% if (public_imagens_locals|length > 0) %}
-                                                  {% for arrimg in public_imagens_locals %}
-                                                    {% for img in arrimg %}
-                                                      {% if (img.locals_id == local.id) %}
-                                                        <img width="100" height="77" src="uploads_locais/{{ img.name }}"/>
-                                                      {% endif %}
-                                                    {% endfor %}
-                                                  {% endfor %}
-                                              {% else %}
-                                                  <span>Não há fotos cadastradas</span>
-                                              {% endif %}
-                                                  {{ local.name }}
-                                              </a> 
-                                          </td>
-                                        {% endif %} 
-                                      {% endfor %} 
-                                  {% else %}
-                                      <span>Não há locais cadastrados</span>
-                                  {% endif %}
-                              </tr>
-                          </tbody>
-                      </table>
-                    </td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
+            <!-- ALBUMS -->
+            <div class="container">
+              {% if(albums|length>0) %}
+                  {% for album in albums%}
 
-        <div class="container">
-          <table width="100%" border="1">
-            <tbody>
-              <tr>
-                  <td bgcolor="#CCCCCC">
-                      <table width="100%" border="0">
-                          <tbody>
-                            <tr>
-                                <td>Rotas</td>
-                                <td class="direita"><p>&nbsp;</p></td>
-                             </tr>
-                          </tbody>
-                      </table>
-                      <table width="100%" border="0" class="centro">
-                        <!-- ROTAS -->
-                        <table width="100%" border="0" class="centro">
-                            <tbody>
-                                <tr>
-                                    {% if (public_routes|length > 0) %}
-                                        {% for key,route in public_routes %}
-                                          {% if(route.visibility=='public') %}
-                                            <td>
-                                                <a href="route/{{route.id}}">
-                                                {% if (public_imagens_routes|length > 0) %}
-                                                    {% for arrimg in public_imagens_routes %}
-                                                      {% for img in arrimg %}
-                                                        {% if (img.routes_id == route.id) %}
-                                                          <img width="100" height="77" src="uploads_rotas/{{ img.name }}"/>
-                                                        {% endif %}
+              <table width="100%" border="1">
+                <tbody>
+                      <tr>
+                          <td bgcolor="#CCCCCC">
+
+                              <table width="100%" border="0">
+                                  <tbody>
+                                    <tr>
+                                        <td><a href="album/edit/{{album.id}}">{{album.album_name}}</a></td>
+                                        <td class="direita"><p>&nbsp;</p></td>
+                                     </tr>
+                                  </tbody>
+                              </table>
+
+                              <table id="album" width="100%" border="0" class="centro">
+                                  <tbody>
+                                      <tr>
+                                          {% if (locals_albums|length > 0) %}
+
+                                              {% for locals in locals_albums %}
+
+                                                {% for local in locals %}
+                                                
+                                                {% if(local.albums_id == album.id) %}
+
+                                                <a href="local/{{local.id}}">
+                                                   {% if (imagens_locals_albums|length > 0) %}
+                                                      {% for arrimg in imagens_locals_albums %}
+                                                        {% for aimg in arrimg %}
+                                                          {% for img in aimg %}
+                                                             {% if (img.locals_id == local.id) %}
+                                                            <img width="100" height="77" src="../uploads_locais/{{ img.name }}"/>
+                                                             {% endif %}
+                                                          {% endfor %}
+                                                        {% endfor %}
                                                       {% endfor %}
-                                                    {% endfor %}
-                                                {% else %}
-                                                    <span>Não há fotos cadastradas</span>
+                                                   {% else %}
+                                                         <span>Não há fotos cadastradas</span>
+                                                   {% endif %}
+                                                       {{ local.name }}
+                                                  </a>
+
                                                 {% endif %}
-                                                    {{ route.name }}
-                                                </a> 
-                                            </td> 
+
+                                                {% endfor %} 
+
+                                              {% endfor %}
+
+                                          {% else %}
+                                              <span>Não há locais cadastrados</span>
                                           {% endif %}
-                                        {% endfor %} 
-                                    {% else %}
-                                        <span>Não há rotas cadastradas</span>
-                                    {% endif %}
-                                </tr>
-                            </tbody>
-                        </table>
-                        </td>
-                    </tr>
+                                      </tr>
+                                  </tbody>
+                              </table>
+
+                          </td>  
+                      </tr>
                   </tbody>
-                </table>
+              </table>
+
+                {% endfor %}
+              {% else %}
+              <table table width="100%" border="1">
+                <tr>
+                  <td>Não há albuns cadastrados</td>
+                </tr>
+              </table>
+              {% endif %}
+            </div>
+        
+
+       
                 <form action="" method="">
                   <input id="search_users" type="text" name="term" placeholder="Busca de Usuários" value="" size="60"/>
                 </form>
@@ -183,11 +168,11 @@
             $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
 
               var avatar = item.avatar.name? item.avatar.name : item.avatar;
-              var inner_html = '<a href="http://localhost/locais_fotos/profile/'+item.id+'">';
+              var inner_html = '<a href="'+rootURL+'./profile/'+item.id+'">';
               inner_html += '<div class="list_item_container">';
               inner_html += '<div class="image">';
               inner_html += '<img height="50px" width="50px"';
-              inner_html += ' src="http://localhost/locais_fotos/uploads_users/' + avatar + '">';
+              inner_html += ' src="'+rootURL+'./uploads_users/' + avatar + '">';
               inner_html += '</div>';
               inner_html += '<div class="label">' + item.name + '</div>';
               inner_html += '<div class="city">' + item.city + '</div>';
@@ -197,15 +182,16 @@
                           .append(inner_html)
                           .appendTo( ul );
             };
-
+             console.log(rootURL+'ajax_search_users');
               $("#search_users").autocomplete({
                 minLength: 0,
-                source: 'http://localhost/locais_fotos/ajax_search_users',
+                source: rootURL+'../ajax_search_users',
                  focus: function(event, ui) {
                 },
                 select: function(event, ui) {
                 }
               });
+
             </script>
             
     {% endblock %}

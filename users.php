@@ -48,8 +48,8 @@ $app->get('/user', $authenticate($app), function() use ($app){
    $user['friends_avatars'] = $friends_avatars;
    //printer(count($user['friends_avatars']));exit;
 
-   $user['locals'] = $user['user']->locals;
-   $user['routes'] = $user['user']->routes;
+   //$user['locals'] = $user['user']->locals;
+   //$user['routes'] = $user['user']->routes;
 
    $array_locals_albums = array();
    $imagens_locals_albums = array();
@@ -66,8 +66,8 @@ $app->get('/user', $authenticate($app), function() use ($app){
    }
  
    $user['locals_albums'] = $array_locals_albums;
-   $user['imagens_routes'] = get_nested_relation($user['routes'],'route_pictures');
-   $user['imagens_locals'] = get_nested_relation($user['locals'],'local_pictures');
+   //$user['imagens_routes'] = get_nested_relation($user['routes'],'route_pictures');
+   //$user['imagens_locals'] = get_nested_relation($user['locals'],'local_pictures');
    $user['imagens_locals_albums'] = $imagens_locals_albums;
   
    $user['avatar'] = $user['user']->user_pictures;
@@ -80,11 +80,23 @@ $app->get('/user', $authenticate($app), function() use ($app){
 $app->get('/profile/(:id)', $authenticate($app), function($id) use ($app){
    $user['avatar'] = current_user()->user_pictures;
    $user['public_user'] = User::find_by_id($id);
-   $user['public_locals'] = $user['public_user']->locals;
-   $user['public_routes'] = $user['public_user']->routes;
-   $user['public_imagens_routes'] = get_nested_relation($user['public_routes'],'route_pictures');
-   $user['public_imagens_locals'] = get_nested_relation($user['public_locals'],'local_pictures');
+
+   $array_locals_albums = array();
+   $imagens_locals_albums = array();
+
+   $albums = $user['public_user']->albums;
+   $user['albums'] = $albums;
+
+   foreach ($user['albums'] as $key => $value) {
+     $array_locals_albums[$key] = Local::find('all', array('conditions' => array('albums_id = ? AND visibility = ?',$value->id, 'public')));
+   }
+
+   foreach ($array_locals_albums as $key => $value) {
+      $imagens_locals_albums[$key] = get_nested_relation($value,'local_pictures');
+   }
+   $user['locals_albums'] = $array_locals_albums;
    $user['public_avatar'] = $user['public_user']->user_pictures;
+   $user['imagens_locals_albums'] = $imagens_locals_albums;
 
    $app->render('user/user_profile.html', $user);
 });

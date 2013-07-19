@@ -96,7 +96,6 @@ function get_nested_relation($obj,$relation){
 
 	foreach ($obj as $key => $value) {
 	    $data[$key] = $value->$relation;
-		//printer($value);
 	}
 
 	return $data;
