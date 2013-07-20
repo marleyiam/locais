@@ -13,10 +13,10 @@ $loader = Twig_Autoloader::register();
 ActiveRecord\Config::initialize(function($cfg) {
     $cfg->set_model_directory('models');
     $cfg->set_connections(array(
-        'development' => 'pgsql://vxfhhbrgubvffj:aZDz158BPmc7ph_jD29vOBK8tK@ec2-54-235-173-50.compute-1.amazonaws.com/d2ups3m8cpgdva'
+        'development' => 'pgsql://postgres:150679@localhost/locals'
     ));
 });
-//
+
 #$app = new \Slim\Slim();
 //Diz pro Slim usar os templates do Twig \o/
 $app = new \Slim\Slim(array( 'view' => new \Slim\Extras\Views\Twig()));
