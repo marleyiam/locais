@@ -1,0 +1,25 @@
+
+{% extends "./layout/site.html" %}
+    {% block content %}
+        <title>Lista de Favoritos</title>
+        {% block header_profile %}
+          {% include 'user/header_profile.html' %}
+        {% endblock %}
+        <div id="main">
+            <a href="user" title="">Voltar</a>
+ 
+            <table border="1px solid">
+                {% if(favorites|length>0) %}
+                    {% for favorite in favorites %}
+                        <td>
+                            <tr>{{favorite.id}}</tr>
+                        </td>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td>Não há favoritos cadastrados </td>
+                    </tr>
+                    {% endif %}
+            </table>
+        </div>
+    {% endblock %}

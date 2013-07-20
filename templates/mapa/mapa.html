@@ -62,7 +62,10 @@
           zoom: 4,
           center: inicio,
           mapTypeControlOptions: {
-            mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+            mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style',
+                        google.maps.MapTypeId.SATELLITE,'satelite',
+                        google.maps.MapTypeId.HYBRID,'hybrid',
+                        google.maps.MapTypeId.TERRAIN,'terrain']
           }
         };
 
@@ -365,37 +368,41 @@
       
 
       /** Autocomplete de locais */
-      arrayLocais = "";
-      var locais = new Array();
+      if(u==='isResource/isAction') { 
+          arrayLocais = "";
+          var locais = new Array();
+          console.log("auto")
+          $.ajax({
+            type: 'get',
+            url: rootURL+'autocomplete',
+            success: function(data){
+              arrayLocais = data;
+              for(var i in data) {
+                locais[i] = data[i].name;  
+              }
+            },
+            error: function(jqxhr){
+              console.log(jqxhr);
+            }
+          });
+      }
 
-      $.ajax({
-        type: 'get',
-        url: rootURL+'autocomplete',
-        success: function(data){
-          arrayLocais = data;
-          for(var i in data) {
-            locais[i] = data[i].name;  
-          }
-        },
-        error: function(jqxhr){
-          console.log(jqxhr);
-        }
-      });
+            /** Autocomplete de locais */
+            arrayLocais = "";
+            var locais = new Array();
 
             var url = window.parent.location.href;
             var url_array = url.split("/");
             var token = url.lastIndexOf("/");
             var id = url.substr(token+1);
+            /*!!!*/
+            href = window.location.href.toString();    
 
-            /** Autocomplete de locais */
-            arrayLocais = "";
-            var locais = new Array();
- 
-            url = window.parent.location.href;
-            url_array = url.split("/");
+            if(u==='isResource/isNum' && id!==undefined && href.contains('route')) { 
+
             $.ajax({
               type: 'get',
-              url: rootURL+'/autocomplete_route/'+id,
+              url: rootURL+'autocomplete_route/'+id,
               success: function(data){
 
                 routeObj = JSON.parse(data.route_path);
@@ -414,8 +421,12 @@
                 console.log(jqxhr);
               }
             });
+          }//fim autocomplete_route
+
       /*****************************************************************/
-      if(acao == "route") {  
+      if(u==='isResource/isAction') { 
+   
+         console.log('u :'+u);
             $("#origem").autocomplete({
               minLength: 0,
               source: locais,
@@ -443,6 +454,7 @@
                 setOrigin(lt,lg);
               }
             });
+
             $("#destino").autocomplete({
               minLength: 0,
               source: locais,
@@ -467,7 +479,6 @@
                 lc = ui.item.value;
                 lt = arrayLocais.contains('name','lat',lc);
                 lg = arrayLocais.contains('name','lng',lc);
-                //setDestination(lt,lg);
                 addWayPoints(lt,lg);
                 traceRoute(origin,destination,wps);
               }

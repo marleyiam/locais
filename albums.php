@@ -29,11 +29,21 @@ $app->post('/album', $authenticate($app), function () use ($app) {
     }
 });
 
+
 /** DELETE */
 $app->get('/album/delete/(:id)', function($id) use ($app) {
  $album = Album::find_by_id($id);
- $album->delete();
- $app->redirect(get_root_url().'album');
+ $success = false;
+ try{
+    $success = $album->delete();
+ }catch(Exception $e){
+   //var_dump($e->getMessage());
+ }
+ if($success){
+    $app->redirect(get_root_url().'album');
+ }else{
+    echo 'Para excluir o album você deve antes excluir todos os registros associados à ele !';
+ }
 });
 
 /** NEW */
@@ -50,6 +60,8 @@ $app->get('/album/edit/(:id)', $authenticate($app), function ($id) use ($app) {
     $dados_requisicao['action'] = get_root_url().'album/update/'.$id;
     $dados_requisicao['acao'] = "editar";
     $dados_requisicao['locals'] = Local::find("all",array("conditions" => array("users_id = ?", current_user()->id)));
+
+    $dados_requisicao['realties'] = Realty::find("all",array("conditions" => array("users_id = ?", current_user()->id)));
     /*
     $aproved = Friend::find("all", array(
      "conditions" => array('aproved = ? AND id_b = ? OR aproved = ? AND id_a = ? ','TRUE',$user['user']->id,'TRUE',$user['user']->id)));
@@ -82,7 +94,7 @@ $app->put('/album/update/(:id)', function ($id) use ($app) {
     }
 });
 
-/** ADD lOCAL to ALBUM*/
+/** ADD lOCAL TO ALBUM*/
 $app->post('/add_local_to_album', function() use ($app){
     
     $arrterm = $app->request()->params();
@@ -90,23 +102,58 @@ $app->post('/add_local_to_album', function() use ($app){
     $album_id = $arrterm["album_id"];
     $local = Local::find_by_id($local_id);
      
-    if($local->update_attribute ("albums_id" ,$album_id)){
-        echo 'O local foi adicionado ao seu album !';
-    }else{
-        echo 'O local não pode ser adicionado ao seu album !';
-    }
+    //if($local->albums_id == $album_id){
+    //    echo 'O local já está associado à um album !';
+    //}else{
+        if($local->update_attribute ("albums_id" ,$album_id)){
+            echo 'O local foi adicionado ao seu album !';
+        }else{
+            echo 'O local não pode ser adicionado ao seu album !';
+        }    
+   // }
+
 });
 
-/** RMV lOCAL from ALBUM*/
+/** RMV lOCAL FROM ALBUM*/
 $app->post('/del_local_of_album', function() use ($app){
 
     $arrterm = $app->request()->params();
     $local_id = $arrterm["local_id"];
     $local = Local::find_by_id($local_id);
-     
+    
     if($local->update_attribute ("albums_id" ,NULL)){
         echo 'O local foi removido do seu album !';
     }else{
         echo 'O local não pode ser removido ao seu album !';
+    }
+});
+
+
+/** ADD REALTY TO ALBUM*/
+$app->post('/add_realty_to_album', function() use ($app){
+    
+    $arrterm = $app->request()->params();
+    $realty_id = $arrterm["realty_id"];
+    $album_id = $arrterm["album_id"];
+    $realty = Realty::find_by_id($realty_id);
+     
+    if($realty->update_attribute ("albums_id" ,$album_id)){
+        echo 'O imóvel foi adicionado ao seu album !';
+    }else{
+        echo 'O imóvel não pode ser adicionado ao seu album !';
+    }
+});
+
+/** RMV REALTY FROM ALBUM*/
+$app->post('/del_realty_of_album', function() use ($app){
+
+    $arrterm = $app->request()->params();
+    $realty_id = $arrterm["realty_id"];
+    $realty = Realty::find_by_id($realty_id);
+     
+    if($realty->update_attribute ("albums_id" ,NULL)){
+        echo 'O imóvel foi removido do seu album !';
+    }else{
+        echo 'O imóvel não pode ser removido ao seu album !';
     }
 });

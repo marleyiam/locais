@@ -94,7 +94,7 @@
                               <table width="100%" border="0">
                                   <tbody>
                                     <tr>
-                                        <td><a href="album/edit/{{album.id}}">{{album.album_name}}</a></td>
+                                        <td>{{album.album_name}}</td>
                                         <td class="direita"><p>&nbsp;</p></td>
                                      </tr>
                                   </tbody>
@@ -137,6 +137,42 @@
                                           {% else %}
                                               <span>Não há locais cadastrados</span>
                                           {% endif %}
+
+                                          <!-- imóveis -->
+                                          {% if (realties_albums|length > 0) %}
+
+                                              {% for realties in realties_albums %}
+
+                                                {% for realty in realties %}
+                                                
+                                                {% if(realty.albums_id == album.id) %}
+
+                                                <a href="realty/{{realty.id}}">
+                                                   {% if (imagens_realties_albums|length > 0) %}
+                                                      {% for arrimg in imagens_realties_albums %}
+                                                        {% for aimg in arrimg %}
+                                                          {% for img in aimg %}
+                                                             {% if (img.realties_id == realty.id) %}
+                                                            <img width="100" height="77" src="../uploads_realties/{{ img.name }}"/>
+                                                             {% endif %}
+                                                          {% endfor %}
+                                                        {% endfor %}
+                                                      {% endfor %}
+                                                   {% else %}
+                                                         <span>Não há fotos cadastradas</span>
+                                                   {% endif %}
+                                                       {{ realty.name }}
+                                                  </a>
+
+                                                {% endif %}
+
+                                                {% endfor %} 
+
+                                              {% endfor %}
+
+                                          {% else %}
+                                              <span>Não há imóveis cadastrados</span>
+                                          {% endif %}
                                       </tr>
                                   </tbody>
                               </table>
@@ -156,8 +192,6 @@
               {% endif %}
             </div>
         
-
-       
                 <form action="" method="">
                   <input id="search_users" type="text" name="term" placeholder="Busca de Usuários" value="" size="60"/>
                 </form>

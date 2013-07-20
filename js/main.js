@@ -1,5 +1,6 @@
        //window.alert('!');
       rootURL = "";
+      u = "";
       function setRoot(){
           
           rootURL = "";
@@ -7,7 +8,7 @@
           links = $('a');
 
           array_Address_url = address_url.split("/");
-          console.log(array_Address_url);
+          //console.log(array_Address_url);
           resources = [];
           actions = [];
           indexes = [];
@@ -18,7 +19,6 @@
           isProfile = false;
           actions = ['new','edit'];
           resources = ['local','realty','route','user','profile','album'];
-          //profiles = ['profile'];
           configs = ['config'];
 
           function whatIs(arrayI){
@@ -50,7 +50,7 @@
           }
               
           function defineRoot(u){
-            console.log(u);
+            //console.log(u);
               if(u==='isUser/isAction'){
                   rootURL = '../'; 
               }else if(u==='isUser/isConfig'){
@@ -64,11 +64,11 @@
               }else if(u==='/'){
                   rootURL = ''; 
               }
-              console.log(rootURL);
+              //console.log(rootURL);
           }
 
           u = indexes.join('/') ;
-          console.log(indexes);
+          //console.log(indexes);
           defineRoot(u);
 
           links.each(function(i,it){
@@ -90,31 +90,46 @@
           }
 
           if($(".avatar").length > 0){
-              $el = $(".avatar");
-              src2 = $el.attr('src').toString();
-              $el.attr('src',rootURL+src2);
+              $el2 = $(".avatar");
+              src2 = $el2.attr('src').toString();
+              $el2.attr('src',rootURL+src2);
           }
 
           if($("#aformSearch").length > 0){
-              $el = $("#aformSearch");
-              src3 = $el.attr('action').toString();
-              $el.attr('src',rootURL+src3);
+              $el3 = $("#aformSearch");
+              src3 = $el3.attr('action').toString();
+              $el3.attr('src',rootURL+src3);
           }
           if($(".local_album_status_add").length > 0){
-              $el = $(".local_album_status_add");
-              src4 = $el.attr('src').toString();
-              $el.attr('src',rootURL+src4);
+              $el4 = $(".local_album_status_add");
+              src4 = $el4.attr('src').toString();
+              $el4.attr('src',rootURL+src4);
           }
           if($(".local_album_status_dll").length > 0){
-              $el = $(".local_album_status_dll"); 
-              src4 = $el.attr('src').toString();
-              $el.attr('src',rootURL+src4);
+              $el5 = $(".local_album_status_dll"); 
+              src5 = $el5.attr('src').toString();
+              $el5.attr('src',rootURL+src5);
+          }
+          if($(".realty_album_status_add").length > 0){
+              $el6 = $(".realty_album_status_add");
+              src6 = $el6.attr('src').toString();
+              $el6.attr('src',rootURL+src6);
+          }
+          if($(".realty_album_status_dll").length > 0){
+              $el7 = $(".realty_album_status_dll"); 
+              src7 = $el7.attr('src').toString();
+              $el7.attr('src',rootURL+src7);
+          }
+          if($(".link_fb").length > 0){
+              $el8 = $(".link_fb"); 
+              src8 = $el8.attr('src').toString();
+              $el8.attr('src',rootURL+src8);
           }
       } //fim setRoot
 
 
       $('#main').ready(function(){
-          console.log('READY');
+          //console.log('READY');
           setRoot();
       });
 
@@ -181,9 +196,7 @@
          });
      });
 
-     //$("#target").val()
-
-          /** Adiciona o fomr_rota*/
+          /** Adiciona o form_rota*/
            url = window.parent.location.href;
            url_array = url.split("/");
            acao = url_array[4]; 
@@ -206,7 +219,7 @@
                     user_b = $(".avatar").attr("data-public-user");
                     $.ajax({
                     type: 'post',
-                    url: 'http://localhost/locais_fotos/add_user',
+                    url: rootURL+'add_user',
                     data: {from_user:user_a,to_user:user_b},
                     success: function(data){
                         window.alert(data);
@@ -221,12 +234,11 @@
               $("#acc").on('click',function(e){
                   id = $(this).attr('data-friend');
                   e.preventDefault();
-                      $.ajax({
+                  $.ajax({
                       type: 'post',
                       url: 'requests/confirm',
                       data: {id:id},
                       success: function(data){
-                        //console.log(data);
                         window.alert(data);  
                       },
                       error: function(jqxhr){
@@ -239,12 +251,11 @@
               $("#dny").on('click',function(e){
                   id = $(this).attr('data-friend');
                   e.preventDefault();
-                      $.ajax({
+                  $.ajax({
                       type: 'post',
                       url: 'requests/deny',
                       data: {id:id},
                       success: function(data){
-                        //console.log(data);
                         window.alert(data);
                         $(this).parent('tr').hide("slow"); 
                       },
@@ -303,12 +314,12 @@
             });
 
             /** ADD local to Album */
-            $(".btn_add_album").on('click',function(e){
-             e.preventDefault();
-             $btn = $(this);
-             local_id = $btn.attr('data-id-local');
-             album_id = $btn.attr('data-id-album');
-              //console.log(local_id);
+             $(".locals_to_album").on('click','.btn_add_album',function(e){
+              e.preventDefault();
+              $btn = $(this);
+              local_id = $btn.attr('data-id-local');
+              album_id = $("#album_name").attr('data-id-album');
+
               $.ajax({
                   type: 'post',
                   url: rootURL+'add_local_to_album',
@@ -316,7 +327,9 @@
                   success: function(data){
                       window.alert(data);
                       $btn.parent().parent().find('img').attr('src',rootURL+'img/bulletDLL.png');
-                    
+                      $prnt = $btn.parent();
+                      $prnt.find('button').remove();
+                      $prnt.append('<button data-id-local="'+local_id+'" class="btn_rmv_album">Remover do Album</button>');
                   },
                   error: function(jqxhr){
                       window.alert(jqxhr)
@@ -325,12 +338,11 @@
             });
 
             /** RMV local of Album */
-            $(".btn_rmv_album").on('click',function(e){
-             e.preventDefault();
-             //console.log('click');
-             $btn = $(this);
-             local_id = $btn.attr('data-id-local');
-             album_id = $btn.attr('data-id-album');
+            $(".locals_to_album").on('click','.btn_rmv_album',function(e){
+              e.preventDefault();
+              $btn = $(this);
+              local_id = $btn.attr('data-id-local');
+              album_id = $("#album_name").attr('data-id-album');
 
               $.ajax({
                   type: 'post',
@@ -339,7 +351,77 @@
                   success: function(data){
                       window.alert(data);
                       $btn.parent().parent().find('img').attr('src',rootURL+'img/bulletADD.png');
-                
+                      $prnt = $btn.parent();
+                      $prnt.find('button').remove();
+                      $prnt.append('<button data-id-local="'+local_id+'" class="btn_add_album" data-id-album="'+album_id+'">Adicionar ao Album</button>');
+                  },
+                  error: function(jqxhr){
+                      window.alert(jqxhr)
+                  }
+              });
+            });
+
+            /** REMOVE ALBUM */
+            $(".rmv_album").on('click','.rmv_album_link',function(e){
+                e.preventDefault();
+                if (confirm("Tem certeza que deseja excluir esse album ?")) {
+                    link = $(this).attr('href');
+                    $.ajax({
+                        type: 'get',
+                        url: rootURL+link,
+                        success: function(data){
+                            window.alert(data);
+                        },
+                        error: function(jqxhr){
+                            window.alert(jqxhr);
+                        }
+                    });
+                }
+                return false;
+            });
+
+
+            /** ADD Realty to Album */
+            $(".realties_to_album").on('click','.btn_add_realty_album',function(e){
+              e.preventDefault();
+              $btn = $(this);
+              realty_id = $btn.attr('data-id-realty');
+              album_id = $("#album_name").attr('data-id-album');
+
+              $.ajax({
+                  type: 'post',
+                  url: rootURL+'add_realty_to_album',
+                  data: {realty_id:realty_id,album_id:album_id},
+                  success: function(data){
+                      window.alert(data);
+                      $btn.parent().parent().find('img').attr('src',rootURL+'img/bulletDLL.png');
+                      $prnt = $btn.parent();
+                      $prnt.find('button').remove();
+                      $prnt.append('<button data-id-realty="'+realty_id+'" class="btn_rmv_realty_album">Remover do Album</button>');
+                  },
+                  error: function(jqxhr){
+                      window.alert(jqxhr)
+                  }
+              });
+            });
+
+            /** RMV Realty of Album */
+            $(".realties_to_album").on('click','.btn_rmv_realty_album',function(e){
+              e.preventDefault();
+              $btn = $(this);
+              realty_id = $btn.attr('data-id-realty');
+              album_id = $("#album_name").attr('data-id-album');
+
+              $.ajax({
+                  type: 'post',
+                  url: rootURL+'del_realty_of_album',
+                  data: {realty_id:realty_id,album_id:album_id},
+                  success: function(data){
+                      window.alert(data);
+                      $btn.parent().parent().find('img').attr('src',rootURL+'img/bulletADD.png');
+                      $prnt = $btn.parent();
+                      $prnt.find('button').remove();
+                      $prnt.append('<button data-id-realty="'+realty_id+'" class="btn_add_realty_album" data-id-album="'+album_id+'">Adicionar ao Album</button>');
                   },
                   error: function(jqxhr){
                       window.alert(jqxhr)

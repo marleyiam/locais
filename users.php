@@ -48,11 +48,10 @@ $app->get('/user', $authenticate($app), function() use ($app){
    $user['friends_avatars'] = $friends_avatars;
    //printer(count($user['friends_avatars']));exit;
 
-   //$user['locals'] = $user['user']->locals;
-   //$user['routes'] = $user['user']->routes;
-
    $array_locals_albums = array();
    $imagens_locals_albums = array();
+   $array_realties_albums = array();
+   $imagens_realties_albums = array();
 
    $albums = $user['user']->albums;
    $user['albums'] = $albums;
@@ -64,12 +63,19 @@ $app->get('/user', $authenticate($app), function() use ($app){
    foreach ($array_locals_albums as $key => $value) {
       $imagens_locals_albums[$key] = get_nested_relation($value,'local_pictures');
    }
+
+   foreach ($user['albums'] as $key => $value) {
+     $array_realties_albums[$key] = Realty::find('all', array('conditions' => array('albums_id = ?',$value->id)));
+   }
+
+   foreach ($array_realties_albums as $key => $value) {
+      $imagens_realties_albums[$key] = get_nested_relation($value,'realty_pictures');
+   }
  
    $user['locals_albums'] = $array_locals_albums;
-   //$user['imagens_routes'] = get_nested_relation($user['routes'],'route_pictures');
-   //$user['imagens_locals'] = get_nested_relation($user['locals'],'local_pictures');
-   $user['imagens_locals_albums'] = $imagens_locals_albums;
-  
+   $user['imagens_locals_albums'] = $imagens_locals_albums; 
+   $user['realties_albums'] = $array_realties_albums;
+   $user['imagens_realties_albums'] = $imagens_realties_albums;
    $user['avatar'] = $user['user']->user_pictures;
 
    $app->render('user/show_profile.html', $user);
@@ -83,6 +89,8 @@ $app->get('/profile/(:id)', $authenticate($app), function($id) use ($app){
 
    $array_locals_albums = array();
    $imagens_locals_albums = array();
+   $array_realties_albums = array();
+   $imagens_realties_albums = array();
 
    $albums = $user['public_user']->albums;
    $user['albums'] = $albums;
@@ -94,9 +102,20 @@ $app->get('/profile/(:id)', $authenticate($app), function($id) use ($app){
    foreach ($array_locals_albums as $key => $value) {
       $imagens_locals_albums[$key] = get_nested_relation($value,'local_pictures');
    }
-   $user['locals_albums'] = $array_locals_albums;
+
+   foreach ($user['albums'] as $key => $value) {
+     $array_realties_albums[$key] = Realty::find('all', array('conditions' => array('albums_id = ? AND visibility = ?',$value->id, 'public')));
+   }
+
+   foreach ($array_realties_albums as $key => $value) {
+      $imagens_realties_albums[$key] = get_nested_relation($value,'realty_pictures');
+   }
+
    $user['public_avatar'] = $user['public_user']->user_pictures;
+   $user['locals_albums'] = $array_locals_albums;
    $user['imagens_locals_albums'] = $imagens_locals_albums;
+   $user['realties_albums'] = $array_realties_albums;
+   $user['imagens_realties_albums'] = $imagens_realties_albums;
 
    $app->render('user/user_profile.html', $user);
 });

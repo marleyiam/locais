@@ -1,5 +1,5 @@
 
-<form action="{{action}}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+<form id="frmALbum" action="{{action}}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 	<table border="0px solid">
 	{% if acao == 'cadastrar' %}
 		<caption>Cadastro de Album</caption>
@@ -9,7 +9,7 @@
 		<tbody>
 	{% endif %}
 			<tr>
-				<td><label>Nome</label></td><td><input type="text" name="nome" value="{{ album?album.album_name : ''}}"></td>
+				<td><label>Nome</label></td><td><input id="album_name" type="text" name="nome" value="{{ album?album.album_name : ''}}" data-id-album="{{album.id}}"></td>
 			</tr>
 
 			<tr>
@@ -19,23 +19,71 @@
 		</tbody>
 	</table>
 	<table border="1px solid">
+		<tr><td>locais</td></tr>
 		{% if (locals|length>0) %}
 			{% for i,local in locals%}
 				<tr>
 					<td><a href="local/{{local.id}}">{{ local.name}}</a></td>
-					{% if(local.albums_id != '' and local.albums_id == album.id) %}
+					{% if(local.albums_id and local.albums_id == album.id) %}
 						<td>
 							<img class="local_album_status_add" src="img/bulletDLL.png" alt="">
 						</td>
-						<td>
+						<td class="locals_to_album">
 							<button data-id-local="{{local.id}}" class="btn_rmv_album">Remover do Album</button>
+						</td>
+					{% elseif(local.albums_id and local.albums_id != album.id) %}
+						<td>
+							<img class="local_album_status_add" src="img/bulletSTP.png" alt="">
+						</td>
+						<td class="locals_to_album">
+							<button data-id-local="{{local.id}}" class="btn_add_album">Adicionar ao Album</button>
 						</td>
 					{% else %}
 						<td>
 							<img class="local_album_status_dll" src="img/bulletADD.png" alt="">
 						</td>
+						<td class="locals_to_album">
+							<button data-id-local="{{local.id}}" class="btn_add_album">Adicionar ao Album</button>
+						</td>
+					{% endif %}
+					
+
+				</tr>
+			{% endfor %}
+		{% else %}
+		<tr>
+			<td>Não há locais cadastrados</td>
+		</tr>
+		{% endif %}
+	</table>
+
+	<!-- -->
+	<table border="1px solid">
+		<tr><td>imóveis</td></tr>
+		{% if (realties|length>0) %}
+			{% for i,realty in realties%}
+				<tr>
+					<td><a href="realty/{{realty.id}}">{{ realty.name}}</a></td>
+					{% if(realty.albums_id and realty.albums_id == album.id) %}
 						<td>
-							<button data-id-local="{{local.id}}" class="btn_add_album" data-id-album="{{album.id}}">Adicionar ao Album</button>
+							<img class="realty_album_status_add" src="img/bulletDLL.png" alt="">
+						</td>
+						<td  class="realties_to_album">
+							<button data-id-realty="{{realty.id}}" class="btn_rmv_realty_album">Remover do Album</button>
+						</td>
+					{% elseif(realty.albums_id and realty.albums_id != album.id)  %}
+						<td>
+							<img class="realty_album_status_add" src="img/bulletSTP.png" alt="">
+						</td>
+						<td  class="realties_to_album">
+							<button data-id-realty="{{realty.id}}" class="btn_add_realty_album">Adicionar ao Album</button>
+						</td>
+					{% else %}
+						<td>
+							<img class="realty_album_status_dll" src="img/bulletADD.png" alt="">
+						</td>
+						<td  class="realties_to_album">
+							<button data-id-realty="{{realty.id}}" class="btn_add_realty_album">Adicionar ao Album</button>
 						</td>
 					{% endif %}
 
@@ -43,7 +91,7 @@
 			{% endfor %}
 		{% else %}
 		<tr>
-			<td>Não há locais cadastrados</td>
+			<td>Não há imóveis cadastrados</td>
 		</tr>
 		{% endif %}
 	</table>                                                                                       

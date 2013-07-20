@@ -17,10 +17,10 @@
                                  <a href="album/{{ album.id }}">Visualizar Album</a>
                                 </td>-->
                                 <td>
-                                 <a href="album/edit/{{ album.id }}">Gerenciar Album</a>
+                                    <a href="album/edit/{{ album.id }}">Gerenciar Album</a>
                                 </td>
-                                <td>
-                                <a onclick="return confirm('Certeza ?');" href="album/delete/{{ album.id }}">Excluir Album</a>
+                                <td class="rmv_album">
+                                    <a class="rmv_album_link" href="album/delete/{{ album.id }}">Excluir Album</a>
                                 </td>
                             </tr>
                             <tr>

@@ -87,6 +87,7 @@ require 'routes.php';
 require 'users.php';
 require 'friends.php';
 require 'albums.php';
+require 'favorites.php';
 
 /** RUN APP */
 $app->run();

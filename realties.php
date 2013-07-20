@@ -11,9 +11,19 @@ $app->get('/realty', $authenticate($app), function() use ($app){
 /** SHOW */
 $app->get('/realty/(:id)', function($id) use ($app){
    $realty['realty'] = Realty::find_by_id($id);
-
+   $realty['link'] = 'sharerealty/'.$realty['realty']->identifier;
    $realty['imagens'] = $realty['realty']->realty_pictures;
    $app->render('realty/show.html', $realty);
+});
+
+/** FIND REALTY by SHAREURL */
+$app->get('/sharerealty/:term', function($term) use ($app){
+    $realty['realty'] = Realty::find_by_identifier($term);
+    if($realty['realty']){
+        $app->redirect(get_root_url().'realty/'.$realty['realty']->id);
+    }else{
+        echo 'O imóvel que você está procurando não existe !';   
+    }
 });
 
 /** CREATE */
@@ -68,7 +78,7 @@ $app->post('/realty', $authenticate($app) , function () use ($app) {
             }
         }
 
-        $app->redirect(get_root_url().'realty/'.$last_id+1);
+        $app->redirect(get_root_url().'realty');
     }else{
         $app->render('realty/new.html', 'erro no insert');
     }

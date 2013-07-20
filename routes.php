@@ -10,9 +10,20 @@ $app->get('/route', $authenticate($app), function() use ($app){
 /** SHOW */
 $app->get('/route/(:id)', function($id) use ($app){
    $route['route'] = Route::find_by_id($id);
-
+   $route['link'] = 'shareroute/'.$route['route']->identifier;
    $route['imagens'] = $route['route']->route_pictures;
    $app->render('route/show.html', $route);
+});
+
+
+/** FIND ROUTE by SHAREURL */
+$app->get('/shareroute/:term', function($term) use ($app){
+    $route['route'] = Route::find_by_identifier($term);
+    if($route['route']){
+        $app->redirect(get_root_url().'route/'.$route['route']->id);
+    }else{
+        echo 'A rota que você está procurando não existe !';   
+    }
 });
 
 /** CREATE */

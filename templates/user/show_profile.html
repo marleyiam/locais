@@ -106,6 +106,42 @@
                                       {% else %}
                                           <span>Não há locais cadastrados</span>
                                       {% endif %}
+
+
+                                      {% if (realties_albums|length > 0) %}
+
+                                          {% for realties in realties_albums %}
+
+                                            {% for realty in realties %}
+                                            
+                                            {% if(realty.albums_id == album.id) %}
+
+                                            <a href="realty/{{realty.id}}">
+                                               {% if (imagens_realties_albums|length > 0) %}
+                                                  {% for arrimg in imagens_realties_albums %}
+                                                    {% for aimg in arrimg %}
+                                                      {% for img in aimg %}
+                                                         {% if (img.realties_id == realty.id) %}
+                                                        <img width="100" height="77" src="uploads_realties/{{ img.name }}"/>
+                                                         {% endif %}
+                                                      {% endfor %}
+                                                    {% endfor %}
+                                                  {% endfor %}
+                                               {% else %}
+                                                     <span>Não há fotos cadastradas</span>
+                                               {% endif %}
+                                                   {{ realty.name }}
+                                              </a>
+
+                                            {% endif %}
+
+                                            {% endfor %} 
+
+                                          {% endfor %}
+
+                                      {% else %}
+                                          <span>Não há imóveis cadastrados</span>
+                                      {% endif %}
                                   </tr>
                               </tbody>
                           </table>

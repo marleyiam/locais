@@ -13,8 +13,20 @@ $app->get('/local/(:id)', function($id) use ($app){
    $local['local'] = Local::find_by_id($id);
 
    $local['imagens'] = $local['local']->local_pictures;
+   $local['link'] = 'sharelocal/'.$local['local']->identifier;
    $app->render('local/show.html', $local);
 });
+
+/** FIND LOCAL by SHAREURL */
+$app->get('/sharelocal/:term', function($term) use ($app){
+    $local['local'] = Local::find_by_identifier($term);
+    if($local['local']){
+        $app->redirect(get_root_url().'local/'.$local['local']->id);
+    }else{
+        echo 'O local que você está procurando não existe !';   
+    }
+});
+
 
 /** CREATE */
 $app->post('/local', $authenticate($app) , function () use ($app) {
@@ -61,7 +73,8 @@ $app->post('/local', $authenticate($app) , function () use ($app) {
             }
         }
 
-        $app->redirect(get_root_url().'local/'.$last_id+1);
+        //$app->redirect(get_root_url().'local');
+        $app->redirect(get_root_url().'local');
     }else{
         $app->render('local/new.html', 'erro no insert');
     }

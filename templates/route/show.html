@@ -16,6 +16,7 @@
                         <th>coordenadas</th>
                         <th>descricao</th>
                         <th>exibicao</th>
+                        <th>link</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,6 +27,7 @@
                         <td>{{ route.route_path }}</td>
                         <td>{{ route.description }}</td>
                         <td>{{ route.visibility }}</td>
+                        <td><a href="{{link}}">{{link}}</a></td>
                     </tr>
                 </tbody>
             </table>
