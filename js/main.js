@@ -128,8 +128,8 @@
       } //fim setRoot
 
 
-      $('#main').ready(function(){
-          //console.log('READY');
+      $('.container').ready(function(){
+          console.log('container');
           setRoot();
       });
 
