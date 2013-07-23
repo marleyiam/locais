@@ -3,12 +3,10 @@
       u = "";
       function setRoot(){
           
-          rootURL = "";
           address_url = window.location.href;
           links = $('a');
 
           array_Address_url = address_url.split("/");
-          //console.log(array_Address_url);
           resources = [];
           actions = [];
           indexes = [];
@@ -50,7 +48,7 @@
           }
               
           function defineRoot(u){
-            //console.log(u);
+
               if(u==='isUser/isAction'){
                   rootURL = '../'; 
               }else if(u==='isUser/isConfig'){
@@ -64,11 +62,9 @@
               }else if(u==='/'){
                   rootURL = ''; 
               }
-              //console.log(rootURL);
           }
 
           u = indexes.join('/') ;
-          //console.log(indexes);
           defineRoot(u);
 
           links.each(function(i,it){
@@ -95,10 +91,10 @@
               $el2.attr('src',rootURL+src2);
           }
 
-          if($("#aformSearch").length > 0){
-              $el3 = $("#aformSearch");
+          if($("#formSearch").length > 0){
+              $el3 = $("#formSearch");
               src3 = $el3.attr('action').toString();
-              $el3.attr('src',rootURL+src3);
+              $el3.attr('action',rootURL+src3);
           }
           if($(".local_album_status_add").length > 0){
               $el4 = $(".local_album_status_add");
