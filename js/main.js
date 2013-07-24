@@ -2,7 +2,7 @@
       rootURL = "";
       u = "";
       function setRoot(){
-          
+          console.log('iniciou');
           address_url = window.location.href;
           links = $('a');
 

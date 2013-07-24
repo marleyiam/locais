@@ -6,83 +6,81 @@
           {% block header_profile %}
             {% include 'user/header_profile.html' %}
           {% endblock %}
-            <style>
-              div.list_item_container {
-                  height: 50px;
-                  padding: 2px;
-              }
-              div.image {
-                  width: 90px;
-                  height: 50px;
-                  float: left;
-              }
-              div.city {
-                  font-style: italic;
-                  font-size: 0.8em;
-                  color: gray;
-              }
-            </style>
+    <style>
+      div.list_item_container {
+          height: 50px;
+          padding: 2px;
+      }
+      div.image {
+          width: 90px;
+          height: 50px;
+          float: left;
+      }
+      div.city {
+          font-style: italic;
+          font-size: 0.8em;
+          color: gray;
+      }
+    </style>
             <table border="1px solid">
-                  
-                        <td>
-                          <tr>
-                             
-                              {% if (public_avatar|length > 0) %}
-                                
-                                      <td>
-                                        <img class="avatar" height="100px" width="100px" src="uploads_users/{{public_avatar.name}}" 
-                                        data-public-user="{{public_user.id}}">
-                                      </td>
-                                      <td>
-                                        {% if(user.id!=public_user.id) %}
-                                        <a href="add_user">
-                                          <img class="add_btn" 
-                                          src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" 
-                                          alt=""/>
-                                        </a>
-                                        {% endif %}
-                                      </td>
-                                 
-                                {% else %}
-                               
-                                      <td>
-                                        <img class="avatar" height="100px" width="100px" 
-                                        src="uploads_users/default-user-picture.png" 
-                                        data-public-user="{{public_user.id}}">
-                                      </td>
-                                      <td>
-                                        {% if(user.id!=public_user.id) %}
-                                        <a href="add_user">
-                                          <img class="add_btn" 
-                                          src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" 
-                                          alt=""/>
-                                        </a>
-                                        {% endif %} 
-                                        </td>
-                                
+                <td>
+                  <tr>
+                      {% if (public_avatar|length > 0) %}
+                        
+                              <td>
+                                <img class="avatar" height="100px" width="100px" src="uploads_users/{{public_avatar.name}}" 
+                                data-public-user="{{public_user.id}}">
+                              </td>
+                              <td>
+                                {% if(user.id!=public_user.id) %}
+                                <a href="add_user">
+                                  <img class="add_btn" 
+                                  src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" 
+                                  alt=""/>
+                                </a>
                                 {% endif %}
-                            
-                          </tr>
-                            <tr>
-                                <td>{{ public_user.name }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ public_user.city }}</td><td>{{ public_user.uf }}</td>
-                            </tr>
-                            <tr>
-                                <td>descricao :</td>
-                            </tr>
-                            <tr>
-                                <td>{{ public_user.aboutme}}</td>
-                            </tr>
-                            <tr>
-                              <td>{{ public_user.phone}}</td>
-                            </tr>
-                        </td>
+                              </td>
+                         
+                        {% else %}
+                       
+                              <td>
+                                <img class="avatar" height="100px" width="100px" 
+                                src="uploads_users/default-user-picture.png" 
+                                data-public-user="{{public_user.id}}">
+                              </td>
+                              <td>
+                                {% if(user.id!=public_user.id) %}
+                                <a href="add_user">
+                                  <img class="add_btn" 
+                                  src="http://www.thebvasconnection.com/wp-content/uploads/2011/01/FB_Friends_button.jpg" 
+                                  alt=""/>
+                                </a>
+                                {% endif %} 
+                              </td>
+                        
+                        {% endif %}
+                  </tr>
+
+                    <tr>
+                        <td>{{ public_user.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ public_user.city }}</td><td>{{ public_user.uf }}</td>
+                    </tr>
+                    <tr>
+                        <td>descricao :</td>
+                    </tr>
+                    <tr>
+                        <td>{{ public_user.aboutme}}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ public_user.phone}}</td>
+                    </tr>
+                </td>
             </table>
 
             <!-- ALBUMS -->
-            <div class="container">
+          <div class="container">
               {% if(albums|length>0) %}
                   {% for album in albums%}
 
@@ -176,7 +174,6 @@
                                       </tr>
                                   </tbody>
                               </table>
-
                           </td>  
                       </tr>
                   </tbody>
@@ -190,17 +187,16 @@
                 </tr>
               </table>
               {% endif %}
-            </div>
+          </div>
         
                 <form action="" method="">
                   <input id="search_users" type="text" name="term" placeholder="Busca de Usuários" value="" size="60"/>
                 </form>
-        
 
             <script sync defer>
               /** USER AUTOCOMPLETE */
             $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
-
+              
               var avatar = item.avatar.name? item.avatar.name : item.avatar;
               var inner_html = '<a href="'+rootURL+'./profile/'+item.id+'">';
               inner_html += '<div class="list_item_container">';

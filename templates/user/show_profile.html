@@ -6,41 +6,40 @@
           {% block header_profile %}
             {% include 'user/header_profile.html' %}
           {% endblock %}
-            <style>
-              div.list_item_container {
-                  height: 50px;
-                  padding: 2px;
-              }
-              div.image {
-                  width: 90px;
-                  height: 50px;
-                  float: left;
-              }
-              div.city {
-                  font-style: italic;
-                  font-size: 0.8em;
-                  color: gray;
-              }
-            </style>
+      <style>
+        div.list_item_container {
+            height: 50px;
+            padding: 2px;
+        }
+        div.image {
+            width: 90px;
+            height: 50px;
+            float: left;
+        }
+        div.city {
+            font-style: italic;
+            font-size: 0.8em;
+            color: gray;
+        }
+      </style>
             <table border="1px solid">
-                  
-                        <td>
-                            <tr>
-                                <td>{{ user.name }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ user.city }}</td><td>{{ user.uf }}</td>
-                            </tr>
-                            <tr>
-                                <td>descricao :</td>
-                            </tr>
-                            <tr>
-                                <td>{{ user.aboutme}}</td>
-                            </tr>
-                            <tr>
-                              <td>{{ user.phone}}</td>
-                            </tr>
-                        </td>
+                <td>
+                    <tr>
+                        <td>{{ user.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ user.city }}</td><td>{{ user.uf }}</td>
+                    </tr>
+                    <tr>
+                        <td>descricao :</td>
+                    </tr>
+                    <tr>
+                        <td>{{ user.aboutme}}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ user.phone}}</td>
+                    </tr>
+                </td>
             </table>
         </div>
         <div id="locais">
@@ -165,7 +164,7 @@
                 <form action="" method="">
                   <input id="search_users" type="text" name="term" placeholder="Busca de Usuários" value="" size="60"/>
                 </form>
-            </div>
+         
             <!-- AMIGOS -->
 
             <div class="container">
@@ -230,8 +229,6 @@
                 </table>
             </div>
 
-
- 
             <script>
               /** USER AUTOCOMPLETE */
             $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
@@ -261,20 +258,5 @@
                 }
               });
             </script>
-            <!--
-            {% if(img is not null) %} 
-              {% if (img.users_id == friend.id) %}
-              
-                <img class="friend_avatar" height="100px" width="100px" 
-                src="uploads_users/{{img.name}}" 
-                data-public-user="{{friend.id}}"/>
-              {% endif %}
-            {% else %}
-               
-                <img class="friend_avatar" height="100px" width="100px" 
-                src="uploads_users/default-user-picture.png" 
-                data-public-user="{{friend.id}}"/>
-            {% endif %}
-            -->
 
     {% endblock %}
