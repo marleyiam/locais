@@ -2,8 +2,16 @@
       rootURL = "";
       u = "";
       function setRoot(){
-          console.log('iniciou');
+          
           address_url = window.location.href;
+          var hash = address_url.lastIndexOf("#");
+          if(window.location.hash){
+            address_url = address_url.replace(window.location.hash,'');
+          }
+          if(address_url.substr(hash)==="#"){
+            address_url = address_url.substr(0,hash);
+          }
+
           links = $('a');
 
           array_Address_url = address_url.split("/");
@@ -203,7 +211,7 @@
               return this.indexOf(it) != -1; 
           };
            
-           console.log(url.contains(v));
+           //console.log(url.contains(v));
 
            $(document).ready(function(){
 
@@ -422,6 +430,23 @@
                   error: function(jqxhr){
                       window.alert(jqxhr)
                   }
+              });
+            });
+
+            /** Clone */
+            $("tr").on('click','.btnClone', function(e){
+              clone_type = $(this).attr('data-clone');
+              clone_id = $(this).attr('data-id');
+              $.ajax({
+                type: 'post',
+                url: rootURL+'clone',
+                data: {clone_type:clone_type,clone_id:clone_id},
+                success: function(data){
+                  console.log(data);
+                },
+                error: function(jqxhr){
+                  console.log(jqxhr);
+                }
               });
             });
 

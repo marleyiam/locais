@@ -256,7 +256,6 @@
 
         /** bloco que responde de acordo com a url */
         url = window.location.href;
-        url_array = url.split("/");
         var token = url.lastIndexOf("/");
         var id = url.substr(token+1);
 
@@ -326,7 +325,9 @@
 
       /** Atualiza o local corrente no mapa */
       function setLocal(url){
-        console.log('setlocal');
+
+        console.log(url)
+
        $.ajax({
          type: 'get',
          url: url,
@@ -351,7 +352,7 @@
       if(u==='isResource/isAction') { 
           arrayLocais = "";
           var locais = new Array();
-          console.log("auto")
+          //console.log("auto");
           $.ajax({
             type: 'get',
             url: rootURL+'autocomplete',
@@ -372,7 +373,6 @@
             var locais = new Array();
 
             var url = window.parent.location.href;
-            var url_array = url.split("/");
             var token = url.lastIndexOf("/");
             var id = url.substr(token+1);
             /*!!!*/

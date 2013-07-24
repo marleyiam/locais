@@ -36,6 +36,28 @@
                         <td>{{ local.clone }}</td>
                         <td><a href="{{ link }}">{{ link }}</a></td>
                     </tr>
+                    <tr>
+                        <td>
+                            <!-- AddThis Button BEGIN -->
+                            <div class="addthis_toolbox addthis_default_style addthis_16x16_style" 
+                            addthis:url="{{link}}"
+                            addthis:title="{{local.name}}"
+                            addthis:description="{{local.description}}"
+                            >
+                            <a class="addthis_button_facebook"></a>
+                            </div>
+
+                            <!-- AddThis Button END -->
+                        </td>
+                        <td>
+                            <!-- AddThis Button BEGIN -->
+                            <div class="addthis_toolbox addthis_default_style">
+                            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                            </div>
+
+                            <!-- AddThis Button END -->
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             {% if (imagens|length > 0) %}
@@ -52,4 +74,11 @@
 
             {% include './mapa/mapa.html' %}
         </div>
+        <script async defer>
+               addthis_config = {"data_track_addressbar":true};
+        </script>
+        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5065e8e03dd56e62" async defer>
+        </script>
+        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5065e8e03dd56e62" async defer>
+        </script>
   {% endblock %}
