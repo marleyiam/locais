@@ -195,9 +195,9 @@
                 <form action="" method="">
                   <input id="search_users" type="text" name="term" placeholder="Busca de Usuários" value="" size="60"/>
                 </form>
-            </div>
+        
 
-            <script>
+            <script sync defer>
               /** USER AUTOCOMPLETE */
             $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
 
@@ -216,7 +216,6 @@
                           .append(inner_html)
                           .appendTo( ul );
             };
-             console.log(rootURL+'ajax_search_users');
               $("#search_users").autocomplete({
                 minLength: 0,
                 source: rootURL+'../ajax_search_users',
@@ -225,7 +224,6 @@
                 select: function(event, ui) {
                 }
               });
-
             </script>
             
     {% endblock %}
