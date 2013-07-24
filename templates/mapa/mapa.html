@@ -1,22 +1,22 @@
 
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<style type="text/css">
-  
-  .panel {
-    background-color: #FFFFFF;
-    border: 1px solid #999999;
-    padding: 5px;
-    position: relative;
-    top: 5px;
-    width: 59%;
-    z-index: 5;
-  }
+  <style type="text/css">
+    
+    .panel {
+      background-color: #FFFFFF;
+      border: 1px solid #999999;
+      padding: 5px;
+      position: relative;
+      top: 5px;
+      width: 59%;
+      z-index: 5;
+    }
 
-  #map_canvas {
-    width: 500px;
-    height: 400px;
-  }
-</style>
+    #map_canvas {
+      width: 500px;
+      height: 400px;
+    }
+  </style>
   <!--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCF0Hz5nzG-EHJYWZNrZH9Bl-q2AtFG2yk&sensor=true">-->
   <script type="text/javascript" charset="utf-8">
     //bind de evento do dom
@@ -122,10 +122,9 @@
 
         }// fim if
           stroute += '} }';
-
-          console.log(stroute);
+          //console.log(stroute);
           $("#route_path").val(stroute);
-          //return stroute;
+
       }// fim jsonRoute
 
       var ren, ser;
@@ -135,9 +134,9 @@
       ser = new google.maps.DirectionsService();
       
       function traceRoute(origin, destination, waypoints){
-        console.log(origin);
-        console.log(destination);
-        console.log(waypoints);
+        //console.log(origin);
+        //console.log(destination);
+        //console.log(waypoints);
 
           if(marker) marker.setMap(null);
             route = true;
@@ -161,7 +160,7 @@
                 }
               });
             }else if(arguments.length == 3){
-              console.log('3');
+              //console.log('3');
               var request = {
                     origin:origin, 
                     destination:destination,
@@ -254,39 +253,19 @@
             map.fitBounds(bounds);
           }); //fim do search
 
+
         /** bloco que responde de acordo com a url */
-        url = window.parent.location.href;
+        url = window.location.href;
         url_array = url.split("/");
-        acao = url_array[5];
-        n = parseInt(acao);
+        var token = url.lastIndexOf("/");
+        var id = url.substr(token+1);
 
-        if(!isNaN(n)){
-         console.log('show');  
-
-         url = '../local/setlocal/'+n;
-         setLocal(url);
-
-       }else{
-        switch(acao){
-          case 'new':
-            console.log('new');
-          break;
-          case undefined:
-            console.log('index');
-          break
-          case 'edit':
-            token = url.lastIndexOf("/");
-            id = url.substr(token+1);
-            url = '../../local/setlocal/'+id;
-            setLocal(url);
-            console.log('edit');
-          break
-          default:
-            console.log("nenhuma");
-          break;
-        }   
-      } 
-
+        if(parseInt(id)!==NaN && url.contains('local/'+id)){ 
+          setLocal(rootURL+'local/setlocal/'+id);
+        }else if(parseInt(id)!==NaN && url.contains('local/edit')){
+          setLocal(rootURL+'local/setlocal/'+id);
+        }
+ 
       /** Obtem o par de coordenadas à partir de um marcador dinâmico */
       function coordsByMarker(jb,kb){
         lt = jb.substr(0,10);
@@ -347,6 +326,7 @@
 
       /** Atualiza o local corrente no mapa */
       function setLocal(url){
+        console.log('setlocal');
        $.ajax({
          type: 'get',
          url: url,
@@ -399,162 +379,158 @@
             href = window.location.href.toString();    
 
             if(u==='isResource/isNum' && id!==undefined && href.contains('route')) { 
+              $.ajax({
+                type: 'get',
+                url: rootURL+'autocomplete_route/'+id,
+                success: function(data){
 
-            $.ajax({
-              type: 'get',
-              url: rootURL+'autocomplete_route/'+id,
-              success: function(data){
+                  routeObj = JSON.parse(data.route_path);
 
-                routeObj = JSON.parse(data.route_path);
-
-                setOrigin(routeObj.route.origin.lat,routeObj.route.origin.lng);
-                setDestination(routeObj.route.destination.lat,routeObj.route.destination.lng);
- 
-                 for(var i = 0; i<routeObj.route.wpts.length;i++){
-                    addWayPoints(routeObj.route.wpts[i].lat,routeObj.route.wpts[i].lng);
-                 }
-
-                traceRoute(origin, destination, wps);
+                  setOrigin(routeObj.route.origin.lat,routeObj.route.origin.lng);
+                  setDestination(routeObj.route.destination.lat,routeObj.route.destination.lng);
    
-              },
-              error: function(jqxhr){
-                console.log(jqxhr);
-              }
-            });
-          }//fim autocomplete_route
+                   for(var i = 0; i<routeObj.route.wpts.length;i++){
+                      addWayPoints(routeObj.route.wpts[i].lat,routeObj.route.wpts[i].lng);
+                   }
+
+                  traceRoute(origin, destination, wps);
+     
+                },
+                error: function(jqxhr){
+                  console.log(jqxhr);
+                }
+              });
+            }//fim autocomplete_route
 
       /*****************************************************************/
-      if(u==='isResource/isAction') { 
-   
-         console.log('u :'+u);
-            $("#origem").autocomplete({
-              minLength: 0,
-              source: locais,
-              focus: function(event, ui) {
-              },
-              select: function(event, ui) {
-                lc = ui.item.value;
-                $("#origem").val(lc);
-                lt = arrayLocais.contains('name','lat',lc);
-                lg = arrayLocais.contains('name','lng',lc);
+            if(u==='isResource/isAction') { 
+         
+               console.log('u :'+u);
+                  $("#origem").autocomplete({
+                    minLength: 0,
+                    source: locais,
+                    focus: function(event, ui) {
+                    },
+                    select: function(event, ui) {
+                      lc = ui.item.value;
+                      $("#origem").val(lc);
+                      lt = arrayLocais.contains('name','lat',lc);
+                      lg = arrayLocais.contains('name','lng',lc);
 
-                var location = new google.maps.LatLng(lt,lg);
-                var marker = new google.maps.Marker({
-                  position: location,
-                  map: map
-                });
+                      var location = new google.maps.LatLng(lt,lg);
+                      var marker = new google.maps.Marker({
+                        position: location,
+                        map: map
+                      });
 
-                var href = window.location.href
-                var path = href.split("/");
-                var src = path[0]+'/'+path[1]+'/'+path[2]+'/'+path[3];
-                src += '/img/Aredimensionado.png';
-                placeMarker(location,src);
-                map.setCenter(marker.getPosition(location));
-                map.setZoom(12);
-                setOrigin(lt,lg);
-              }
-            });
+                      var href = window.location.href
+                      var path = href.split("/");
+                      var src = path[0]+'/'+path[1]+'/'+path[2]+'/'+path[3];
+                      src += '/img/Aredimensionado.png';
+                      placeMarker(location,src);
+                      map.setCenter(marker.getPosition(location));
+                      map.setZoom(12);
+                      setOrigin(lt,lg);
+                    }
+                  });
 
-            $("#destino").autocomplete({
-              minLength: 0,
-              source: locais,
-              focus: function(event, ui) {
-              },
-              select: function(event, ui) {
-                lc = ui.item.value;
-                $("#destino").val(lc);
-                lt = arrayLocais.contains('name','lat',lc);
-                lg = arrayLocais.contains('name','lng',lc);
-                setDestination(lt,lg);
-                traceRoute(origin,destination);
-              }
-            });
+                  $("#destino").autocomplete({
+                    minLength: 0,
+                    source: locais,
+                    focus: function(event, ui) {
+                    },
+                    select: function(event, ui) {
+                      lc = ui.item.value;
+                      $("#destino").val(lc);
+                      lt = arrayLocais.contains('name','lat',lc);
+                      lg = arrayLocais.contains('name','lng',lc);
+                      setDestination(lt,lg);
+                      traceRoute(origin,destination);
+                    }
+                  });
 
-            $(".para").autocomplete({
-              minLength: 0,
-              source: locais,
-              focus: function(event, ui) {
-              },
-              select: function(event, ui) {
-                lc = ui.item.value;
-                lt = arrayLocais.contains('name','lat',lc);
-                lg = arrayLocais.contains('name','lng',lc);
-                addWayPoints(lt,lg);
-                traceRoute(origin,destination,wps);
-              }
-            });
+                  $(".para").autocomplete({
+                    minLength: 0,
+                    source: locais,
+                    focus: function(event, ui) {
+                    },
+                    select: function(event, ui) {
+                      lc = ui.item.value;
+                      lt = arrayLocais.contains('name','lat',lc);
+                      lg = arrayLocais.contains('name','lng',lc);
+                      addWayPoints(lt,lg);
+                      traceRoute(origin,destination,wps);
+                    }
+                  });
 
-            /** Adicionar input de Destinos */
-            $add = $("table").find("#add");
+                  /** Adicionar input de Destinos */
+                  $add = $("table").find("#add");
 
-            paramais = 1;
-           
-            $add.click(function(e){
-              if($("table").find(".para").length<8){
-                 paramais++;
-                 ctd = $("#wrapper").css("padding-bottom")
-                 arrctd = ctd.split("p");
-                 ctd = parseInt(arrctd[0]);
-                 ctd -= paramais%2!=0? 30 : 28;
-                 ctd = ctd.toString()+"px";
-                  $("#wrapper").css("padding-bottom",ctd);
-
-                novotr = '<tr>';
-                novotr += '<td><label for="para">Para:</label></td>';
-                novotr += '<td><input class="para add" value=""/><img id="x" src="http://www.kiltr.com/Images/ported/transportControls/close.gif"/></td>';
-                novotr += '</tr>';
-
-                $(novotr).insertBefore($('table').find('#add'));
+                  paramais = 1;
                  
-                $(".add").autocomplete({
-                  minLength: 0,
-                  source: locais,
-                  focus: function(event, ui) {
-                  },
-                  select: function(event, ui) {
-                    lc = ui.item.value;
-                    $(this).val(lc);
-                    lt = arrayLocais.contains('name','lat',lc);
-                    lg = arrayLocais.contains('name','lng',lc);
-                    addWayPoints(lt,lg);
-                    traceRoute(origin,destination,wps);
-                  }
-                });
-            }else{
-              window.alert("O limite de pontos foi atingido !");
-            }
-            }); //fim do click no ADD "para"
+                  $add.click(function(e){
+                    if($("table").find(".para").length<8){
+                      paramais++;
+                      ctd = $("#wrapper").css("padding-bottom")
+                      arrctd = ctd.split("p");
+                      ctd = parseInt(arrctd[0]);
+                      ctd -= paramais%2!=0? 30 : 28;
+                      ctd = ctd.toString()+"px";
+                      $("#wrapper").css("padding-bottom",ctd);
 
-        paramenos = 1;
-        $close = $('table').find('.add').parent().find('img');
-        $("table").delegate('#x', 'click',function(e){
-          paramenos++;
-          paramais--;
-          ctd = $("#wrapper").css("padding-bottom")
-          arrctd = ctd.split("p");
-          ctd = parseInt(arrctd[0]);
-          ctd += paramenos%2!=0? 30 : 28;
-          ctd = ctd.toString()+"px";
-           $("#wrapper").css("padding-bottom",ctd);
-        
-          $(this).parent().parent().remove(); 
-          var local = $(this).parent().parent().find('.add').val(); 
-          var lat = arrayLocais.contains("name","lat",local);
-          var lng = arrayLocais.contains("name","lng",local);
-          wps = wps.remove({ location : new google.maps.LatLng(lat,lng), stopover : true });
-          if(wps.length>=1){
-            traceRoute(origin,destination,wps);
-          }else{
-            traceRoute(origin,destination); 
-          }
-        });
-      } //fim da checkagem de rota
+                      novotr = '<tr>';
+                      novotr += '<td><label for="para">Para:</label></td>';
+                      novotr += '<td><input class="para add" value=""/><img id="x"';
+                      novotr += 'src="http://www.kiltr.';
+                      novotr += 'com/Images/ported/transportControls/close.gif"/></td>';
+                      novotr += '</tr>';
 
-        /*
-        $("#geocomplete").geocomplete({
-          map: ".map_canvas"
-        });
-        */
+                      $(novotr).insertBefore($('table').find('#add'));
+                       
+                      $(".add").autocomplete({
+                        minLength: 0,
+                        source: locais,
+                        focus: function(event, ui) {
+                        },
+                        select: function(event, ui) {
+                          lc = ui.item.value;
+                          $(this).val(lc);
+                          lt = arrayLocais.contains('name','lat',lc);
+                          lg = arrayLocais.contains('name','lng',lc);
+                          addWayPoints(lt,lg);
+                          traceRoute(origin,destination,wps);
+                        }
+                      });
+                    }else{
+                      window.alert("O limite de pontos foi atingido !");
+                    }
+                  }); //fim do click no ADD "para"
+
+              paramenos = 1;
+              $close = $('table').find('.add').parent().find('img');
+              $("table").delegate('#x', 'click',function(e){
+                paramenos++;
+                paramais--;
+                ctd = $("#wrapper").css("padding-bottom")
+                arrctd = ctd.split("p");
+                ctd = parseInt(arrctd[0]);
+                ctd += paramenos%2!=0? 30 : 28;
+                ctd = ctd.toString()+"px";
+                 $("#wrapper").css("padding-bottom",ctd);
+              
+                $(this).parent().parent().remove(); 
+                var local = $(this).parent().parent().find('.add').val(); 
+                var lat = arrayLocais.contains("name","lat",local);
+                var lng = arrayLocais.contains("name","lng",local);
+                wps = wps.remove({ location : new google.maps.LatLng(lat,lng), stopover : true });
+                if(wps.length>=1){
+                  traceRoute(origin,destination,wps);
+                }else{
+                  traceRoute(origin,destination); 
+                }
+              });
+            } //fim da checkagem de rota
+
     } //fim do initialize
     </script>
     <!--<div class="panel">
