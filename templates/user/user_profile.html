@@ -193,10 +193,10 @@
                   <input id="search_users" type="text" name="term" placeholder="Busca de Usuários" value="" size="60"/>
                 </form>
 
-            <script sync defer>
+            <script async defer>
               /** USER AUTOCOMPLETE */
             $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
-              
+
               var avatar = item.avatar.name? item.avatar.name : item.avatar;
               var inner_html = '<a href="'+rootURL+'./profile/'+item.id+'">';
               inner_html += '<div class="list_item_container">';
