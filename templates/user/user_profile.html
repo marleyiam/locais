@@ -122,9 +122,9 @@
                                                       {% endfor %}
                                                    {% else %}
                                                          <span>Não há fotos cadastradas</span>
-                                                   {% endif %}
+                                                  {% endif %}
                                                        {{ local.name }}
-                                                  </a>
+                                                </a>
 
                                                 {% endif %}
 
@@ -207,7 +207,7 @@
               inner_html += '<div class="label">' + item.name + '</div>';
               inner_html += '<div class="city">' + item.city + '</div>';
               inner_html += '</div></a>';
-                      return $( "<li></li>" )
+                      return $("<li></li>")
                           .data("item.autocomplete", item)
                           .append(inner_html)
                           .appendTo( ul );

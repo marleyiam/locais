@@ -273,3 +273,35 @@ $app->get('/ajax_search_users', function () use ($app) {
 
     echo json_encode($arr);
 });
+
+$app->post('/clone', function() use ($app){
+  $arr = $app->request()->params();
+
+  $clone = new $arr['clone_type'];
+  $clone->users_id = current_user()->id;
+  foreach ($arr as $key => $value) {
+      if($key!='clone_type' && $key!='current_imgs'){
+          $clone->$key = $value;
+      }
+  }
+
+  if($clone->save()){
+      
+      if($arr['current_imgs']){
+          $current_imgs = $arr['current_imgs'];
+          foreach ($current_imgs as $key => $value) {
+              $class = $arr['clone_type'].'Picture';
+              $img = new $class();
+              $fk = strtolower(Inflect::pluralize($arr['clone_type']).'_id');
+              $img->name = $value;
+              $img->$fk = $clone->id;
+              $img->save();
+              //printer(get_class_methods($img));
+          }
+      }
+      echo $arr['clone_type']." clonado com sucesso !"; 
+  }else{
+      echo "Não foi possível clonar esse registro !";
+  }
+
+});

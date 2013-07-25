@@ -435,14 +435,40 @@
 
             /** Clone */
             $("tr").on('click','.btnClone', function(e){
-              clone_type = $(this).attr('data-clone');
-              clone_id = $(this).attr('data-id');
+              current_imgs = [];
+              $(".current_imgs").each(function(i,it){
+                  $el = $(it);
+                  path = $el.attr('src');
+                  token = path.lastIndexOf("/");
+                  current_img_name = path.substr(token+1);
+                  current_imgs[i] = current_img_name;
+              });
+
+              //if(!current_imgs.length > 0){
+              //    current_imgs = [];
+              //}
+
+              dataObj = {
+                clone_type:$(this).attr('data-clone'),
+                name:$('#local_name').text(),
+                identifier:$('#local_identifier').text()+'1',
+                address:$('#local_address').text(),
+                city:$('#local_city').text(),
+                lat:$('#local_lat').text(),
+                lng:$('#local_lng').text(),
+                description:$('#local_desc').text(),
+                visibility:$('#local_visibility').text(),
+                clone:$('#local_clone').text(),
+                current_imgs:current_imgs
+              }
+
               $.ajax({
                 type: 'post',
                 url: rootURL+'clone',
-                data: {clone_type:clone_type,clone_id:clone_id},
+                data: dataObj,
                 success: function(data){
-                  console.log(data);
+                  window.alert(data);
+                  //console.log(data);
                 },
                 error: function(jqxhr){
                   console.log(jqxhr);
