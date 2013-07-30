@@ -28,7 +28,7 @@ $twig = new Twig_Environment($loader, array(
 
 $twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
 */
-
+/*definicoes do FB app*/
 define('FACEBOOK_APP_ID',"475085362501750");
 define('FACEBOOK_SECRET',"d07dfae4e722f45fd92072069e4e0c59");
 define('REDIRECT_URI',"http://localhost/locais_fotos");
