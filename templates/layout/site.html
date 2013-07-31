@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Placelee</title>
     <link href="./templates/layout/styles.css" rel="stylesheet" type="text/css">
-    <style>
+        <!--<link href="styles.css" rel="stylesheet" type="text/css">-->
+       <style>
       .centralizado { margin: 0 auto; float: none; }
     </style>
 
@@ -52,6 +53,20 @@
     </style>
   </head>
   <body>
-    {% block content %} Sample Content {% endblock %} 
+  
+  <div class="container">
+  
+    
+
+    <div class="content">
+    
+    <div class="menu_superior">
+    </div>
+    
+    {% block content %} Sample Content {% endblock %}
+  
+    </div>
+  </div><!-- end .container -->
+
   </body>
 </html>
