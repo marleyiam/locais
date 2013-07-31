@@ -82,9 +82,17 @@ $app->post('/local', $authenticate($app) , function () use ($app) {
 
 /** DELETE */
 $app->get('/local/delete/(:id)', function($id) use ($app) {
- $local = Local::find_by_id($id);
- $local->delete();
- $app->redirect(get_root_url().'local');
+    $local = Local::find_by_id($id);
+    $success = false;
+    try{
+        $success = $local->delete();
+    }catch(Exception $e){
+    }
+    if($success){
+        echo 'Local excluído com sucesso !';
+    }else{
+        echo 'Para excluir o local você deve antes excluir todas as imagens associados à ele !';
+    }
 });
 
 /** NEW */

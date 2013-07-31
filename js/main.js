@@ -369,12 +369,19 @@
             $(".rmv_album").on('click','.rmv_album_link',function(e){
                 e.preventDefault();
                 if (confirm("Tem certeza que deseja excluir esse album ?")) {
-                    link = $(this).attr('href');
+                  $el = $(this);
+                    link = $el.attr('href');
+          
                     $.ajax({
                         type: 'get',
                         url: rootURL+link,
                         success: function(data){
-                            window.alert(data);
+                            if(data.status===true){
+                              window.alert(data.msg);
+                              $el.parent().parent().parent().remove()
+                            }else{
+                              window.alert(data.msg);
+                            }
                         },
                         error: function(jqxhr){
                             window.alert(jqxhr);
@@ -436,31 +443,33 @@
             /** Clone */
             $("tr").on('click','.btnClone', function(e){
               current_imgs = [];
-              $(".current_imgs").each(function(i,it){
+              $imgs = $(".current_imgs");
+              $imgs.each(function(i,it){
                   $el = $(it);
                   path = $el.attr('src');
                   token = path.lastIndexOf("/");
                   current_img_name = path.substr(token+1);
-                  current_imgs[i] = current_img_name;
+                  coma = i <= ($imgs.length-2)? ',':'';
+                  current_imgs[i] = '"'+current_img_name+'"';
               });
-
-              //if(!current_imgs.length > 0){
-              //    current_imgs = [];
-              //}
-
-              dataObj = {
-                clone_type:$(this).attr('data-clone'),
-                name:$('#local_name').text(),
-                identifier:$('#local_identifier').text()+'1',
-                address:$('#local_address').text(),
-                city:$('#local_city').text(),
-                lat:$('#local_lat').text(),
-                lng:$('#local_lng').text(),
-                description:$('#local_desc').text(),
-                visibility:$('#local_visibility').text(),
-                clone:$('#local_clone').text(),
-                current_imgs:current_imgs
-              }
+           
+                dataObj = '{';
+                dataObj += '"clone_type"'+':'+'"'+$(this).attr('data-clone')+'"';
+                dataObj += ',';
+                list = $(".resource_data").find('td');
+                list.each(function(i,it){
+                  $el = $(it);
+                  if($el.attr('id')!==undefined){
+                    resource_id =  $el.attr('id').toString();
+                    token = resource_id.lastIndexOf('_');
+                    field = resource_id.substr(token+1);
+                    dataObj += '"'+field+'"'+':'+'"'+$el.text()+'"';
+                    dataObj += ',';
+                  }
+                });
+                dataObj += '"imgs[]"'+':['+current_imgs+']';
+                dataObj += '}';
+                dataObj = JSON.parse(dataObj);
 
               $.ajax({
                 type: 'post',
@@ -468,12 +477,48 @@
                 data: dataObj,
                 success: function(data){
                   window.alert(data);
-                  //console.log(data);
                 },
                 error: function(jqxhr){
                   console.log(jqxhr);
                 }
               });
             });
+
+            /** REMOVE PIC from Resource */
+            $("#imgs").on('click','.pic_close',function(){
+                $el = $(this);
+                $.ajax({
+                    type: 'post',
+                    url: rootURL+'rmv_picture',
+                    data: {img_id:$el.attr('data-id-img'),resource:$el.attr('data-resource')},
+                    success: function(data){
+                      $el.parent().remove();
+                      window.alert(data);
+                    },
+                    error: function(jqxhr){
+                      console.log(jqxhr);
+                    }
+                });
+            });
+
+            /** REMOVE Resource */
+            $(".rmv_resource").on('click','.rmv_resource_link',function(e){
+                e.preventDefault();
+                if (confirm("Tem certeza que deseja excluir esse registro ?")) {
+                    link = $(this).attr('href');
+                    $.ajax({
+                        type: 'get',
+                        url: rootURL+link,
+                        success: function(data){
+                            window.alert("Registro excluído com sucesso !");
+                        },
+                        error: function(jqxhr){
+                            window.alert(jqxhr);
+                        }
+                    });
+                }
+                return false;
+            });
+
 
            }); // fim do document.ready

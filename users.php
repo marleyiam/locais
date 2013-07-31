@@ -277,18 +277,23 @@ $app->get('/ajax_search_users', function () use ($app) {
 $app->post('/clone', function() use ($app){
   $arr = $app->request()->params();
 
-  $clone = new $arr['clone_type'];
+  $clone = new $arr['clone_type'];  
   $clone->users_id = current_user()->id;
   foreach ($arr as $key => $value) {
-      if($key!='clone_type' && $key!='current_imgs'){
+      if($key!='clone_type' && $key!='imgs'){
+        if($key=='identifier'){
+           $u = sprintf("%010s_%s", time(), uniqid(true));
+          $clone->$key = $value.$u;
+        }else{
           $clone->$key = $value;
+        }
       }
   }
 
   if($clone->save()){
       
-      if($arr['current_imgs']){
-          $current_imgs = $arr['current_imgs'];
+      if($arr['imgs']){
+          $current_imgs = $arr['imgs'];
           foreach ($current_imgs as $key => $value) {
               $class = $arr['clone_type'].'Picture';
               $img = new $class();
@@ -303,5 +308,15 @@ $app->post('/clone', function() use ($app){
   }else{
       echo "Não foi possível clonar esse registro !";
   }
+});
 
+/** REMOVE picture RESOURCE (local, realty, route) */
+$app->post('/rmv_picture', function() use ($app){
+    $arr = $app->request()->params();
+    $resource_picture = $arr['resource']::find_by_id($arr['img_id']); 
+    if($resource_picture->delete()){
+        echo 'Foto excluída com sucesso !';
+    }else{
+        echo 'Não foi possível excluir a foto !';
+    }
 });

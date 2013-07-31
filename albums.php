@@ -29,21 +29,22 @@ $app->post('/album', $authenticate($app), function () use ($app) {
     }
 });
 
-
 /** DELETE */
 $app->get('/album/delete/(:id)', function($id) use ($app) {
- $album = Album::find_by_id($id);
- $success = false;
- try{
-    $success = $album->delete();
- }catch(Exception $e){
+    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
+    
+    $album = Album::find_by_id($id);
+    $success = false;
+    try{
+       $success = $album->delete();
+    }catch(Exception $e){
    //var_dump($e->getMessage());
- }
- if($success){
-    $app->redirect(get_root_url().'album');
- }else{
-    echo 'Para excluir o album você deve antes excluir todos os registros associados à ele !';
- }
+    }
+    if($success){
+        echo json_encode(array('msg'=>'Album excluído com sucesso !','status'=>$success));
+    }else{
+        echo json_encode(array('msg'=>'Para excluir o album você deve antes excluir todos os registros associados à ele !','status'=>$success));
+    }
 });
 
 /** NEW */

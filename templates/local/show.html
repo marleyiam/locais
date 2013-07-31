@@ -8,8 +8,8 @@
             <table border="1px solid">
                 <caption>Dados do Local</caption>
                 <thead>
-                    <tr>
-                        <th>ID</th>
+                    <tr class="resource_fields">
+                        <th>id</th>
                         <th>nome</th>
                         <th>identificador</th>
                         <th>endereco</th>
@@ -23,18 +23,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td id="local_id">{{ local.id }}</td>
+                    <tr class="resource_data">
+                        <td>{{ local.id }}</td>
                         <td id="local_name">{{ local.name }}</td>
                         <td id="local_identifier">{{ local.identifier }}</td>
                         <td id="local_address">{{ local.address }}</td>
                         <td id="local_city">{{ local.city }}</td>
                         <td id="local_lat">{{ local.lat }}</td>
                         <td id="local_lng">{{ local.lng }}</td>
-                        <td id="local_desc">{{ local.description }}</td>
+                        <td id="local_description">{{ local.description }}</td>
                         <td id="local_visibility">{{ local.visibility }}</td>
                         <td id="local_clone">{{ local.clone }}</td>
-                        <td id="local"><a href="{{ link }}">{{ link }}</a></td>
+                        <td><a href="{{ link }}">{{ link }}</a></td>
                     </tr>
                     <tr>
                         <td>
@@ -72,9 +72,12 @@
             {% if (imagens|length > 0) %}
             <div id="imgs">
                 {% for img in imagens %}
-                <div>
-                    <img class="current_imgs" src="../uploads_locais/{{ img.name }}" width="400px" height="230px" alt=""/>
-                </div>
+                    <div>
+                        <img class="current_imgs" src="../uploads_locais/{{ img.name }}" width="400px" height="230px" alt=""/>
+                           {% if(user.id == local.users_id) %}
+                                <img data-id-img= "{{img.id}}" data-resource="LocalPicture" class="pic_close" src="../img/pic-close.png" alt="">
+                           {% endif %}
+                    </div>
                 {% endfor %}
             </div>
             {% else %}
