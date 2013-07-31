@@ -2,8 +2,8 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8">
+    <title>Placelee</title>
     <link href="./templates/layout/styles.css" rel="stylesheet" type="text/css">
-    <title>main</title>
     <style>
       .centralizado { margin: 0 auto; float: none; }
     </style>
@@ -13,12 +13,12 @@
       href = window.location.href;
       href_array = href.split("/");
       count = href_array.length;
-      if(count <= 5){
+      if(count <= 4){
         root = "./";
 
-      }else if(count == 6){
+      }else if(count == 5){
         root = "../";
-      }else if(count == 7){
+      }else if(count == 6){
         root = "../../";
       }
     </script>
