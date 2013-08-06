@@ -9,14 +9,13 @@
       .centralizado { margin: 0 auto; float: none; }
     </style>
 
-    <script type="text/javascript">
+    <script>
       root = "";
       href = window.location.href;
       href_array = href.split("/");
       count = href_array.length;
       if(count <= 4){
         root = "./";
-
       }else if(count == 5){
         root = "../";
       }else if(count == 6){
@@ -37,11 +36,6 @@
     <script>
       $.getScript(root+'js/jquery.MultiFile.js');
     </script>
-
-    <script>
-	$.getScript(root+'js/main.js');
-    </script>
-
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
     <!--<script src="http://code.jquery.com/jquery-1.9.0rc1.js"></script>
@@ -56,8 +50,6 @@
   
   <div class="container">
   
-    
-
     <div class="content">
     
     <div class="menu_superior">
@@ -68,5 +60,9 @@
   </div>
 
   </div><!-- end .container -->
+    <script defer>
+console.log('root :'+root);
+	$.getScript(root+'js/main.js');
+    </script>
   </body>
 </html>
