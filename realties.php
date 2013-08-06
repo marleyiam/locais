@@ -107,6 +107,8 @@ $app->get('/realty/new/', $authenticate($app), function () use ($app) {
 
 /** EDIT */
 $app->get('/realty/edit/(:id)', $authenticate($app), function ($id) use ($app) {
+    $user = current_user();
+    $dados_requisicao['avatar'] = $user->user_pictures;
     $dados_requisicao['realty'] = Realty::find_by_id($id);
     $dados_requisicao['action'] = get_root_url().'realty/update/'.$id;
     $dados_requisicao['acao'] = "editar";
@@ -115,8 +117,6 @@ $app->get('/realty/edit/(:id)', $authenticate($app), function ($id) use ($app) {
 
 /** UPDATE */
 $app->put('/realty/update/(:id)', function ($id) use ($app) {
-    $user = current_user();
-    $realty['avatar'] = $user->user_pictures;
     $realty = Realty::find_by_id($id);
     $imagem = new RealtyPicture();
     $realty->name  = $app->request()->put('nome');

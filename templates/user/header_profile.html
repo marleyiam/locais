@@ -5,7 +5,7 @@
 	<a href="user/config">edit config</a>
 	</br>
 	{% if(friends_requests_quantity>0) %}
-	<a href="requests">({{friends_requests_quantity}})Solicitações</a>
+		<a href="requests">({{friends_requests_quantity}})Solicitações</a>
 	{% endif %}
 	<form id="formSearch" action="search_for_locals" method="get">
 		<input id="search_locals" type="text" name="term" placeholder="Local, endereço, ponto de interesse, etc." value="" size="60"/>
