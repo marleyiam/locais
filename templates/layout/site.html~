@@ -38,10 +38,6 @@
       $.getScript(root+'js/jquery.MultiFile.js');
     </script>
 
-    <script defer="defer">
-      $.getScript(root+'js/main.js');
-    </script>
-
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
     <!--<script src="http://code.jquery.com/jquery-1.9.0rc1.js"></script>
@@ -69,4 +65,7 @@
   </div><!-- end .container -->
 
   </body>
+    <script defer>
+      $.getScript(root+'js/main.js');
+    </script>
 </html>
