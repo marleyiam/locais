@@ -30,16 +30,12 @@
     <!-- Gmaps -->
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
     <!-- geocomplete -->
-    <script type="text/javascript">
+    <script>
       $.getScript(root+'js/geocomplete/jquery.geocomplete.js');
     </script>
     <!-- File Uploader -->
-    <script type="text/javascript">
+    <script>
       $.getScript(root+'js/jquery.MultiFile.js');
-    </script>
-
-    <script type="text/javascript">
-      $.getScript(root+'js/main.js');
     </script>
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
@@ -69,4 +65,7 @@
   </div><!-- end .container -->
 
   </body>
+    <script defer>
+      $.getScript(root+'js/main.js');
+    </script>
 </html>
