@@ -37,6 +37,7 @@
     <script>
       $.getScript(root+'js/jquery.MultiFile.js');
     </script>
+
     <script defer>
 	$.getScript(root+'js/main.js');
     </script>
@@ -63,8 +64,9 @@
     </div>
     
     {% block content %} Sample Content {% endblock %}
-  
-    </div>
+ 
+  </div>
+
   </div><!-- end .container -->
   </body>
 </html>
