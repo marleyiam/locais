@@ -270,33 +270,6 @@
                   });
               });
 
-              /** USER AUTOCOMPLETE */
-            /*$.ui.autocomplete.prototype._renderItem = function (ul, item) { 
-
-              var avatar = item.avatar.name? item.avatar.name : item.avatar;
-              var inner_html = '<a href="http://localhost/locais_fotos/profile/'+item.id+'">';
-              inner_html += '<div class="list_item_container">';
-              inner_html += '<div class="image">';
-              inner_html += '<img height="50px" width="50px"';
-              inner_html += ' src="http://localhost/locais_fotos/uploads_users/' + avatar + '">';
-              inner_html += '</div>';
-              inner_html += '<div class="label">' + item.name + '</div>';
-              inner_html += '<div class="city">' + item.city + '</div>';
-              inner_html += '</div></a>';
-                      return $( "<li></li>" )
-                          .data("item.autocomplete", item)
-                          .append(inner_html)
-                          .appendTo( ul );
-            };
-
-            $("#search_users").autocomplete({
-              minLength: 0,
-              source: 'http://localhost/locais_fotos/ajax_search_users',
-               focus: function(event, ui) {
-              },
-              select: function(event, ui) {
-              }
-            });*/
 
             $("#login-email").change(function(){
                 $(".validation").remove();
@@ -520,5 +493,33 @@
                 return false;
             });
 
+
+              /** USER AUTOCOMPLETE */
+            $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
+
+              var avatar = item.avatar.name? item.avatar.name : item.avatar;
+              var inner_html = '<a href="'+rootURL+'profile/'+item.id+'">';
+              inner_html += '<div class="list_item_container">';
+              inner_html += '<div class="image">';
+              inner_html += '<img height="50px" width="50px"';
+              inner_html += ' src="'+rootURL+'uploads_users/' + avatar + '">';
+              inner_html += '</div>';
+              inner_html += '<div class="label">' + item.name + '</div>';
+              inner_html += '<div class="city">' + item.city + '</div>';
+              inner_html += '</div></a>';
+                      return $("<li></li>")
+                          .data("item.autocomplete", item)
+                          .append(inner_html)
+                          .appendTo(ul);
+            };
+
+              $("#search_users").autocomplete({
+                minLength: 0,
+                source: rootURL+'ajax_search_users',
+                 focus: function(event, ui) {
+                },
+                select: function(event, ui) {
+                }
+              });
 
            }); // fim do document.ready
