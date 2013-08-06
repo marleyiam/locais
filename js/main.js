@@ -64,7 +64,7 @@
               }else if(u==='isResource/isAction'){
                   rootURL = '../../';
               }else if(u==='isResource/isNum'){
-                  rootURL = '../';
+                  rootURL = '../../';
               }else if(u==='isResource/isAction/isNum'){
                   rootURL = '../../';
               }else if(u==='/'){
