@@ -3,22 +3,27 @@
 /** INDEX */
 $app->get('/route', $authenticate($app), function() use ($app){
     $user = current_user();
-   $routes['routes'] =  $user->routes;
+    $routes['avatar'] = $user->user_pictures;
+    $routes['routes'] =  $user->routes;
     $app->render('route/index.html', $routes);
 });
 
 /** SHOW */
 $app->get('/route/(:id)', function($id) use ($app){
-   $route['route'] = Route::find_by_id($id);
-   $route['link'] = 'shareroute/'.$route['route']->identifier;
-   $route['imagens'] = $route['route']->route_pictures;
-   $app->render('route/show.html', $route);
+    $user = current_user();
+    $route['avatar'] = $user->user_pictures;
+    $route['route'] = Route::find_by_id($id);
+    $route['link'] = 'shareroute/'.$route['route']->identifier;
+    $route['imagens'] = $route['route']->route_pictures;
+    $app->render('route/show.html', $route);
 });
 
 
 /** FIND ROUTE by SHAREURL */
 $app->get('/shareroute/:term', function($term) use ($app){
     $route['route'] = Route::find_by_identifier($term);
+    $user = current_user();
+    $route['avatar'] = $user->user_pictures;
     if($route['route']){
         $app->redirect(get_root_url().'route/'.$route['route']->id);
     }else{
@@ -81,6 +86,8 @@ $app->get('/route/delete/(:id)', function($id) use ($app) {
 
 /** NEW */
 $app->get('/route/new/', $authenticate($app), function () use ($app) {
+    $user = current_user();
+    $dados_requisicao['avatar'] = $user->user_pictures;
     $dados_requisicao['action'] = get_root_url().'route';
     $dados_requisicao['acao'] = "cadastrar";
     $app->render('route/new.html', $dados_requisicao);
@@ -88,6 +95,8 @@ $app->get('/route/new/', $authenticate($app), function () use ($app) {
 
 /** EDIT */
 $app->get('/route/edit/(:id)', $authenticate($app), function ($id) use ($app) {
+    $user = current_user();
+    $dados_requisicao['avatar'] = $user->user_pictures;
     $dados_requisicao['route'] = Route::find_by_id($id);
     $dados_requisicao['action'] = get_root_url().'route/update/'.$id;
     $dados_requisicao['acao'] = "editar";

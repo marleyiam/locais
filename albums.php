@@ -3,15 +3,18 @@
 /** INDEX */
 $app->get('/album', $authenticate($app), function() use ($app){
     $user = current_user();
+    $albums['avatar'] = $user->user_pictures;
     $albums['albums'] =  $user->albums;
     $app->render('album/index.html', $albums);
 });
 
 /** SHOW */
 $app->get('/album/(:id)', function($id) use ($app){
-   $album['album'] = Album::find_by_id($id);
+    $user = current_user();
+    $album['avatar'] = $user->user_pictures;
+    $album['album'] = Album::find_by_id($id);
 
-   $app->render('album/show.html', $album);
+    $app->render('album/show.html', $album);
 });
 
 /** CREATE */
@@ -49,6 +52,8 @@ $app->get('/album/delete/(:id)', function($id) use ($app) {
 
 /** NEW */
 $app->get('/album/new/', $authenticate($app), function () use ($app) {
+    $user = current_user();
+    $dados_requisicao['avatar'] = $user->user_pictures;
     $dados_requisicao['action'] = get_root_url().'album';
     $dados_requisicao['acao'] = "cadastrar";
     $dados_requisicao['locals'] = Local::find("all",array("conditions" => array("users_id = ?", current_user()->id)));
@@ -57,6 +62,8 @@ $app->get('/album/new/', $authenticate($app), function () use ($app) {
 
 /** EDIT */
 $app->get('/album/edit/(:id)', $authenticate($app), function ($id) use ($app) {
+    $user = current_user();
+    $dados_requisicao['avatar'] = $user->user_pictures;
     $dados_requisicao['album'] = Album::find_by_id($id);
     $dados_requisicao['action'] = get_root_url().'album/update/'.$id;
     $dados_requisicao['acao'] = "editar";

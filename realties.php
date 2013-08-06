@@ -4,20 +4,25 @@
 /** INDEX */ 
 $app->get('/realty', $authenticate($app), function() use ($app){
     $user = current_user();
+    $realties['avatar'] = $user->user_pictures;
     $realties['realties'] = $user->realties;
     $app->render('realty/index.html', $realties);
 });
 
 /** SHOW */
 $app->get('/realty/(:id)', function($id) use ($app){
-   $realty['realty'] = Realty::find_by_id($id);
-   $realty['link'] = 'sharerealty/'.$realty['realty']->identifier;
-   $realty['imagens'] = $realty['realty']->realty_pictures;
-   $app->render('realty/show.html', $realty);
+    $user = current_user();
+    $realty['avatar'] = $user->user_pictures;
+    $realty['realty'] = Realty::find_by_id($id);
+    $realty['link'] = 'sharerealty/'.$realty['realty']->identifier;
+    $realty['imagens'] = $realty['realty']->realty_pictures;
+    $app->render('realty/show.html', $realty);
 });
 
 /** FIND REALTY by SHAREURL */
 $app->get('/sharerealty/:term', function($term) use ($app){
+    $user = current_user();
+    $realty['avatar'] = $user->user_pictures;
     $realty['realty'] = Realty::find_by_identifier($term);
     if($realty['realty']){
         $app->redirect(get_root_url().'realty/'.$realty['realty']->id);
@@ -93,6 +98,8 @@ $app->get('/realty/delete/(:id)', function($id) use ($app) {
 
 /** NEW */
 $app->get('/realty/new/', $authenticate($app), function () use ($app) {
+    $user = current_user();
+    $dados_requisicao['avatar'] = $user->user_pictures;
     $dados_requisicao['action'] = get_root_url().'realty';
     $dados_requisicao['acao'] = "cadastrar";
     $app->render('realty/new.html', $dados_requisicao);
@@ -108,6 +115,8 @@ $app->get('/realty/edit/(:id)', $authenticate($app), function ($id) use ($app) {
 
 /** UPDATE */
 $app->put('/realty/update/(:id)', function ($id) use ($app) {
+    $user = current_user();
+    $realty['avatar'] = $user->user_pictures;
     $realty = Realty::find_by_id($id);
     $imagem = new RealtyPicture();
     $realty->name  = $app->request()->put('nome');
