@@ -77,7 +77,6 @@ $app->get('/user', $authenticate($app), function() use ($app){
    $user['realties_albums'] = $array_realties_albums;
    $user['imagens_realties_albums'] = $imagens_realties_albums;
    $user['avatar'] = $user['user']->user_pictures;
-   printer($user['avatar']);
 
    $app->render('user/show_profile.html', $user);
 });

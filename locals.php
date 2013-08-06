@@ -4,6 +4,7 @@
 /** INDEX */ 
 $app->get('/local', $authenticate($app), function() use ($app){
     $user = current_user();
+    $locals['avatar'] = $user->user_pictures;
     $locals['locals'] = $user->locals;
     $app->render('local/index.html', $locals);
 });
@@ -11,7 +12,8 @@ $app->get('/local', $authenticate($app), function() use ($app){
 /** SHOW */
 $app->get('/local/(:id)', function($id) use ($app){
    $local['local'] = Local::find_by_id($id);
-
+   $user = current_user();
+   $local['avatar'] = $user->user_pictures;
    $local['imagens'] = $local['local']->local_pictures;
    $local['link'] = 'sharelocal/'.$local['local']->identifier;
    $app->render('local/show.html', $local);
@@ -20,6 +22,8 @@ $app->get('/local/(:id)', function($id) use ($app){
 /** FIND LOCAL by SHAREURL */
 $app->get('/sharelocal/:term', function($term) use ($app){
     $local['local'] = Local::find_by_identifier($term);
+    $user = current_user();
+    $local['avatar'] = $user->user_pictures;
     if($local['local']){
         $app->redirect(get_root_url().'local/'.$local['local']->id);
     }else{
@@ -97,6 +101,8 @@ $app->get('/local/delete/(:id)', function($id) use ($app) {
 
 /** NEW */
 $app->get('/local/new/', $authenticate($app), function () use ($app) {
+    $user = current_user();
+    $dados_requisicao['avatar'] = $user->user_pictures;
     $dados_requisicao['action'] = get_root_url().'local';
     $dados_requisicao['acao'] = "cadastrar";
     $app->render('local/new.html', $dados_requisicao);
@@ -104,6 +110,8 @@ $app->get('/local/new/', $authenticate($app), function () use ($app) {
 
 /** EDIT */
 $app->get('/local/edit/(:id)', $authenticate($app), function ($id) use ($app) {
+    $user = current_user();
+    $dados_requisicao['avatar'] = $user->user_pictures;
     $dados_requisicao['local'] = Local::find_by_id($id);
     $dados_requisicao['action'] = get_root_url().'local/update/'.$id;
     $dados_requisicao['acao'] = "editar";
