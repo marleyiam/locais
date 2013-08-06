@@ -99,7 +99,7 @@
 
       function jsonRoute(origin, destination, wps){
 
-        var stroute = '{"route":{"origin":{"lat":'+origin.jb+',"lng":'+origin.kb+'},"destination":{"lat":'+destination.jb+',"lng":'+destination.kb+'}';
+        var stroute = '{"route":{"origin":{"lat":'+origin.lb+',"lng":'+origin.mb+'},"destination":{"lat":'+destination.lb+',"lng":'+destination.mb+'}';
 
         if(arguments.length == 3){
           
@@ -113,7 +113,7 @@
 
                     routepoints +=',';
                   }
-                    routepoints +='{"lat":'+wps[i].location.jb+',"lng":'+wps[i].location.kb+',"stopover":'+wps[i].stopover+'}';
+                    routepoints +='{"lat":'+wps[i].location.lb+',"lng":'+wps[i].location.mb+',"stopover":'+wps[i].stopover+'}';
                
               }catch(e){}
           }// fim for
@@ -266,9 +266,9 @@
         }
  
       /** Obtem o par de coordenadas à partir de um marcador dinâmico */
-      function coordsByMarker(jb,kb){
-        lt = jb.substr(0,10);
-        lg = kb.substr(0,10);
+      function coordsByMarker(lb,mb){
+        lt = lb.substr(0,10);
+        lg = mb.substr(0,10);
 
         $("#lat").val(lt);
         $("#lng").val(lg);
@@ -278,8 +278,8 @@
       var marker;
 
       function placeMarker(location, image) {
-
-        coordsByMarker(location.jb.toString(),location.kb.toString());
+        console.log(location)
+        coordsByMarker(location.lb.toString(),location.mb.toString());
 
         var position = location;
         var mp = map;
