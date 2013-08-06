@@ -90,7 +90,9 @@
           if($('.header_avatar').length > 0){
               $el = $('.header_avatar');
               src = $el.attr('src').toString();
+              console.log(src)
               $el.attr('src',rootURL+src);
+              console.log($el.attr('src'))
           }
 
           if($(".avatar").length > 0){

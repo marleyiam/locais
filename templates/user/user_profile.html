@@ -192,34 +192,5 @@
                 <form action="" method="">
                   <input id="search_users" type="text" name="term" placeholder="Busca de Usuários" value="" size="60"/>
                 </form>
-
-            <!--<script async defer>
-              /** USER AUTOCOMPLETE */
-            $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
-
-              var avatar = item.avatar.name? item.avatar.name : item.avatar;
-              var inner_html = '<a href="'+rootURL+'./profile/'+item.id+'">';
-              inner_html += '<div class="list_item_container">';
-              inner_html += '<div class="image">';
-              inner_html += '<img height="50px" width="50px"';
-              inner_html += ' src="'+rootURL+'./uploads_users/' + avatar + '">';
-              inner_html += '</div>';
-              inner_html += '<div class="label">' + item.name + '</div>';
-              inner_html += '<div class="city">' + item.city + '</div>';
-              inner_html += '</div></a>';
-                      return $("<li></li>")
-                          .data("item.autocomplete", item)
-                          .append(inner_html)
-                          .appendTo( ul );
-            };
-              $("#search_users").autocomplete({
-                minLength: 0,
-                source: rootURL+'../ajax_search_users',
-                 focus: function(event, ui) {
-                },
-                select: function(event, ui) {
-                }
-              });
-            </script>-->
             
     {% endblock %}
