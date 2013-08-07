@@ -435,8 +435,7 @@
             });
 
 
-            if(!rootURL.contains('locals')){
-              console.log("contain locals")
+            if(!rootURL.contains('routes')){
                 /** USER AUTOCOMPLETE */
               $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
 
