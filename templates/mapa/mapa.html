@@ -258,11 +258,12 @@
         url = window.location.href;
         var token = url.lastIndexOf("/");
         var id = url.substr(token+1);
+        realtylocal = url.contains('local')? 'local' : 'realty';
 
-        if(parseInt(id)!==NaN && url.contains('local/'+id)){ 
-          setLocal(rootURL+'local/setlocal/'+id);
-        }else if(parseInt(id)!==NaN && url.contains('local/edit')){
-          setLocal(rootURL+'local/setlocal/'+id);
+        if(parseInt(id)!==NaN && url.contains('local/'+id) || url.contains('realty/'+id) && !url.contains('new')){ 
+          setLocal(rootURL+realtylocal+'/setlocal/'+id);
+        }else if(parseInt(id)!==NaN && url.contains('local/edit') || url.contains('realty/edit') && !url.contains('new')){
+          setLocal(rootURL+realtylocal+'/setlocal/'+id);
         }
  
       /** Obtem o par de coordenadas à partir de um marcador dinâmico */

@@ -67,7 +67,11 @@
   </body>
   <script async defer> 
       $.getScript(root+'js/root.js');
-      setLinks()
+      try{
+        setLinks();
+      }catch(e){
+        
+      }
   </script>
 
 </html>
