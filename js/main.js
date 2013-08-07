@@ -137,11 +137,12 @@
             $el8.attr('src',rootURL+src8);
         }
 
-        $('html').ready(function(){
-            console.log('container');
-            setRoot();
-        });
       }
+
+      $('html').ready(function(){
+          console.log('container');
+          setRoot();
+      });
 
 
       Array.prototype.contains = function(key, val, param) {
