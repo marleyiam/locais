@@ -435,7 +435,7 @@
             });
 
 
-            if(!rootURL.contains('route')){
+            if(!window.location.href.contains('route')){
                 /** USER AUTOCOMPLETE */
               $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
 
