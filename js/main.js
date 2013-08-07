@@ -532,3 +532,10 @@
             }// fim If
 
            }); // fim do document.ready
+            
+          $(function(){
+              $("#setlink").ready(function() {
+                console.log("SL")
+                setlinks();
+              });
+          }
