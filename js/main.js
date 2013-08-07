@@ -78,7 +78,7 @@
       } //fim setRoot
 
       function setLinks(){
-        console.log('setlinks')
+        console.log('setlinks func')
         links = $('a');
         links.each(function(i,it){
             $el = $(it);
@@ -532,10 +532,3 @@
             }// fim If
 
            }); // fim do document.ready
-            
-          $(function(){
-              $("#setlink").ready(function() {
-                console.log("SL")
-                setlinks();
-              });
-          }
