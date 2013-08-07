@@ -57,7 +57,7 @@
           $el8.attr('src',rootURL+src8);
       }
 
-      $('.container').ready(function(){
+      $('html').ready(function(){
           console.log('container');
           setRoot();
       });
