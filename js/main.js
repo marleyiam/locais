@@ -78,7 +78,7 @@
       } //fim setRoot
 
       function setLinks(){
-        
+        console.log('setlinks')
         links = $('a');
         links.each(function(i,it){
             $el = $(it);
