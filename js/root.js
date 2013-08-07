@@ -6,7 +6,9 @@
           try{
               if(!$el.attr('href').toString().contains('google')){
                   str = $el.attr('href').toString();
+                  console.log(str)
                   $el.attr('href',rootURL+str);  
+                  console.log($el.attr('href'))
               }
           }catch(e){
              
