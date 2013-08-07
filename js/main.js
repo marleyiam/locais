@@ -1,4 +1,82 @@
        //window.alert('!');
+      rootURL = "";
+      u = "";
+      function setRoot(){
+          
+          address_url = window.location.href;
+          var hash = address_url.lastIndexOf("#");
+          if(window.location.hash){
+            address_url = address_url.replace(window.location.hash,'');
+          }
+          if(address_url.substr(hash)==="#"){
+            address_url = address_url.substr(0,hash);
+          }
+
+          //links = $('a');
+
+          array_Address_url = address_url.split("/");
+          resources = [];
+          actions = [];
+          indexes = [];
+          profiles = [];
+          isResource = false;
+          isAction = false;
+          isId = false;
+          isProfile = false;
+          actions = ['new','edit'];
+          resources = ['local','realty','route','user','profile','album'];
+          configs = ['config'];
+
+          function whatIs(arrayI){
+              if(arrayI=='user'){
+                  return 'isUser';
+                
+              }else if(configs.indexOf(arrayI)!=-1){
+                  return 'isConfig';
+                
+              }else if(resources.indexOf(arrayI)!=-1){
+                  return 'isResource';
+               
+              }else if(actions.indexOf(arrayI)!=-1){
+                  return 'isAction';   
+               
+              }else if(arrayI!=='' && !isNaN(arrayI)){
+                  return 'isNum' ; 
+                
+              }else{
+                  return false;   
+              }
+          }
+
+          for(var i=0 ,l = (array_Address_url.length);i<l;i++){
+
+              if(whatIs(array_Address_url[i])!==false){
+                  indexes.push(whatIs(array_Address_url[i]));   
+              }
+          }
+              
+          function defineRoot(u){
+
+              if(u==='isUser/isAction'){
+                  rootURL = '../'; 
+              }else if(u==='isUser/isConfig'){
+                  rootURL = '../'; 
+              }else if(u==='isResource/isAction'){
+                  rootURL = '../../';
+              }else if(u==='isResource/isNum'){
+                  rootURL = '../../';
+              }else if(u==='isResource/isAction/isNum'){
+                  rootURL = '../../';
+              }else if(u==='/'){
+                  rootURL = ''; 
+              }
+          }
+
+          u = indexes.join('/') ;
+          defineRoot(u);
+
+      } //fim setRoot
+
 
       Array.prototype.contains = function(key, val, param) {
           var i = this.length;
