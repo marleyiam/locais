@@ -435,7 +435,7 @@
             });
 
 
-            if(!rootURL.contains('routes')){
+            if(!rootURL.contains('route')){
                 /** USER AUTOCOMPLETE */
               $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
 
