@@ -369,14 +369,13 @@
             var locais = new Array();
 
             var url = window.parent.location.href;
-            console.log(url)
             var token = url.lastIndexOf("/");
             var id = url.substr(token+1);
-            console.log(id)
+
             /*!!!*/
             href = window.location.href.toString();    
 
-            if(id!==undefined && href.contains('route')) { 
+            if(id!=="" && href.contains('route')) { 
               $.ajax({
                 type: 'get',
                 url: rootURL+'autocomplete_route/'+id,
