@@ -205,9 +205,9 @@
            $(document).ready(function(){
 
            
-               $('html').on('DOMNodeInserted',function(e){
-                 console.log(e.target)
-               });  
+               //$('html').on('DOMNodeInserted',function(e){
+               //  console.log(e.target)
+               //});  
            
 
             /** ADD USER */
