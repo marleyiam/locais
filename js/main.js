@@ -205,7 +205,7 @@
            $(document).ready(function(){
 
            
-               $(document).on('DOMNodeInserted',function(e){
+               $('body').on('DOMNodeInserted',function(e){
                  console.log(e.target)
                });  
            
