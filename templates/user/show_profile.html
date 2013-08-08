@@ -81,8 +81,8 @@
 
                                             <a href="local/{{local.id}}">
                                                {% if (imagens_locals_albums|length > 0) %}
-                                                  {% for arrimg in imagens_locals_albums %}
-                                                    {% for k,aimg in arrimg %}
+                                                  {% for k,arrimg in imagens_locals_albums %}
+                                                    {% for aimg in arrimg %}
                                                       {% for img in aimg %}
                                                         {% if k==j %}
                                                          {% if (img.locals_id == local.id) %}
