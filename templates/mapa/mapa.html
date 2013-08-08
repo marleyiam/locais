@@ -122,7 +122,6 @@
 
         }// fim if
           stroute += '} }';
-          //console.log(stroute);
           $("#route_path").val(stroute);
 
       }// fim jsonRoute
@@ -134,9 +133,6 @@
       ser = new google.maps.DirectionsService();
       
       function traceRoute(origin, destination, waypoints){
-        //console.log(origin);
-        //console.log(destination);
-        //console.log(waypoints);
 
           if(marker) marker.setMap(null);
             route = true;
@@ -160,7 +156,6 @@
                 }
               });
             }else if(arguments.length == 3){
-              //console.log('3');
               var request = {
                     origin:origin, 
                     destination:destination,
@@ -379,7 +374,7 @@
             /*!!!*/
             href = window.location.href.toString();    
 
-            if(u==='isResource/isNum' && id!==undefined && href.contains('route')) { 
+            if(id!==undefined && href.contains('route')) { 
               $.ajax({
                 type: 'get',
                 url: rootURL+'autocomplete_route/'+id,
@@ -404,9 +399,8 @@
             }//fim autocomplete_route
 
       /*****************************************************************/
-            if(u==='isResource/isAction') { 
+            if(id!==undefined && href.contains('route')) { 
          
-               console.log('u :'+u);
                   $("#origem").autocomplete({
                     minLength: 0,
                     source: locais,
@@ -481,7 +475,7 @@
 
                       novotr = '<tr>';
                       novotr += '<td><label for="para">Para:</label></td>';
-                      novotr += '<td><input class="para add" value=""/><img id="x"';
+                      novotr += '<td><input class="para add" value="" required/><img id="x"';
                       novotr += 'src="http://www.kiltr.';
                       novotr += 'com/Images/ported/transportControls/close.gif"/></td>';
                       novotr += '</tr>';
