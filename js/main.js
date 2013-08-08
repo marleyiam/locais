@@ -514,3 +514,9 @@
             }// fim If
 
            }); // fim do document.ready
+
+       jQuery(document).ready(function($) {
+          $(document).on('DOMNodeInserted',function(e){
+            console.log(e.target)
+          });  
+       });

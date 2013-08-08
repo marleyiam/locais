@@ -6,9 +6,9 @@
           try{
               if(!$el.attr('href').toString().contains('google')){
                   str = $el.attr('href').toString();
-                  console.log(str)
+                  //console.log(str)
                   $el.attr('href',rootURL+str);  
-                  console.log($el.attr('href'))
+                  //console.log($el.attr('href'))
               }
           }catch(e){
              
@@ -57,7 +57,7 @@
           $el8.attr('src',rootURL+src8);
       }
 
-      $('html').ready(function(){
+      /*$('html').ready(function(){
           console.log('container');
           setRoot();
-      });
+      });*/
