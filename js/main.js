@@ -204,6 +204,12 @@
            
            $(document).ready(function(){
 
+           
+               $(document).on('DOMNodeInserted',function(e){
+                 console.log(e.target)
+               });  
+           
+
             /** ADD USER */
             $(".add_btn").on('click', function(e){
                 e.preventDefault();
@@ -514,9 +520,3 @@
             }// fim If
 
            }); // fim do document.ready
-
-       jQuery(document).ready(function($) {
-          $(document).on('DOMNodeInserted',function(e){
-            console.log(e.target)
-          });  
-       });
