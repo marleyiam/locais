@@ -84,7 +84,7 @@
                                                   {% for k,arrimg in imagens_locals_albums %}
                                                     {% for aimg in arrimg %}
                                                       {% for x,img in aimg %}
-                                                        {% if(img.locals_id) %}
+                                                        {% if(img.locals_id is not null) %}
                                                          {% if (img.locals_id == local.id) %}
                                                            {{x}}
                                                            <img width="100" height="77" src="uploads_locais/{{ img.name }}"/>
