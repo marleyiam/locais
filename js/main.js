@@ -12,7 +12,7 @@
             address_url = address_url.substr(0,hash);
           }
 
-          //links = $('a');
+          links = $('a');
 
           array_Address_url = address_url.split("/");
           resources = [];
@@ -64,7 +64,7 @@
               }else if(u==='isResource/isAction'){
                   rootURL = '../../';
               }else if(u==='isResource/isNum'){
-                  rootURL = '../../';
+                  rootURL = '../';
               }else if(u==='isResource/isAction/isNum'){
                   rootURL = '../../';
               }else if(u==='/'){
@@ -75,85 +75,77 @@
           u = indexes.join('/') ;
           defineRoot(u);
 
+          links.each(function(i,it){
+              $el = $(it);
+
+              try{
+                  if(!$el.attr('href').toString().contains('google')){
+                      str = $el.attr('href').toString();
+                      $el.attr('href',rootURL+str);  
+                  }
+              }catch(e){
+                 
+              }
+          });
+          if($('.header_avatar').length > 0){
+              $el = $('.header_avatar');
+              src = $el.attr('src').toString();
+              $el.attr('src',rootURL+src);
+          }
+
+          if($(".avatar").length > 0){
+              $el2 = $(".avatar");
+              src2 = $el2.attr('src').toString();
+              $el2.attr('src',rootURL+src2);
+          }
+
+          if($("#formSearch").length > 0){
+              $el3 = $("#formSearch");
+              src3 = $el3.attr('action').toString();
+              $el3.attr('action',rootURL+src3);
+          }
+          if($(".local_album_status_add").length > 0){
+              $el4 = $(".local_album_status_add");
+              src4 = $el4.attr('src').toString();
+              $el4.attr('src',rootURL+src4);
+          }
+          if($(".local_album_status_dll").length > 0){
+              $el5 = $(".local_album_status_dll"); 
+              src5 = $el5.attr('src').toString();
+              $el5.attr('src',rootURL+src5);
+          }
+          if($(".realty_album_status_add").length > 0){
+              $el6 = $(".realty_album_status_add");
+              src6 = $el6.attr('src').toString();
+              $el6.attr('src',rootURL+src6);
+          }
+          if($(".realty_album_status_dll").length > 0){
+              $el7 = $(".realty_album_status_dll"); 
+              src7 = $el7.attr('src').toString();
+              $el7.attr('src',rootURL+src7);
+          }
+          if($(".link_fb").length > 0){
+              $el8 = $(".link_fb"); 
+              src8 = $el8.attr('src').toString();
+              $el8.attr('src',rootURL+src8);
+          }
       } //fim setRoot
 
-      function setLinks(){
-        console.log('setlinks func')
-        links = $('a');
-        links.each(function(i,it){
-            $el = $(it);
 
-            try{
-                if(!$el.attr('href').toString().contains('google')){
-                    str = $el.attr('href').toString();
-                    //console.log(str)
-                    $el.attr('href',rootURL+str);  
-                    //console.log($el.attr('href'))
-                }
-            }catch(e){
-               
-            }
-        });
-        if($('.header_avatar').length > 0){
-            $el = $('.header_avatar');
-            src = $el.attr('src').toString();
-            $el.attr('src',rootURL+src);
-        }
-
-        if($(".avatar").length > 0){
-            $el2 = $(".avatar");
-            src2 = $el2.attr('src').toString();
-            $el2.attr('src',rootURL+src2);
-        }
-
-        if($("#formSearch").length > 0){
-            $el3 = $("#formSearch");
-            src3 = $el3.attr('action').toString();
-            $el3.attr('action',rootURL+src3);
-        }
-        if($(".local_album_status_add").length > 0){
-            $el4 = $(".local_album_status_add");
-            src4 = $el4.attr('src').toString();
-            $el4.attr('src',rootURL+src4);
-        }
-        if($(".local_album_status_dll").length > 0){
-            $el5 = $(".local_album_status_dll"); 
-            src5 = $el5.attr('src').toString();
-            $el5.attr('src',rootURL+src5);
-        }
-        if($(".realty_album_status_add").length > 0){
-            $el6 = $(".realty_album_status_add");
-            src6 = $el6.attr('src').toString();
-            $el6.attr('src',rootURL+src6);
-        }
-        if($(".realty_album_status_dll").length > 0){
-            $el7 = $(".realty_album_status_dll"); 
-            src7 = $el7.attr('src').toString();
-            $el7.attr('src',rootURL+src7);
-        }
-        if($(".link_fb").length > 0){
-            $el8 = $(".link_fb"); 
-            src8 = $el8.attr('src').toString();
-            $el8.attr('src',rootURL+src8);
-        }
-
-      }
-
-      $('html').ready(function(){
+      $('.container').ready(function(){
           console.log('container');
           setRoot();
       });
 
-
-      Array.prototype.contains = function(key, val, param) {
-          var i = this.length;
-          while (i--) {
+       Array.prototype.contains = function(key, val, param) {
+           var i = this.length;
+           while (i--) {
               if(this[i][key] == param) {
                   return this[i][val];
               }
-          }
-          return false;
-      }
+           }
+           return false;
+       }
 
       Array.prototype.remove = function(obj) {
         for(var i in this){
@@ -190,6 +182,23 @@
       }
       setInterval(fa(),fc(),500,500);
      '*/
+     $(".add_btn").on('click', function(e){
+         e.preventDefault();
+
+             user_a = $(".header_avatar").attr("data-user");
+             user_b = $(".avatar").attr("data-public-user");
+             $.ajax({
+             type: 'post',
+             url: 'http://localhost/locais_fotos/add_user',
+             data: {from_user:user_a,to_user:user_b},
+             success: function(data){
+                 window.alert(data);
+             },
+             error: function(jqxhr){
+                 window.alert(jqxhr);
+             }
+         });
+     });
 
           /** Adiciona o form_rota*/
            url = window.parent.location.href;
@@ -202,13 +211,9 @@
               return this.indexOf(it) != -1; 
           };
            
-           $(document).ready(function(){
+           //console.log(url.contains(v));
 
-           
-               //$('html').on('DOMNodeInserted',function(e){
-               //  console.log(e.target)
-               //});  
-           
+           $(document).ready(function(){
 
             /** ADD USER */
             $(".add_btn").on('click', function(e){
@@ -265,6 +270,33 @@
                   });
               });
 
+              /** USER AUTOCOMPLETE */
+            /*$.ui.autocomplete.prototype._renderItem = function (ul, item) { 
+
+              var avatar = item.avatar.name? item.avatar.name : item.avatar;
+              var inner_html = '<a href="http://localhost/locais_fotos/profile/'+item.id+'">';
+              inner_html += '<div class="list_item_container">';
+              inner_html += '<div class="image">';
+              inner_html += '<img height="50px" width="50px"';
+              inner_html += ' src="http://localhost/locais_fotos/uploads_users/' + avatar + '">';
+              inner_html += '</div>';
+              inner_html += '<div class="label">' + item.name + '</div>';
+              inner_html += '<div class="city">' + item.city + '</div>';
+              inner_html += '</div></a>';
+                      return $( "<li></li>" )
+                          .data("item.autocomplete", item)
+                          .append(inner_html)
+                          .appendTo( ul );
+            };
+
+            $("#search_users").autocomplete({
+              minLength: 0,
+              source: 'http://localhost/locais_fotos/ajax_search_users',
+               focus: function(event, ui) {
+              },
+              select: function(event, ui) {
+              }
+            });*/
 
             $("#login-email").change(function(){
                 $(".validation").remove();
@@ -489,34 +521,25 @@
             });
 
 
-            if(!window.location.href.contains('route')){
-                /** USER AUTOCOMPLETE */
-              $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
+            $("#forgot").click(function(e){
+                e.preventDefault();
+                $("#formmail").show("slow");
+            })
+            $("#formmail").submit(function(e) {
+              e.preventDefault();
+              email = $("#sendmail").val();
+              $.ajax({
+                type: 'post',
+                data: {email:email},
+                url: $("#formmail").attr('action'),
+                success: function(data){
+                  window.alert(data)
+                },
+                error: function(jqxhr){
+                  window.alert(jqxhr)
+                }
+              })
+            });
 
-                var avatar = item.avatar.name? item.avatar.name : item.avatar;
-                var inner_html = '<a href="'+rootURL+'profile/'+item.id+'">';
-                inner_html += '<div class="list_item_container">';
-                inner_html += '<div class="image">';
-                inner_html += '<img height="50px" width="50px"';
-                inner_html += ' src="'+rootURL+'uploads_users/' + avatar + '">';
-                inner_html += '</div>';
-                inner_html += '<div class="label">' + item.name + '</div>';
-                inner_html += '<div class="city">' + item.city + '</div>';
-                inner_html += '</div></a>';
-                        return $("<li></li>")
-                            .data("item.autocomplete", item)
-                            .append(inner_html)
-                            .appendTo(ul);
-              };
-
-                $("#search_users").autocomplete({
-                  minLength: 0,
-                  source: rootURL+'ajax_search_users',
-                   focus: function(event, ui) {
-                  },
-                  select: function(event, ui) {
-                  }
-                });
-            }// fim If
 
            }); // fim do document.ready

@@ -6,6 +6,8 @@
     <link href="./templates/layout/styles.css" rel="stylesheet" type="text/css">
     <style>
       .centralizado { margin: 0 auto; float: none; }
+      .pic_close { padding-bottom: 210px; }
+      #formmail { display:none; }
     </style>
 
     <script type="text/javascript">
@@ -91,7 +93,19 @@
             </tr>
         </table>
     </form>
-          <p><a href="">Esqueci a senha</a>
+          <p><a id="forgot" href="#">Esqueci a senha</a>
+          
+
+            <form action="changepasswd" action="post" id="formmail">
+              <table border="1px solid">
+                <tr>
+                  <td><label for="">Digite seu e-mail</label></td>
+                  <td><input type="text" required name="email" id="sendmail"/></td>
+                </tr>
+                <tr><td><input type="submit" value="enviar"></td></tr>
+              </table>
+            </form>
+
           <div id="fb_login">
     {% if(fb_login|length>0) %}
       <a href="{{fb_login}}"><img class="link_fb" src="img/f-connect.png" alt=""></a>
