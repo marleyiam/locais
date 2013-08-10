@@ -173,7 +173,8 @@ $app->post('/changepasswd', function() use ($app){
       $content  = nl2br("
         Olá, recebemos uma solicitação sua para redefinição de sua senha,
         para realiza-la basta acessar o seguinte link:
-        ".get_root_url()."/redefine_email?user_id=".$user->id."&token=".$token."
+        
+        http://".get_root_url()."redefine_email?user_id=".$user->id."&token=".$token."
         ");
       //insert username, token, tstamp
       $message = Swift_Message::newInstance();
