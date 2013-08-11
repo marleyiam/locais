@@ -60,7 +60,7 @@ $app->get('/login', function() use ($app){
 });
 
 $app->get('/fb_login', function() use ($app) {
-  printer($app->request()->get());
+ // printer($app->request()->get());
   $facebook = new Facebook(array(
     'appId' => FACEBOOK_APP_ID,
     'secret' => FACEBOOK_SECRET,
@@ -155,6 +155,7 @@ $app->post('/check_email', function() use ($app){
 
 });
 
+/** AJAX Change Password Request */
 $app->post('/changepasswd', function() use ($app){
   $arr = $app->request()->params();
   $email = $arr['email'];
@@ -163,20 +164,22 @@ $app->post('/changepasswd', function() use ($app){
       require_once 'lib/swift_required.php';
 
       $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
-      ->setUsername('seulogin')
-      ->setPassword('suasenha');
+      ->setUsername('seu_login')
+      ->setPassword('sua_senha');
 
       $name = $user->name;
       $sendto   = $email;
-      $usermail = $email;
+      $usermail = 'admin@mail.com';
       $token = sha1(uniqid($user->name, true));
+      $ts = time();
+
       $content  = nl2br("
         Olá, recebemos uma solicitação sua para redefinição de sua senha,
         para realiza-la basta acessar o seguinte link:
-        
-        http://".get_root_url()."redefine_email?user_id=".$user->id."&token=".$token."
-        ");
-      //insert username, token, tstamp
+        http://".get_host().get_root_url()."redefine_email?user=".base64_encode($user->email)."&token=".$token."&ts=".$ts."
+        O link expirará dentro de 24Hs, ao fim desse prazo, caso deseje redefinir sua
+        senha, será necessário realizar uma nova solicitação");
+
       $message = Swift_Message::newInstance();
       $message->setTo(array(
         $sendto => "Admin"
@@ -198,31 +201,35 @@ $app->post('/changepasswd', function() use ($app){
   }
 });
 
+/** REDEFINE PASSWORD */
 $app->get('/redefine_email', function() use ($app){
 
+  $arr = $app->request()->params();
+  $u_email = base64_decode($arr['user']);
+  $token = $arr['token'];
+  $ts = $arr['ts'] + (60 * 60 * 24);
+  $now = time();
+  if($now < $ts){
+    $agora = date("d/m/Y G:i:s", $now);
+    $data_email = date("d/m/Y G:i:s", $ts);
+    $user = User::find_by_email($u_email);
+    if($user && is_sha1($token)){
+      $_SESSION['user_id'] = $user->id;
+      $dados_requisicao['user'] = $user;
+      $dados_requisicao['avatar'] = $dados_requisicao['user']->user_pictures;
+      $app->redirect(get_root_url().'user/config',$dados_requisicao);
+      
+    }else{
+      echo "Error!";
+      $app->redirect(get_root_url().'login');
+    }
 
-  // retrieve token
-  //if (isset($_GET["token"]) && preg_match('/^[0-9A-F]{40}$/i', $_GET["token"])) {
-  //    $token = $_GET["token"];
-  //}
-  //else {
-  //    throw new Exception("Valid token not provided.");
-  //}
-
-  // verify token
- // $query = $db->prepare("SELECT username, tstamp FROM pending_users WHERE token = ?");
-  //$query->execute(array($token));
-  //$row = $query->fetch(PDO::FETCH_ASSOC);
-  //$query->closeCursor();
-
- // if ($row) {
-  //    extract($row);
-  //}
-  //else {
-  //    throw new Exception("Valid token not provided.");
-  //}
-
-})
+  }else{
+    echo "O prazo de sua redefinição de senha excedeu o limite de 24Hs, será necessário
+    solicitar a redefinição de senha novamente !";
+    $app->redirect(get_root_url().'login');
+  }
+});
 
 
 ?>

@@ -8,6 +8,8 @@ require 'functions/functions.php';
 require 'functions/Inflect.php';
 require 'vendor/facebook/facebook.php';
 
+date_default_timezone_set("America/Fortaleza");
+
 $loader = Twig_Autoloader::register();
 \Slim\Slim::registerAutoloader();
 ActiveRecord\Config::initialize(function($cfg) {

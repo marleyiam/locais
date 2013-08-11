@@ -54,6 +54,32 @@ function get_root_url(){
 	return substr($_SERVER['PHP_SELF'],0,-9);
 }
 
+function get_host() {
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+		if($host = $_SERVER['HTTP_X_FORWARDED_HOST']){
+		    $elements = explode(',', $host);
+		    $host = trim(end($elements));
+		}else{
+		    if(!$host = $_SERVER['HTTP_HOST']){
+		        if (!$host = $_SERVER['SERVER_NAME']){
+		            $host = !empty($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '';
+		        }
+		    }
+		}	
+	}else{
+		if(!$host = $_SERVER['HTTP_HOST']){
+		    if (!$host = $_SERVER['SERVER_NAME']){
+		        $host = !empty($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '';
+		    }
+		}
+	}
+   
+    // Remove o numero da porta do host
+    $host = preg_replace('/:\d+$/', '', $host);
+
+    return trim($host);
+}
+
 function convertDate2String($data) {
 
 		return date('F d, Y h:i:s A', strtotime($data));	
@@ -78,6 +104,14 @@ function from_camel_case($input) {
   return implode('_', $ret);
 }
 
+function to_camel_case($str, $capitalise_first_char = true) {
+   if($capitalise_first_char) {
+     $str[0] = strtoupper($str[0]);
+   }
+   $func = create_function('$c', 'return strtoupper($c[1]);');
+   return preg_replace_callback('/_([a-z])/', $func, $str);
+ }
+
 function relation($entity,$relation,$find){
 //$user['imagens'] = relation(array("Local",$user['locals']),"LocalPicture","identifier");
 	$data = array();
@@ -93,10 +127,15 @@ function relation($entity,$relation,$find){
 
 function get_nested_relation($obj,$relation){
 	$data = array();
+	$entity = Inflect::singularize(to_camel_case($relation));
 
 	foreach ($obj as $key => $value) {
-	    $data[$key] = $value->$relation;
+	    $data[$key] = $value->$relation? $value->$relation : new $entity(array());
+	    //echo $value->$relation? 1 : NULL;
+	    //printer($data[$key]);
+	    //echo '</br>';
 	}
+	//exit;
 
 	return $data;
 }
@@ -158,6 +197,10 @@ function get_last_id($entity){
 
 function validateEmail($email) {
   return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+function is_sha1($str) {
+    return (bool) preg_match('/^[0-9a-f]{40}$/i', $str);
 }
 
 ?>
