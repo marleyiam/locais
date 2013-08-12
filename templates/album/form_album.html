@@ -94,5 +94,44 @@
 			<td>Não há imóveis cadastrados</td>
 		</tr>
 		{% endif %}
+	</table>
+
+	<!-- -->
+	<table border="1px solid">
+		<tr><td>Rotas</td></tr>
+		{% if (routes|length>0) %}
+			{% for i,route in routes%}
+				<tr>
+					<td><a href="route/{{route.id}}">{{ route.name}}</a></td>
+					{% if(route.albums_id and route.albums_id == album.id) %}
+						<td>
+							<img class="route_album_status_add" src="img/bulletDLL.png" alt="">
+						</td>
+						<td  class="routes_to_album">
+							<button data-id-route="{{route.id}}" class="btn_rmv_route_album">Remover do Album</button>
+						</td>
+					{% elseif(route.albums_id and route.albums_id != album.id)  %}
+						<td>
+							<img class="route_album_status_add" src="img/bulletSTP.png" alt="">
+						</td>
+						<td  class="routes_to_album">
+							<button data-id-route="{{route.id}}" class="btn_add_route_album">Adicionar ao Album</button>
+						</td>
+					{% else %}
+						<td>
+							<img class="route_album_status_dll" src="img/bulletADD.png" alt="">
+						</td>
+						<td  class="routes_to_album">
+							<button data-id-route="{{route.id}}" class="btn_add_route_album">Adicionar ao Album</button>
+						</td>
+					{% endif %}
+
+				</tr>
+			{% endfor %}
+		{% else %}
+		<tr>
+			<td>Não há rotas cadastradas</td>
+		</tr>
+		{% endif %}
 	</table>                                                                                       
 </form>

@@ -9,7 +9,7 @@
             <table border="1px solid">
                 <caption>Dados da Rota</caption>
                 <thead>
-                    <tr>
+                    <tr class="resource_fields">
                         <th>ID</th>
                         <th>nome</th>
                         <th>identificador</th>
@@ -20,14 +20,44 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr class="resource_data">
                         <td>{{ route.id }}</td>
-                        <td>{{ route.name }}</td>
-                        <td>{{ route.identifier }}</td>
-                        <td>{{ route.route_path }}</td>
-                        <td>{{ route.description }}</td>
-                        <td>{{ route.visibility }}</td>
+                        <td id="route_name">{{ route.name }}</td>
+                        <td id="route_identifier">{{ route.identifier }}</td>
+                        <td id="route_route_path">{{ route.route_path }}</td>
+                        <td id="route_description">{{ route.description }}</td>
+                        <td id="route_visibility">{{ route.visibility }}</td>
                         <td><a href="{{link}}">{{link}}</a></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <!-- AddThis Button BEGIN -->
+                            <div class="addthis_toolbox addthis_default_style addthis_16x16_style" 
+                            addthis:url="{{link}}"
+                            addthis:title="{{route.name}}"
+                            addthis:description="{{route.description}}"
+                            >
+                            <a class="addthis_button_facebook"></a>
+                            </div>
+
+                            <!-- AddThis Button END -->
+                        </td>
+                        <td>
+                            <!-- AddThis Button BEGIN -->
+                            <div class="addthis_toolbox addthis_default_style">
+                            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                            </div>
+
+                            <!-- AddThis Button END -->
+                        </td>
+                        
+                            {% if(route.users_id != user.id) %}
+                              {% if(route.clone) %}
+                              <td>
+                                <input class="btnClone" data-clone="Route" type="button" value="clonar"/>
+                              </td>
+                              {% endif %}
+                            {% endif %}
                     </tr>
                 </tbody>
             </table>
@@ -35,7 +65,10 @@
             <div id="imgs">
                 {% for img in imagens %}
                 <div>
-                    <img src="../uploads_rotas/{{ img.name }}" width="400px" height="230px" alt=""/>
+                    <img  class="current_imgs" src="../uploads_rotas/{{ img.name }}" width="400px" height="230px" alt=""/>
+                    {% if(user.id == route.users_id) %}
+                         <img data-id-img= "{{img.id}}" data-resource="RoutePicture" class="pic_close" src="../img/pic-close.png" alt="">
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -45,4 +78,11 @@
 
             {% include './mapa/mapa.html' %}
         </div>
+        <script async defer>
+               addthis_config = {"data_track_addressbar":true};
+        </script>
+        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5065e8e03dd56e62" async defer>
+        </script>
+        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5065e8e03dd56e62" async defer>
+        </script>
   {% endblock %}

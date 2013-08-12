@@ -130,12 +130,19 @@ function get_nested_relation($obj,$relation){
 	$entity = Inflect::singularize(to_camel_case($relation));
 
 	foreach ($obj as $key => $value) {
-	    $data[$key] = $value->$relation? $value->$relation : new $entity(array());
-	    //echo $value->$relation? 1 : NULL;
-	    //printer($data[$key]);
-	    //echo '</br>';
+	   $data[$key] = $value->$relation;
 	}
-	//exit;
+
+	return $data;
+}
+
+function get_resource_relation($obj,$relation,$fk){
+	$data = array();
+	$entity = Inflect::singularize(to_camel_case($relation));
+
+	foreach ($obj as $key => $value) {
+	   $data[$key] = $value->$relation? $value->$relation : array(new $entity(array("id"=>100,"name"=>"no_picture.gif",$fk=>$value->id)));
+	}
 
 	return $data;
 }

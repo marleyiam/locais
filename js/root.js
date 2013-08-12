@@ -56,8 +56,17 @@
           src8 = $el8.attr('src').toString();
           $el8.attr('src',rootURL+src8);
       }
-
-      /*$('html').ready(function(){
-          console.log('container');
-          setRoot();
-      });*/
+      if($(".route_album_status_add").length > 0){
+          $el9 = $(".route_album_status_add");
+          src9 = $el9.attr('src').toString();
+          $el9.attr('src',rootURL+src9);
+      }
+      if($(".route_album_status_dll").length > 0){
+          $el10 = $(".route_album_status_dll"); 
+          src10 = $el10.attr('src').toString();
+          $el10.attr('src',rootURL+src10);
+      }
+      //$('html').ready(function(){
+      //    console.log('container');
+      //    setRoot();
+      //});

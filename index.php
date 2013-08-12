@@ -33,35 +33,11 @@ $twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
  /*definicoes do FB APP*/
 define('FACEBOOK_APP_ID',"475085362501750");
 define('FACEBOOK_SECRET',"d07dfae4e722f45fd92072069e4e0c59");
-define('REDIRECT_URI',"http://localhost/locais_fotos");
+define('REDIRECT_URI',"http://nameless-river-5051.heroku.app/locais_fotos");
 
 
 
 //$app->notFound('ErrorFunction404');
-
-/** AUTOCOMPLETE SEARCH LOCAL AJAX*/
-/*$app->get('/search_locals', function () use ($app) {
-
-    $app->response()->header('Content-Type', 'application/json;charset=utf-8');
-
-    $arrterm = $app->request()->params();
-    $term = $arrterm["term"];
-
-    $res = array();
-    $ress = array();
-    $locals = Local::find('all', array('conditions' => array("name LIKE ?
-    OR identifier LIKE ? OR address LIKE ?
-    OR city LIKE ?", "%".$term."%","%".$term."%","%".$term."%","%".$term."%")));
-
-    foreach ($locals as $key => $value) {
-        $res[$key] = $value->attributes();
-        $ress[$key] = $res[$key]["name"];   
-    }
-
-    echo json_encode($ress);
-});*/
-
-
 
            // $app->setEncryptedCookie('my_cookie',$post->password);
            // $app->redirect('profile/index.html');
@@ -82,6 +58,7 @@ $authAdmin = function($role = 'member'){
     };
 };
 */
+
 require 'auth.php';
 require 'locals.php';
 require 'realties.php';

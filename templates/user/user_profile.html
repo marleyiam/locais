@@ -171,6 +171,42 @@
                                           {% else %}
                                               <span>Não há imóveis cadastrados</span>
                                           {% endif %}
+
+                                          <!-- rotas -->
+                                          {% if (routes_albums|length > 0) %}
+
+                                              {% for routes in routes_albums %}
+
+                                                {% for route in routes %}
+                                                
+                                                {% if(route.albums_id == album.id) %}
+
+                                                <a href="route/{{route.id}}">
+                                                   {% if (imagens_routes_albums|length > 0) %}
+                                                      {% for arrimg in imagens_routes_albums %}
+                                                        {% for aimg in arrimg %}
+                                                          {% for img in aimg %}
+                                                             {% if (img.routes_id == route.id) %}
+                                                            <img width="100" height="77" src="../uploads_rotas/{{ img.name }}"/>
+                                                             {% endif %}
+                                                          {% endfor %}
+                                                        {% endfor %}
+                                                      {% endfor %}
+                                                   {% else %}
+                                                         <span>Não há fotos cadastradas</span>
+                                                   {% endif %}
+                                                       {{ route.name }}
+                                                  </a>
+
+                                                {% endif %}
+
+                                                {% endfor %} 
+
+                                              {% endfor %}
+
+                                          {% else %}
+                                              <span>Não há rotas cadastradas</span>
+                                          {% endif %}
                                       </tr>
                                   </tbody>
                               </table>

@@ -70,6 +70,9 @@ $app->get('/album/edit/(:id)', $authenticate($app), function ($id) use ($app) {
     $dados_requisicao['locals'] = Local::find("all",array("conditions" => array("users_id = ?", current_user()->id)));
 
     $dados_requisicao['realties'] = Realty::find("all",array("conditions" => array("users_id = ?", current_user()->id)));
+
+    $dados_requisicao['routes'] = Route::find("all",array("conditions" => array("users_id = ?", current_user()->id)));
+
     /*
     $aproved = Friend::find("all", array(
      "conditions" => array('aproved = ? AND id_b = ? OR aproved = ? AND id_a = ? ','TRUE',$user['user']->id,'TRUE',$user['user']->id)));
@@ -163,5 +166,35 @@ $app->post('/del_realty_of_album', function() use ($app){
         echo 'O imóvel foi removido do seu album !';
     }else{
         echo 'O imóvel não pode ser removido ao seu album !';
+    }
+});
+
+
+/** ADD ROUTE TO ALBUM*/
+$app->post('/add_route_to_album', function() use ($app){
+    
+    $arrterm = $app->request()->params();
+    $route_id = $arrterm["route_id"];
+    $album_id = $arrterm["album_id"];
+    $route = Route::find_by_id($route_id);
+     
+    if($route->update_attribute ("albums_id" ,$album_id)){
+        echo 'A rota foi adicionada ao seu album !';
+    }else{
+        echo 'A rota não pode ser adicionada ao seu album !';
+    }
+});
+
+/** RMV ROUTE FROM ALBUM*/
+$app->post('/del_route_of_album', function() use ($app){
+
+    $arrterm = $app->request()->params();
+    $route_id = $arrterm["route_id"];
+    $route = Route::find_by_id($route_id);
+     
+    if($route->update_attribute ("albums_id" ,NULL)){
+        echo 'A rota foi removida do seu album !';
+    }else{
+        echo 'A rota não pode ser removida do seu album !';
     }
 });

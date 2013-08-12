@@ -46,12 +46,13 @@ $app->get('/user', $authenticate($app), function() use ($app){
 
    $user['friends'] = $friends;
    $user['friends_avatars'] = $friends_avatars;
-   //printer(count($user['friends_avatars']));exit;
 
    $array_locals_albums = array();
    $imagens_locals_albums = array();
    $array_realties_albums = array();
    $imagens_realties_albums = array();
+   $array_routes_albums = array();
+   $imagens_routes_albums = array();
 
    $albums = $user['user']->albums;
    $user['albums'] = $albums;
@@ -61,7 +62,7 @@ $app->get('/user', $authenticate($app), function() use ($app){
    }
 
    foreach ($array_locals_albums as $key => $value) {
-      $imagens_locals_albums[$key] = get_nested_relation($value,'local_pictures');
+      $imagens_locals_albums[$key] = get_resource_relation($value,'local_pictures','locals_id');
    }
 
    foreach ($user['albums'] as $key => $value) {
@@ -69,13 +70,23 @@ $app->get('/user', $authenticate($app), function() use ($app){
    }
 
    foreach ($array_realties_albums as $key => $value) {
-      $imagens_realties_albums[$key] = get_nested_relation($value,'realty_pictures');
+      $imagens_realties_albums[$key] = get_resource_relation($value,'realty_pictures','realties_id');
+   }
+
+   foreach ($user['albums'] as $key => $value) {
+     $array_routes_albums[$key] = Route::find('all', array('conditions' => array('albums_id = ?',$value->id)));
+   }
+
+   foreach ($array_routes_albums as $key => $value) {
+      $imagens_routes_albums[$key] = get_resource_relation($value,'route_pictures','routes_id');
    }
  
    $user['locals_albums'] = $array_locals_albums;
    $user['imagens_locals_albums'] = $imagens_locals_albums; 
    $user['realties_albums'] = $array_realties_albums;
    $user['imagens_realties_albums'] = $imagens_realties_albums;
+   $user['routes_albums'] = $array_routes_albums;
+   $user['imagens_routes_albums'] = $imagens_routes_albums;
    $user['avatar'] = $user['user']->user_pictures;
 
    $app->render('user/show_profile.html', $user);
@@ -91,6 +102,8 @@ $app->get('/profile/(:id)', $authenticate($app), function($id) use ($app){
    $imagens_locals_albums = array();
    $array_realties_albums = array();
    $imagens_realties_albums = array();
+   $array_routes_albums = array();
+   $imagens_routes_albums = array();
 
    $albums = $user['public_user']->albums;
    $user['albums'] = $albums;
@@ -100,7 +113,7 @@ $app->get('/profile/(:id)', $authenticate($app), function($id) use ($app){
    }
 
    foreach ($array_locals_albums as $key => $value) {
-      $imagens_locals_albums[$key] = get_nested_relation($value,'local_pictures');
+      $imagens_locals_albums[$key] = get_resource_relation($value,'local_pictures','locals_id');
    }
 
    foreach ($user['albums'] as $key => $value) {
@@ -108,7 +121,15 @@ $app->get('/profile/(:id)', $authenticate($app), function($id) use ($app){
    }
 
    foreach ($array_realties_albums as $key => $value) {
-      $imagens_realties_albums[$key] = get_nested_relation($value,'realty_pictures');
+      $imagens_realties_albums[$key] = get_resource_relation($value,'realty_pictures','locals_id');
+   }
+
+   foreach ($user['albums'] as $key => $value) {
+     $array_routes_albums[$key] = Route::find('all', array('conditions' => array('albums_id = ?',$value->id)));
+   }
+
+   foreach ($array_routes_albums as $key => $value) {
+      $imagens_routes_albums[$key] = get_resource_relation($value,'route_pictures','routes_id');
    }
 
    $user['public_avatar'] = $user['public_user']->user_pictures;
@@ -116,6 +137,8 @@ $app->get('/profile/(:id)', $authenticate($app), function($id) use ($app){
    $user['imagens_locals_albums'] = $imagens_locals_albums;
    $user['realties_albums'] = $array_realties_albums;
    $user['imagens_realties_albums'] = $imagens_realties_albums;
+   $user['routes_albums'] = $array_routes_albums;
+   $user['imagens_routes_albums'] = $imagens_routes_albums;
 
    $app->render('user/user_profile.html', $user);
 });
@@ -274,6 +297,7 @@ $app->get('/ajax_search_users', function () use ($app) {
     echo json_encode($arr);
 });
 
+/** CLONE Resource (local,realty,route) */
 $app->post('/clone', function() use ($app){
   $arr = $app->request()->params();
 

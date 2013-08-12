@@ -250,14 +250,14 @@
 
 
         /** bloco que responde de acordo com a url */
-        url = window.location.href;
-        var token = url.lastIndexOf("/");
-        var id = url.substr(token+1);
-        realtylocal = url.contains('local')? 'local' : 'realty';
+        _url = window.location.href;
+        var token = _url.lastIndexOf("/");
+        var id = _url.substr(token+1);
+        realtylocal = _url.contains('/local/')? 'local' : 'realty';
 
-        if(parseInt(id)!==NaN && url.contains('local/'+id) || url.contains('realty/'+id) && !url.contains('new')){ 
+        if(parseInt(id)!==NaN && _url.contains('local/'+id) || _url.contains('realty/'+id) && !_url.contains('new')){ 
           setLocal(rootURL+realtylocal+'/setlocal/'+id);
-        }else if(parseInt(id)!==NaN && url.contains('local/edit') || url.contains('realty/edit') && !url.contains('new')){
+        }else if(parseInt(id)!==NaN && _url.contains('local/edit') || _url.contains('realty/edit') && !_url.contains('new')){
           setLocal(rootURL+realtylocal+'/setlocal/'+id);
         }
  

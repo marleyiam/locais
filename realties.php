@@ -180,10 +180,4 @@ $app->get('/realty/setlocal/(:id)', function ($id) use ($app) {
     echo json_encode($coordenadas);
 });
 
-$app->get('realty_url/', function() use ($app){
-    //$arrterm = $app->request()->params();
-    //$term = $arrterm["term"];
-    //$realty['realty'] = Realty::find_by_identifier();
-});
-
 ?>

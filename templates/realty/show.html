@@ -8,7 +8,7 @@
             <table border="1px solid">
                 <caption>Dados do Imóvel</caption>
                 <thead>
-                    <tr>
+                    <tr class="resource_fields">
                         <th>ID</th>
                         <th>nome</th>
                         <th>identificador</th>
@@ -28,23 +28,53 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr class="resource_data">
                         <td>{{ realty.id }}</td>
-                        <td>{{ realty.name }}</td>
-                        <td>{{ realty.identifier }}</td>
-                        <td>{{ realty.address }}</td>
-                        <td>{{ realty.city }}</td>
-                        <td>{{ realty.lat }}</td>
-                        <td>{{ realty.lng }}</td>
-                        <td>{{ realty.description }}</td>
-                        <td>{{ realty.visibility }}</td>
-                        <td>{{ realty.rooms }}</td>
-                        <td>{{ realty.area }}</td>
-                        <td>{{ realty.trading }}</td>
-                        <td>{{ realty.price }}</td>
-                        <td>{{ realty.contacts }}</td>
-                        <td>{{ realty.clone }}</td>
+                        <td id="realty_name">{{ realty.name }}</td>
+                        <td id="realty_identifier">{{ realty.identifier }}</td>
+                        <td id="realty_address">{{ realty.address }}</td>
+                        <td id="realty_city">{{ realty.city }}</td>
+                        <td id="realty_lat">{{ realty.lat }}</td>
+                        <td id="realty_lng">{{ realty.lng }}</td>
+                        <td id="realty_description">{{ realty.description }}</td>
+                        <td id="realty_visibility">{{ realty.visibility }}</td>
+                        <td id="realty_rooms">{{ realty.rooms }}</td>
+                        <td id="realty_area">{{ realty.area }}</td>
+                        <td id="realty_trading">{{ realty.trading }}</td>
+                        <td id="realty_price">{{ realty.price }}</td>
+                        <td id="realty_contacts">{{ realty.contacts }}</td>
+                        <td id="realty_clone">{{ realty.clone }}</td>
                         <td><a href="{{link}}">{{link}}</a></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <!-- AddThis Button BEGIN -->
+                            <div class="addthis_toolbox addthis_default_style addthis_16x16_style" 
+                            addthis:url="{{link}}"
+                            addthis:title="{{realty.name}}"
+                            addthis:description="{{realty.description}}"
+                            >
+                            <a class="addthis_button_facebook"></a>
+                            </div>
+
+                            <!-- AddThis Button END -->
+                        </td>
+                        <td>
+                            <!-- AddThis Button BEGIN -->
+                            <div class="addthis_toolbox addthis_default_style">
+                            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                            </div>
+
+                            <!-- AddThis Button END -->
+                        </td>
+                        
+                            {% if(realty.users_id != user.id) %}
+                              {% if(realty.clone) %}
+                              <td>
+                                <input class="btnClone" data-clone="Realty" type="button" value="clonar"/>
+                              </td>
+                              {% endif %}
+                            {% endif %}
                     </tr>
                 </tbody>
             </table>
@@ -52,7 +82,10 @@
             <div id="imgs">
                 {% for img in imagens %}
                 <div>
-                    <img src="../uploads_realties/{{ img.name }}" width="400px" height="230px" alt=""/>
+                    <img  class="current_imgs" src="../uploads_realties/{{ img.name }}" width="400px" height="230px" alt=""/>
+                    {% if(user.id == realty.users_id) %}
+                         <img data-id-img= "{{img.id}}" data-resource="RealtyPicture" class="pic_close" src="../img/pic-close.png" alt="">
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -62,4 +95,11 @@
 
             {% include './mapa/mapa.html' %}
         </div>
+        <script async defer>
+               addthis_config = {"data_track_addressbar":true};
+        </script>
+        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5065e8e03dd56e62" async defer>
+        </script>
+        <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5065e8e03dd56e62" async defer>
+        </script>
   {% endblock %}

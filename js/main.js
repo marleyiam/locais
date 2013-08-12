@@ -1,8 +1,9 @@
        //window.alert('!');
       rootURL = "";
       u = "";
+      
       function setRoot(){
-          
+          //links = $('a');
           address_url = window.location.href;
           var hash = address_url.lastIndexOf("#");
           if(window.location.hash){
@@ -11,8 +12,6 @@
           if(address_url.substr(hash)==="#"){
             address_url = address_url.substr(0,hash);
           }
-
-          links = $('a');
 
           array_Address_url = address_url.split("/");
           resources = [];
@@ -75,7 +74,7 @@
           u = indexes.join('/') ;
           defineRoot(u);
 
-          links.each(function(i,it){
+          /*links.each(function(i,it){
               $el = $(it);
 
               try{
@@ -128,14 +127,14 @@
               $el8 = $(".link_fb"); 
               src8 = $el8.attr('src').toString();
               $el8.attr('src',rootURL+src8);
-          }
+          }*/
       } //fim setRoot
 
 
-      $('.container').ready(function(){
+      //$('.container').ready(function(){
           console.log('container');
           setRoot();
-      });
+      //});
 
        Array.prototype.contains = function(key, val, param) {
            var i = this.length;
@@ -182,23 +181,6 @@
       }
       setInterval(fa(),fc(),500,500);
      '*/
-     $(".add_btn").on('click', function(e){
-         e.preventDefault();
-
-             user_a = $(".header_avatar").attr("data-user");
-             user_b = $(".avatar").attr("data-public-user");
-             $.ajax({
-             type: 'post',
-             url: 'http://localhost/locais_fotos/add_user',
-             data: {from_user:user_a,to_user:user_b},
-             success: function(data){
-                 window.alert(data);
-             },
-             error: function(jqxhr){
-                 window.alert(jqxhr);
-             }
-         });
-     });
 
           /** Adiciona o form_rota*/
            url = window.parent.location.href;
@@ -270,34 +252,7 @@
                   });
               });
 
-              /** USER AUTOCOMPLETE */
-            /*$.ui.autocomplete.prototype._renderItem = function (ul, item) { 
-
-              var avatar = item.avatar.name? item.avatar.name : item.avatar;
-              var inner_html = '<a href="http://localhost/locais_fotos/profile/'+item.id+'">';
-              inner_html += '<div class="list_item_container">';
-              inner_html += '<div class="image">';
-              inner_html += '<img height="50px" width="50px"';
-              inner_html += ' src="http://localhost/locais_fotos/uploads_users/' + avatar + '">';
-              inner_html += '</div>';
-              inner_html += '<div class="label">' + item.name + '</div>';
-              inner_html += '<div class="city">' + item.city + '</div>';
-              inner_html += '</div></a>';
-                      return $( "<li></li>" )
-                          .data("item.autocomplete", item)
-                          .append(inner_html)
-                          .appendTo( ul );
-            };
-
-            $("#search_users").autocomplete({
-              minLength: 0,
-              source: 'http://localhost/locais_fotos/ajax_search_users',
-               focus: function(event, ui) {
-              },
-              select: function(event, ui) {
-              }
-            });*/
-
+            /** Email availability*/
             $("#login-email").change(function(){
                 $(".validation").remove();
                 email = $(this).val();
@@ -440,6 +395,56 @@
               });
             });
 
+            /*****************************/
+              /** ADD route to Album */
+               $(".routes_to_album").on('click','.btn_add_route_album',function(e){
+                e.preventDefault();
+                $btn = $(this);
+                route_id = $btn.attr('data-id-route');
+                album_id = $("#album_name").attr('data-id-album');
+
+                $.ajax({
+                    type: 'post',
+                    url: rootURL+'add_route_to_album',
+                    data: {route_id:route_id,album_id:album_id},
+                    success: function(data){
+                        window.alert(data);
+                        $btn.parent().parent().find('img').attr('src',rootURL+'img/bulletDLL.png');
+                        $prnt = $btn.parent();
+                        $prnt.find('button').remove();
+                        $prnt.append('<button data-id-route="'+route_id+'" class="btn_rmv_route_album">Remover do Album</button>');
+                    },
+                    error: function(jqxhr){
+                        window.alert(jqxhr)
+                    }
+                });
+              });
+
+              /** RMV route of Album */
+              $(".routes_to_album").on('click','.btn_rmv_route_album',function(e){
+                e.preventDefault();
+                $btn = $(this);
+                route_id = $btn.attr('data-id-route');
+                album_id = $("#album_name").attr('data-id-album');
+
+                $.ajax({
+                    type: 'post',
+                    url: rootURL+'del_route_of_album',
+                    data: {route_id:route_id,album_id:album_id},
+                    success: function(data){
+                        window.alert(data);
+                        $btn.parent().parent().find('img').attr('src',rootURL+'img/bulletADD.png');
+                        $prnt = $btn.parent();
+                        $prnt.find('button').remove();
+                        $prnt.append('<button data-id-route="'+route_id+'" class="btn_add_route_album" data-id-album="'+album_id+'">Adicionar ao Album</button>');
+                    },
+                    error: function(jqxhr){
+                        window.alert(jqxhr)
+                    }
+                });
+              });
+            /***************************/
+
             /** Clone */
             $("tr").on('click','.btnClone', function(e){
               current_imgs = [];
@@ -520,11 +525,43 @@
                 return false;
             });
 
+                    /** USER AUTOCOMPLETE */
+            if(u==='isUser' || window.location.href.contains('profile')){
+                
+              $.ui.autocomplete.prototype._renderItem = function (ul, item) { 
+                
+                var avatar = item.avatar.name? item.avatar.name : item.avatar;
+                var inner_html = '<a href="'+rootURL+'profile/'+item.id+'">';
+                inner_html += '<div class="list_item_container">';
+                inner_html += '<div class="image">';
+                inner_html += '<img height="50px" width="50px"';
+                inner_html += ' src="'+rootURL+'uploads_users/' + avatar + '">';
+                inner_html += '</div>';
+                inner_html += '<div class="label">' + item.name + '</div>';
+                inner_html += '<div class="city">' + item.city + '</div>';
+                inner_html += '</div></a>';
+                        return $("<li></li>")
+                            .data("item.autocomplete", item)
+                            .append(inner_html)
+                            .appendTo( ul );
+              };
+             
+                $("#search_users").autocomplete({
+                  minLength: 0,
+                  source: rootURL+'ajax_search_users',
+                   focus: function(event, ui) {
+                  },
+                  select: function(event, ui) {
+                  }
+                });
+            }
+
 
             $("#forgot").click(function(e){
                 e.preventDefault();
                 $("#formmail").show("slow");
-            })
+            });
+
             $("#formmail").submit(function(e) {
               e.preventDefault();
               email = $("#sendmail").val();
@@ -538,8 +575,7 @@
                 error: function(jqxhr){
                   window.alert(jqxhr)
                 }
-              })
+              });
             });
-
 
            }); // fim do document.ready
