@@ -15,7 +15,7 @@ $loader = Twig_Autoloader::register();
 ActiveRecord\Config::initialize(function($cfg) {
     $cfg->set_model_directory('models');
     $cfg->set_connections(array(
-        'development' => 'pgsql://vxfhhbrgubvffj:aZDz158BPmc7ph_jD29vOBK8tK@ec2-54-235-173-50.compute-1.amazonaws.com/d2ups3m8cpgdva'
+        'development' => 'compute-1.amazonaws.com/d2ups3m8cpgdva'
     ));
 });
 //
@@ -31,8 +31,8 @@ $twig = new Twig_Environment($loader, array(
 $twig->addFilter('var_dump', new Twig_Filter_Function('var_dump'));
 */
  /*definicoes do FB APP*/
-define('FACEBOOK_APP_ID',"475085362501750");
-define('FACEBOOK_SECRET',"d07dfae4e722f45fd92072069e4e0c59");
+define('FACEBOOK_APP_ID',"");
+define('FACEBOOK_SECRET',"");
 define('REDIRECT_URI',"http://nameless-river-5051.heroku.app/locais_fotos");
 
 
